@@ -3,6 +3,13 @@
 ## Informations importantes 
 - Réunion tous les **vendredis à 12h20** dans le bureau de M. Bougeret. 
 - Soutenance 11-12 janvier. 
+- 13 vendredis jusqu'au 08/01/2020
+  - Ven 24/10 partiels. 
+  - Ven 31/10 vacances. 
+  - Ven 26/12 vacances. 
+  - Ven 01/01 vacances. 
+  - Ven 09/01 dernier vendredi. 
+  -> 9 vendredis avec rdv. 
 
 ### Comptes rendus 
 #### Réunion du 09/10/2020 
