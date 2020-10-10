@@ -12,7 +12,7 @@
 - **Choisir le langage** de programmation pour le projet. 
 - **Regarder la [vidéo](https://www.youtube.com/watch?v=mBDNykcauYc)** introduisant le sujet. 
 
-- Idées des différentes versions du projet : 
+- Idées des différentes versions du projet : <br>
   - V1 : 
      - Affichage de l'interface de base. 
      - Obstacles rectangles. 
@@ -25,4 +25,4 @@
      - Gestion du rayon de chaque objet. 
   - Suite : 
     - Possibilité d'évolution sur les comportements humains observés.
- - Très grande possibilité d'évolution dans les versions. 
+ - Très grande possibilité d'évolution dans les versions. <br>
