@@ -13,15 +13,15 @@
 - Regarder la [vidéo](https://www.youtube.com/watch?v=mBDNykcauYc) introduisant le sujet. 
 
 - Idées des différentes versions du projet : 
- - V1 : 
-  - Affichage de l'interface de base. 
-  - Obstacles rectangles. 
-  - Objet unique qui se déplace jusqu'à la sortie. 
-  - Les objets sont des simples points. 
- - V2 : 
-  - Gestion de plusieurs objets (sans collisions). 
- - V3 : 
-  - Gestion des collisions sur plusieurs objets. 
-  - Gestion du rayon de chaque objet. 
+  - V1 : 
+   - Affichage de l'interface de base. 
+   - Obstacles rectangles. 
+   - Objet unique qui se déplace jusqu'à la sortie. 
+   - Les objets sont des simples points. 
+  - V2 : 
+   - Gestion de plusieurs objets (sans collisions). 
+  - V3 : 
+   - Gestion des collisions sur plusieurs objets. 
+   - Gestion du rayon de chaque objet. 
 
-- Très grande possibilité d'évolution dans les versions. 
+ - Très grande possibilité d'évolution dans les versions. 
