@@ -12,11 +12,13 @@ public class Salle extends Parent {
     private double hauteur;
     private double marge = 20;
     private List<Sortie> listSorties;
+    private List<Obstacle> listObstacles;
 
     public Salle(double lar, double hau) {
         this.largeur = lar - (2 * marge);
         this.hauteur = hau - (2 * marge);
         this.listSorties = new ArrayList<>();
+        this.listObstacles = new ArrayList<>();
 
         Rectangle salle = new Rectangle(largeur, hauteur);
         salle.setTranslateX(marge);
@@ -70,5 +72,10 @@ public class Salle extends Parent {
         }
 
         this.getChildren().add(sortie);
+    }
+
+    public void addObstacle (Obstacle obstacle) {
+        listObstacles.add(obstacle);
+        this.getChildren().add(obstacle);
     }
 }

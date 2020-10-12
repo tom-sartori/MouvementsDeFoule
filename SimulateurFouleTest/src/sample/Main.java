@@ -36,6 +36,9 @@ public class Main extends Application {
         salle.addSortie(sortie);
         salle.addSortie(sortie1);
 
+        Obstacle obstacle = new ObstacleRectangle(100, 100, 200, 150);
+        salle.addObstacle(obstacle);
+
 
         Personne personne = new Personne(500, 200);
         personne.avancer(salle);
