@@ -74,8 +74,12 @@ public class Salle extends Parent {
         this.getChildren().add(sortie);
     }
 
-    public void addObstacle (Obstacle obstacle) {
+    public void addObstacle (Obstacle obstacle){
         listObstacles.add(obstacle);
         this.getChildren().add(obstacle);
+    }
+
+    public List<Obstacle> getListObstacles(){
+        return listObstacles;
     }
 }
