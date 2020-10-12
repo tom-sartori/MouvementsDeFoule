@@ -10,7 +10,7 @@ import java.util.List;
 public class Salle extends Parent {
     private double largeur;
     private double hauteur;
-    private double marge = 30;
+    private double marge = 20;
     private List<Sortie> listSorties;
 
     public Salle(double lar, double hau) {

@@ -1,10 +1,15 @@
 package sample;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 public class Personne extends Parent {
     private double x;
@@ -135,7 +140,24 @@ public class Personne extends Parent {
         double [] coordSortie = findCoordSortie(salle);
         double [] coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
 
+        this.dx = coordDxDy[0];
+        this.dy = coordDxDy[1];
         return coordDxDy;
     }
 
+    public void avancer (Salle salle) {
+
+        getDxDy(salle);
+
+        Timeline loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent arg) {
+
+                setTranslateX(getTranslateX() + dx);
+                setTranslateY(getTranslateY() + dy);
+
+            }
+        }));
+        loop.setCycleCount(Timeline.INDEFINITE);
+        loop.play();
+    }
 }
