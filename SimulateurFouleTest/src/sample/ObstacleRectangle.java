@@ -31,5 +31,35 @@ public class ObstacleRectangle extends Obstacle {
         getChildren().add(obstacle);
     }
 
+    public double getX() {
+        return x;
+    }
 
+    public double getY() {
+        return y;
+    }
+
+    public double getLargeur() {
+        return largeur;
+    }
+
+    public double getHauteur() {
+        return hauteur;
+    }
+
+    public double[] getCoin1() {
+        return coin1;
+    }
+
+    public double[] getCoin2() {
+        return coin2;
+    }
+
+    public double[] getCoin3() {
+        return coin3;
+    }
+
+    public double[] getCoin4() {
+        return coin4;
+    }
 }
