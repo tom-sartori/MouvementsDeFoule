@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -29,27 +30,31 @@ public class Main extends Application {
 
         Group root = new Group();   // Creation du groupe qui va tout contenir
 
+
         Salle salle = new Salle(largeur,hauteur);   // Creation salle
+
+
+        Personne personne = new Personne(500, 200);
+        Personne personne1 = new Personne(50, 200);
+        salle.addPersonne(personne);
+        //salle.addPersonne(personne1);
+
 
         Sortie sortie = new Sortie(2,60,50);
         Sortie sortie1 = new Sortie(3, 60, 80);
         salle.addSortie(sortie);
         salle.addSortie(sortie1);
 
+
         //Obstacle obstacle = new ObstacleRectangle(100, 100, 200, 150);
         //salle.addObstacle(obstacle);
 
 
-        Personne personne = new Personne(500, 200);
-        personne.avancer(salle);
-
-        Personne personne1 = new Personne(50, 200);
-        personne1.avancer(salle);
+        salle.demarrer();
 
 
-        root.getChildren().addAll(salle,personne, personne1);   // ajoute les elements au groupe
+        root.getChildren().addAll(salle);   // ajoute les elements au groupe
         Scene scene = new Scene(root, largeur, hauteur, Color.LIGHTGRAY);
-
 
         primaryStage.setTitle("TEST");
         primaryStage.setScene(scene);

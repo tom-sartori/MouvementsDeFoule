@@ -1,8 +1,13 @@
 package sample;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +16,14 @@ public class Salle extends Parent {
     private double largeur;
     private double hauteur;
     private double marge = 20;
+    private List<Personne> listPersonnes;
     private List<Sortie> listSorties;
     private List<Obstacle> listObstacles;
 
     public Salle(double lar, double hau) {  // Créée une salle rectangle avec une marge
         this.largeur = lar - (2 * marge);
         this.hauteur = hau - (2 * marge);
+        this.listPersonnes = new ArrayList<>(); // HashList surement apres
         this.listSorties = new ArrayList<>();
         this.listObstacles = new ArrayList<>();
 
@@ -79,6 +86,11 @@ public class Salle extends Parent {
         this.getChildren().add(sortie);
     }
 
+    public void addPersonne (Personne personne) {
+        listPersonnes.add(personne);
+        getChildren().add(personne);
+    }
+
     public void addObstacle (Obstacle obstacle){
         listObstacles.add(obstacle);
         this.getChildren().add(obstacle);
@@ -86,5 +98,47 @@ public class Salle extends Parent {
 
     public List<Obstacle> getListObstacles(){
         return listObstacles;
+    }
+
+    public void demarrer () {
+        for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
+            personne.getDxDy(this);         // Initialise dx et dy
+        }
+
+        Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
+
+        Timeline loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent arg) {
+
+                for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
+                    personne.avancer();
+                    System.out.println("Salle x : " + personne.getTranslateX());
+
+                    if (personne.estSorti(salle))
+                        removePersonne(personne);
+                }
+
+            }
+        }));
+        loop.setCycleCount(Timeline.INDEFINITE);
+        loop.play();
+    }
+
+
+    public double getLargeur() {
+        return largeur;
+    }
+
+    public double getHauteur() {
+        return hauteur;
+    }
+
+    public double getMarge() {
+        return marge;
+    }
+
+    public void removePersonne (Personne personne) {
+        listPersonnes.remove(personne);
+        getChildren().remove(personne);
     }
 }

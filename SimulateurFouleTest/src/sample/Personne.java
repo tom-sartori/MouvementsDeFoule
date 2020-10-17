@@ -10,17 +10,17 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 public class Personne extends Parent {
-    private double x;
-    private double y;
+    private double xDepart;
+    private double yDepart;
     private double r = 15;
 
     private double dx;
     private double dy;
 
     public Personne(double posX , double posY){
-        x = posX;
-        y = posY;
-        Circle cercle = new Circle(x,y,r);
+        xDepart = posX;
+        yDepart = posY;
+        Circle cercle = new Circle(xDepart, yDepart,r);
         cercle.setFill(Color.RED);
         this.getChildren().add(cercle);
     }
@@ -73,8 +73,8 @@ public class Personne extends Parent {
         double dist2 = 0;
 
         // calcul avec Pythagore
-        dist1 = Math.sqrt( Math.pow(Math.abs(x - sortie.getX1()), 2) + Math.pow(Math.abs(y - sortie.getY1()), 2));
-        dist2 = Math.sqrt( Math.pow(Math.abs(x - sortie.getX2()), 2) + Math.pow(Math.abs(y - sortie.getY2()), 2));
+        dist1 = Math.sqrt( Math.pow(Math.abs(xDepart - sortie.getX1()), 2) + Math.pow(Math.abs(yDepart - sortie.getY1()), 2));
+        dist2 = Math.sqrt( Math.pow(Math.abs(xDepart - sortie.getX2()), 2) + Math.pow(Math.abs(yDepart - sortie.getY2()), 2));
 
         //System.out.println("Distance 1 : " + dist1);
         //System.out.println("Distance 2 : " + dist2);
@@ -101,9 +101,9 @@ public class Personne extends Parent {
         double[] tab = new double[2];
 
         if (mur == 1) {
-            double distX = Math.abs(x - xArrive);
-            double distY = Math.abs(y - yArrive);
-            if (x - xArrive > 0) {
+            double distX = Math.abs(xDepart - xArrive);
+            double distY = Math.abs(yDepart - yArrive);
+            if (xDepart - xArrive > 0) {
                 tab[0] = - (distX / distY);
             }
             else
@@ -111,9 +111,9 @@ public class Personne extends Parent {
             tab[1] = -1;
         }
         else if (mur == 2) {
-            double distX = Math.abs(x - xArrive);
-            double distY = Math.abs(y - yArrive);
-            if (y - yArrive > 0) {
+            double distX = Math.abs(xDepart - xArrive);
+            double distY = Math.abs(yDepart - yArrive);
+            if (yDepart - yArrive > 0) {
                 tab[1] = - (distY / distX);
             }
             else
@@ -121,9 +121,9 @@ public class Personne extends Parent {
             tab[0] = 1;
         }
         else if (mur == 3) {
-            double distX = Math.abs(x - xArrive);
-            double distY = Math.abs(y - yArrive);
-            if (x - xArrive > 0) {
+            double distX = Math.abs(xDepart - xArrive);
+            double distY = Math.abs(yDepart - yArrive);
+            if (xDepart - xArrive > 0) {
                 tab[0] = - (distX / distY);
             }
             else
@@ -131,9 +131,9 @@ public class Personne extends Parent {
             tab[1] = 1;
         }
         else if (mur == 4) {
-            double distX = Math.abs(x - xArrive);
-            double distY = Math.abs(y - yArrive);
-            if (y - yArrive > 0) {
+            double distX = Math.abs(xDepart - xArrive);
+            double distY = Math.abs(yDepart - yArrive);
+            if (yDepart - yArrive > 0) {
                 tab[1] = - (distY / distX);
             }
             else
@@ -160,22 +160,33 @@ public class Personne extends Parent {
     }
 
 
-    // Utilise la fonction getDxDy précédente, puis fait avancer le personne (de dx en x et dy en y) grace à la boucle de temps
-    // Cependant, cette boucle ne s'arrete pas pour le moment.
-    // De plus, il sera preferable de faire la boucle dans la classe Salle qui prendra une liste de personnes (vu au dernier rdv).
-    public void avancer (Salle salle) {
 
-        getDxDy(salle);
+    public void avancer () {
+        setTranslateX(getTranslateX() + dx);
+        setTranslateY(getTranslateY() + dy);
+    }
 
-        Timeline loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent arg) {
 
-                setTranslateX(getTranslateX() + dx);
-                setTranslateY(getTranslateY() + dy);
+    public double getxDepart() {
+        return xDepart;
+    }
 
-            }
-        }));
-        loop.setCycleCount(Timeline.INDEFINITE);
-        loop.play();
+    public double getyDepart() {
+        return yDepart;
+    }
+
+
+    // Permet de savoir si le perso est sorti de la salle
+    public boolean estSorti(Salle salle) { // Manque le cas avec y
+        if (dx > 0) {
+            if (xDepart + getTranslateX() > salle.getLargeur() - 2 * salle.getMarge())
+                return true;
+        }
+        if (dx < 0) {
+            if (xDepart + getTranslateX() < 0 + salle.getMarge())
+                return true;
+        }
+        // cas avec y
+        return false;
     }
 }
