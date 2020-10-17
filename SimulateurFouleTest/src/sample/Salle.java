@@ -14,7 +14,7 @@ public class Salle extends Parent {
     private List<Sortie> listSorties;
     private List<Obstacle> listObstacles;
 
-    public Salle(double lar, double hau) {
+    public Salle(double lar, double hau) {  // Créée une salle rectangle avec une marge
         this.largeur = lar - (2 * marge);
         this.hauteur = hau - (2 * marge);
         this.listSorties = new ArrayList<>();
@@ -31,6 +31,11 @@ public class Salle extends Parent {
         return listSorties;
     }
 
+
+
+    // Permet d'ajouter une sortie à la salle et la place correctement
+    // Modifie x1 y1 x2 y2 de la sortie correspondante pour lui donner uniquement les coordonnées utiles
+    // (donc pas les coords exterrieurs à la salle)
     public void addSortie (Sortie sortie) {
         listSorties.add(sortie);
 

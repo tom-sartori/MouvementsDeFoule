@@ -27,17 +27,17 @@ public class Main extends Application {
         double largeur = 1000;
         double hauteur = 600;
 
-        Group root = new Group();
+        Group root = new Group();   // Creation du groupe qui va tout contenir
 
-        Salle salle = new Salle(largeur,hauteur);
+        Salle salle = new Salle(largeur,hauteur);   // Creation salle
 
         Sortie sortie = new Sortie(2,60,50);
         Sortie sortie1 = new Sortie(3, 60, 80);
         salle.addSortie(sortie);
         salle.addSortie(sortie1);
 
-        Obstacle obstacle = new ObstacleRectangle(100, 100, 200, 150);
-        salle.addObstacle(obstacle);
+        //Obstacle obstacle = new ObstacleRectangle(100, 100, 200, 150);
+        //salle.addObstacle(obstacle);
 
 
         Personne personne = new Personne(500, 200);
@@ -47,7 +47,7 @@ public class Main extends Application {
         personne1.avancer(salle);
 
 
-        root.getChildren().addAll(salle,personne, personne1);
+        root.getChildren().addAll(salle,personne, personne1);   // ajoute les elements au groupe
         Scene scene = new Scene(root, largeur, hauteur, Color.LIGHTGRAY);
 
 
