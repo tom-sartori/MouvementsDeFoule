@@ -48,6 +48,7 @@
   - Pas de gestion du rayon du perso et pas de collisions. 
   - Classe Obstacle ajouté mais pas encore fonctionnelle. 
 <br/>
+  
 - Le langage sera javaFX. 
 - Pour savoir si on touche un obstacle sur le chemin, il faut déterminer si deux segements s’intersèctent. 
   - Plusieurs manière de faire le calcul sont possibles (à chercher). 
