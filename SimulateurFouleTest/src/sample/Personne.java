@@ -12,7 +12,7 @@ import javafx.util.Duration;
 public class Personne extends Parent {
     private double xDepart;
     private double yDepart;
-    private double r = 15;
+    private final double r = 15;
 
     private double dx;
     private double dy;
@@ -177,16 +177,24 @@ public class Personne extends Parent {
 
 
     // Permet de savoir si le perso est sorti de la salle
-    public boolean estSorti(Salle salle) { // Manque le cas avec y
+    public boolean estSorti(Salle salle) {
         if (dx > 0) {
-            if (xDepart + getTranslateX() > salle.getLargeur() - 2 * salle.getMarge())
+            if (xDepart + getTranslateX() > salle.getLargeur() + salle.getMarge())
                 return true;
         }
         if (dx < 0) {
+            System.out.println(xDepart + getTranslateX());
             if (xDepart + getTranslateX() < 0 + salle.getMarge())
                 return true;
         }
-        // cas avec y
+        if (dy > 0) {
+            if (yDepart + getTranslateY() > salle.getHauteur() + salle.getMarge())
+                return true;
+        }
+        if (dy < 0) {
+            if (yDepart + getTranslateY() < salle.getMarge())
+                return true;
+        }
         return false;
     }
 }
