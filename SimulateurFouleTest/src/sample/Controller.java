@@ -1,69 +1,45 @@
 package sample;
 
-import com.sun.prism.paint.Color;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToolBar;
 
-public class Controller extends Parent {
-    Button playButton;
-    Button pauseButton;
-    Button clearButton;
-    Label statusLabel;
+public class Controller extends Parent{
+    private ControllerSalle cs;
+    private ControllerPanel cp;
 
-    public Controller(){
-        playButton = new Button("Play");
-        pauseButton = new Button("Pause");
-        clearButton = new Button("Clear");
-        this.minHeight(40);
-        playButton.setTranslateX(20);
-        playButton.setMinWidth(40);
-        playButton.setStyle("-fx-border-color: white; -fx-border-width: 5px;");
-        pauseButton.setTranslateX(70);
-        pauseButton.setMinWidth(40);
-        pauseButton.setStyle("-fx-border-color: white; -fx-border-width: 5px;");
-        clearButton.setTranslateX(130);
-        clearButton.setMinWidth(40);
-        clearButton.setStyle("-fx-border-color: white; -fx-border-width: 5px;");
+    public Controller(double width, double height){
+        cs = new ControllerSalle(width, height-40);
+        cp = new ControllerPanel();
+        cp.setTranslateY(height-40);
+        cp.minWidth(width);
+        
+        Salle salle = cs.getSalle();
 
-        statusLabel = new Label("Status : NOT RUNNING");
-        statusLabel.setStyle("-fx-text-fill: red");
+        cp.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                salle.demarrer();
+                if(salle.isRunning()){
+                    cp.setStatusLabel(true);
+                }
+            }
+        });
 
-        this.getChildren().addAll(statusLabel,playButton, pauseButton, clearButton);
+        cp.getPauseButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                salle.pause();
+                cp.setStatusLabel(false);
+            }
+        });
+
+        cp.getClearButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                salle.removeAllPersonne();
+                cp.setStatusLabel(false);
+            }
+        });
+
+        this.getChildren().addAll(cs, cp);
     }
-
-    public static void createPersonne(double x, double y, Salle salle){
-        Personne personne = new Personne(x, y);
-        salle.addPersonne(personne);
-    }
-
-    public Button getPlayButton(){
-        return playButton;
-    }
-
-    public Button getPauseButton(){
-        return pauseButton;
-    }
-
-    public Button getClearButton(){
-        return clearButton;
-    }
-    public Label getStatusLabel(){
-        return statusLabel;
-    }
-
-    public void setStatusLabel(boolean isRunning){
-        if(isRunning){
-            statusLabel.setText("Status : RUNNING");
-            statusLabel.setStyle("-fx-text-fill: green");
-        } else{
-            statusLabel.setText("Status : NOT RUNNING");
-            statusLabel.setStyle("-fx-text-fill: red");
-        }
-    }
+    
 }
