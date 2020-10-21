@@ -1,7 +1,9 @@
 package sample;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.Animation.Status;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -19,6 +21,7 @@ public class Salle extends Parent {
     private List<Personne> listPersonnes;
     private List<Sortie> listSorties;
     private List<Obstacle> listObstacles;
+    private Timeline loop;
 
     public Salle(double lar, double hau) {  // Créée une salle rectangle avec une marge
         this.largeur = lar - (2 * marge);
@@ -101,27 +104,40 @@ public class Salle extends Parent {
     }
 
     public void demarrer () {
+        if(!listPersonnes.isEmpty()){
         for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
             personne.getDxDy(this);         // Initialise dx et dy
         }
 
+          
         Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
 
-        Timeline loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent arg) {
+        if (loop == null) {
 
-                for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                    personne.avancer();
-                    System.out.println("Salle x : " + personne.getTranslateX());
+            loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent arg) {
 
-                    if (personne.estSorti(salle))
-                        removePersonne(personne);
+                    for (int i = 0; i < listPersonnes.size(); i++) {
+                        if (listPersonnes.get(i).estSorti(salle))
+                            removePersonne(listPersonnes.get(i));
+                        else
+                            listPersonnes.get(i).avancer();
+                        System.out.println("test for");
+                    }
                 }
+            }));
+            loop.setCycleCount(Timeline.INDEFINITE);
+            loop.play();
+        }
+        else if(loop.getStatus() == Animation.Status.PAUSED){
+            loop.play();
+        }
 
-            }
-        }));
-        loop.setCycleCount(Timeline.INDEFINITE);
-        loop.play();
+
+    public void pause(){
+        if(loop != null && loop.getStatus() == Status.RUNNING){
+            loop.pause();
+        }
     }
 
 
@@ -140,5 +156,25 @@ public class Salle extends Parent {
     public void removePersonne (Personne personne) {
         listPersonnes.remove(personne);
         getChildren().remove(personne);
+        if (listPersonnes.isEmpty())
+            loop.pause();
+
+    }
+
+    public void removeAllPersonne(){
+        pause();
+        while(!listPersonnes.isEmpty())
+            removePersonne(listPersonnes.get(0));
+    }
+
+    public boolean isRunning(){
+        if(loop!=null && loop.getStatus()== Animation.Status.RUNNING) return true;
+        else return false;
+    }
+
+    public void pause(){
+        if(loop != null && loop.getStatus() == Animation.Status.RUNNING){
+            loop.pause();
+        }
     }
 }
