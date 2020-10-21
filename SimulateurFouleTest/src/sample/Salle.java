@@ -108,6 +108,7 @@ public class Salle extends Parent {
             personne.getDxDy(this);         // Initialise dx et dy
         }
 
+          
         Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
     if(loop==null){
         loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
@@ -151,9 +152,8 @@ public class Salle extends Parent {
     public void removePersonne (Personne personne) {
         listPersonnes.remove(personne);
         getChildren().remove(personne);
-        if(listPersonnes.isEmpty()){
-            pause();
-        }
+        if (listPersonnes.isEmpty())
+            loop.stop(); 
     }
 
     public void removeAllPersonne(){

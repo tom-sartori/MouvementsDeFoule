@@ -12,7 +12,7 @@ import javafx.util.Duration;
 public class Personne extends Parent {
     private double xDepart;
     private double yDepart;
-    private double r = 15;
+    private final double r = 15;
 
     private double dx;
     private double dy;
