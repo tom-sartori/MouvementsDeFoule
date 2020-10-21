@@ -3,6 +3,7 @@ package sample;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.Animation.Status;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -103,10 +104,12 @@ public class Salle extends Parent {
     }
 
     public void demarrer () {
+        if(!listPersonnes.isEmpty()){
         for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
             personne.getDxDy(this);         // Initialise dx et dy
         }
 
+          
         Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
 
         if (loop == null) {
@@ -130,6 +133,11 @@ public class Salle extends Parent {
             loop.play();
         }
 
+
+    public void pause(){
+        if(loop != null && loop.getStatus() == Status.RUNNING){
+            loop.pause();
+        }
     }
 
 
@@ -150,6 +158,7 @@ public class Salle extends Parent {
         getChildren().remove(personne);
         if (listPersonnes.isEmpty())
             loop.pause();
+
     }
 
     public void removeAllPersonne(){
