@@ -104,34 +104,35 @@ public class Salle extends Parent {
     }
 
     public void demarrer () {
-        if(!listPersonnes.isEmpty()){
-        for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-            personne.getDxDy(this);         // Initialise dx et dy
-        }
+        if (!listPersonnes.isEmpty()) {
+            for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
+                personne.getDxDy(this);         // Initialise dx et dy
+            }
 
-          
-        Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
 
-        if (loop == null) {
+            Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
 
-            loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
-                public void handle(ActionEvent arg) {
+            if (loop == null) {
 
-                    for (int i = 0; i < listPersonnes.size(); i++) {
-                        if (listPersonnes.get(i).estSorti(salle))
-                            removePersonne(listPersonnes.get(i));
-                        else
-                            listPersonnes.get(i).avancer();
-                        System.out.println("test for");
+                loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent arg) {
+
+                        for (int i = 0; i < listPersonnes.size(); i++) {
+                            if (listPersonnes.get(i).estSorti(salle))
+                                removePersonne(listPersonnes.get(i));
+                            else
+                                listPersonnes.get(i).avancer();
+                            System.out.println("test for");
+                        }
                     }
-                }
-            }));
-            loop.setCycleCount(Timeline.INDEFINITE);
-            loop.play();
+                }));
+                loop.setCycleCount(Timeline.INDEFINITE);
+                loop.play();
+            } else if (loop.getStatus() == Animation.Status.PAUSED) {
+                loop.play();
+            }
         }
-        else if(loop.getStatus() == Animation.Status.PAUSED){
-            loop.play();
-        }
+    }
 
 
     public void pause(){
@@ -172,9 +173,4 @@ public class Salle extends Parent {
         else return false;
     }
 
-    public void pause(){
-        if(loop != null && loop.getStatus() == Animation.Status.RUNNING){
-            loop.pause();
-        }
-    }
 }

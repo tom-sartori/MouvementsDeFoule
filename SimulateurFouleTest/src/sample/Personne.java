@@ -213,10 +213,17 @@ public class Personne extends Parent {
             System.out.println("les segments sont colinéaires. ");
             if (coordSortie[0] == coordC[0]) {
                 System.out.println("Sur meme axe x. ");
-                //truc avec y;
+                if ( ((yDepart < coordC[1] && coordSortie[1] < coordC[1]) && (yDepart < coordD[1] && coordSortie[1] < coordD[1])) || ((yDepart > coordC[1] && coordSortie[1] > coordC[1]) && (yDepart > coordD[1] && coordSortie[1] > coordD[1]))) {
+                    System.out.println("pas superposés. ");
+                    return false;
+                }
+                else {
+                    System.out.println("Superposés");
+                    return true;
+                }
             }
             else {
-                System.out.println("Pas sur meme axe x. ");
+                System.out.println("sur meme axe y. ");
                 if ( ((xDepart < coordC[0] && coordSortie[0] < coordC[0]) && (xDepart < coordD[0] && coordSortie[0] < coordD[0])) || ((xDepart > coordC[0] && coordSortie[0] > coordC[0]) && (xDepart > coordD[0] && coordSortie[0] > coordD[0]))) {
                     System.out.println("pas superposés. ");
                     return false;
@@ -235,19 +242,44 @@ public class Personne extends Parent {
 
             double k1 = (mat1*u) + (mat3*v);
             double k2 = (mat2*u) + (mat4*v);
-
-            if ((0 < k1 && k1 <= 1) && (0 < k2 && k2 <= 1)) {
+            System.out.println("La valeur de K est "+k1 +"\n"+ "La valeur de k' est " +k2);
+            if ((0 < k1 && k1 < 1) && (0 < k2 && k2 < 1)) {
                 System.out.println("Les segments se touchent. ");
                 return true;
             }
             else {
                 System.out.println("Segments se touchent pas. ");
+                return false;
             }
         }
+    }
 
-
-
-
-        return true;
+    public double[][] coordCointouche(double[] coordSortie, Obstacle o){
+        int compteur=0;
+        int n = o.getCoins().length;
+        int m=o.getCoins()[0].length;
+        double[][] tableau = new double[n][m];
+        for (int i =0; i<n;i++) {
+            if (i != 3) {
+                if (toucheObstacle(coordSortie, o.getCoins()[i], o.getCoins()[i + 1])) {
+                    tableau[compteur] = o.getCoins()[i];
+                    compteur = compteur + 1;
+                    tableau[compteur] = o.getCoins()[i + 1];
+                    compteur += 1;
+                    System.out.println("Position i \n" + "X : "+o.getCoins()[i][0]+"\n"+"Y : " +o.getCoins()[i][1]);
+                    System.out.println("Position i+1 \n" + "X : "+o.getCoins()[i+1][0]+"\n"+"Y : " +o.getCoins()[i+1][1]);
+                }
+            } else {
+                if (toucheObstacle(coordSortie, o.getCoins()[i], o.getCoins()[0])) {
+                    tableau[compteur] = o.getCoins()[i];
+                    compteur = compteur + 1;
+                    tableau[compteur] = o.getCoins()[0];
+                    compteur = compteur + 1;
+                    System.out.println("Position i \n" + "X : "+o.getCoins()[i][0]+"\n"+"Y : " +o.getCoins()[i][1]);
+                    System.out.println("Position i+1 \n" + "X : "+o.getCoins()[i+1][0]+"\n"+"Y : " +o.getCoins()[i+1][1]);
+                }
+            }
+        }
+        return tableau;
     }
 }

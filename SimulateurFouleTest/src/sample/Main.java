@@ -16,9 +16,6 @@ public class Main extends Application {
       
         double largeur = 1000;
         double hauteur = 600;
-        Controller controller = new Controller(largeur, hauteur);
-        Scene scene = new Scene(controller, largeur, hauteur, Color.LIGHTGRAY);
-
         primaryStage.setTitle("Simulateur de foule");
 
         /*
