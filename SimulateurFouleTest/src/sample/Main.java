@@ -24,10 +24,10 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();*/
-
         double largeur = 1000;
         double hauteur = 600;
 
+        /*
         Group root = new Group();   // Creation du groupe qui va tout contenir
 
 
@@ -60,6 +60,18 @@ public class Main extends Application {
         primaryStage.setTitle("TEST");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        */
+
+        Controller controller = new Controller(largeur, hauteur);
+        Scene scene = new Scene(controller, largeur, hauteur, Color.LIGHTGRAY);
+
+        primaryStage.setTitle("Simulateur de foule");
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
+
+
     }
 
 
