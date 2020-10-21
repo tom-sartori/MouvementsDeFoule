@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
@@ -110,25 +111,28 @@ public class Salle extends Parent {
 
           
         Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
-    if(loop==null){
-        loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent arg) {
 
-                for (int i = 0; i < listPersonnes.size(); i ++) {
-                    if (listPersonnes.get(i).estSorti(salle))
-                        removePersonne(listPersonnes.get(i));
-                    else
-                        listPersonnes.get(i).avancer();
+        if (loop == null) {
+
+            loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent arg) {
+
+                    for (int i = 0; i < listPersonnes.size(); i++) {
+                        if (listPersonnes.get(i).estSorti(salle))
+                            removePersonne(listPersonnes.get(i));
+                        else
+                            listPersonnes.get(i).avancer();
+                        System.out.println("test for");
+                    }
                 }
-            }
-        }));
-        loop.setCycleCount(Timeline.INDEFINITE);
-        loop.play();
-    } else if(loop.getStatus() == Status.PAUSED){
-        loop.play();
-    }
-    }
-}
+            }));
+            loop.setCycleCount(Timeline.INDEFINITE);
+            loop.play();
+        }
+        else if(loop.getStatus() == Animation.Status.PAUSED){
+            loop.play();
+        }
+
 
     public void pause(){
         if(loop != null && loop.getStatus() == Status.RUNNING){
@@ -153,7 +157,8 @@ public class Salle extends Parent {
         listPersonnes.remove(personne);
         getChildren().remove(personne);
         if (listPersonnes.isEmpty())
-            loop.stop(); 
+            loop.pause();
+
     }
 
     public void removeAllPersonne(){
@@ -163,7 +168,13 @@ public class Salle extends Parent {
     }
 
     public boolean isRunning(){
-        if(loop!=null && loop.getStatus()==Status.RUNNING) return true;
+        if(loop!=null && loop.getStatus()== Animation.Status.RUNNING) return true;
         else return false;
+    }
+
+    public void pause(){
+        if(loop != null && loop.getStatus() == Animation.Status.RUNNING){
+            loop.pause();
+        }
     }
 }

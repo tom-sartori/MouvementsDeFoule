@@ -9,6 +9,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        /*Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        primaryStage.setTitle("Hello World");
+        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.show();*/
+      
         double largeur = 1000;
         double hauteur = 600;
         Controller controller = new Controller(largeur, hauteur);
@@ -16,6 +21,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Simulateur de foule");
 
+        /*
         Group root = new Group();   // Creation du groupe qui va tout contenir
 
 
@@ -49,6 +55,18 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
+
+        */
+
+        Controller controller = new Controller(largeur, hauteur);
+        Scene scene = new Scene(controller, largeur, hauteur, Color.LIGHTGRAY);
+
+        primaryStage.setTitle("Simulateur de foule");
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
+
+
     }
 
 
