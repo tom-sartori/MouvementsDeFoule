@@ -197,4 +197,57 @@ public class Personne extends Parent {
         }
         return false;
     }
+
+    public boolean toucheObstacle (double[] coordSortie, double [] coordC, double[]coordD) {
+
+        double a = coordSortie[0] - xDepart;
+        double b = coordSortie[1] - yDepart;
+        double c = coordC[0] - coordD[0];
+        double d = coordC[1] - coordD[1];
+        double u = coordC[0] - xDepart;
+        double v = coordC[1] - yDepart;
+
+        double determinant = (a*d)-(b*c);
+
+        if (determinant == 0) {
+            System.out.println("les segments sont colinéaires. ");
+            if (coordSortie[0] == coordC[0]) {
+                System.out.println("Sur meme axe x. ");
+                //truc avec y;
+            }
+            else {
+                System.out.println("Pas sur meme axe x. ");
+                if ( ((xDepart < coordC[0] && coordSortie[0] < coordC[0]) && (xDepart < coordD[0] && coordSortie[0] < coordD[0])) || ((xDepart > coordC[0] && coordSortie[0] > coordC[0]) && (xDepart > coordD[0] && coordSortie[0] > coordD[0]))) {
+                    System.out.println("pas superposés. ");
+                    return false;
+                }
+                else {
+                    System.out.println("Superposés");
+                    return true;
+                }
+            }
+        }
+        else {
+            double mat1 = (1/determinant) * d;
+            double mat2 = (1/determinant) * (-b);
+            double mat3 = (1/determinant) * (-c);
+            double mat4 = (1/determinant) * a;
+
+            double k1 = (mat1*u) + (mat3*v);
+            double k2 = (mat2*u) + (mat4*v);
+
+            if ((0 < k1 && k1 <= 1) && (0 < k2 && k2 <= 1)) {
+                System.out.println("Les segments se touchent. ");
+                return true;
+            }
+            else {
+                System.out.println("Segments se touchent pas. ");
+            }
+        }
+
+
+
+
+        return true;
+    }
 }
