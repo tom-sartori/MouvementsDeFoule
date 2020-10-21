@@ -34,13 +34,14 @@ public class Main extends Application {
         Salle salle = new Salle(largeur,hauteur);   // Creation salle
 
 
-        Personne personne = new Personne(500, 200);
-        Personne personne1 = new Personne(50, 200);
-        salle.addPersonne(personne);
-        //salle.addPersonne(personne1);
+        salle.addPersonne(new Personne(100, 400));
+        salle.addPersonne(new Personne(790, 200));
+        salle.addPersonne(new Personne(150, 300));
+        salle.addPersonne(new Personne(400, 350));
+        salle.addPersonne(new Personne(450, 50));
 
 
-        Sortie sortie = new Sortie(2,60,50);
+        Sortie sortie = new Sortie(4,60,50);
         Sortie sortie1 = new Sortie(3, 60, 80);
         salle.addSortie(sortie);
         salle.addSortie(sortie1);

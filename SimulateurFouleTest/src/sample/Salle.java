@@ -19,6 +19,7 @@ public class Salle extends Parent {
     private List<Personne> listPersonnes;
     private List<Sortie> listSorties;
     private List<Obstacle> listObstacles;
+    private Timeline loop;
 
     public Salle(double lar, double hau) {  // Créée une salle rectangle avec une marge
         this.largeur = lar - (2 * marge);
@@ -107,21 +108,22 @@ public class Salle extends Parent {
 
         Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
 
-        Timeline loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+         loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
             public void handle(ActionEvent arg) {
+                System.out.println("KEYFRAME");
 
-                for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                    personne.avancer();
-                    System.out.println("Salle x : " + personne.getTranslateX());
-
-                    if (personne.estSorti(salle))
-                        removePersonne(personne);
+                for (int i = 0; i < listPersonnes.size(); i ++) {
+                    if (listPersonnes.get(i).estSorti(salle))
+                        removePersonne(listPersonnes.get(i));
+                    else
+                        listPersonnes.get(i).avancer();
+                    System.out.println("test for");
                 }
-
             }
         }));
         loop.setCycleCount(Timeline.INDEFINITE);
         loop.play();
+
     }
 
 
@@ -140,5 +142,7 @@ public class Salle extends Parent {
     public void removePersonne (Personne personne) {
         listPersonnes.remove(personne);
         getChildren().remove(personne);
+        if (listPersonnes.isEmpty())
+            loop.stop();
     }
 }
