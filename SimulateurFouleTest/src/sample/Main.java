@@ -1,32 +1,20 @@
 package sample;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-
-import java.awt.*;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        /*Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();*/
-
         double largeur = 1000;
         double hauteur = 600;
+        Controller controller = new Controller(largeur, hauteur);
+        Scene scene = new Scene(controller, largeur, hauteur, Color.LIGHTGRAY);
+
+        primaryStage.setTitle("Simulateur de foule");
 
         Group root = new Group();   // Creation du groupe qui va tout contenir
 
@@ -59,6 +47,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("TEST");
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
@@ -66,4 +55,5 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }
