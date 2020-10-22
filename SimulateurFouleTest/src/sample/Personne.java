@@ -1,15 +1,6 @@
 package sample;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Parent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.util.Duration;
-
-public class Personne extends Parent {
+public class Personne{
     private double xDepart;
     private double yDepart;
     private final double r = 15;
@@ -17,12 +8,33 @@ public class Personne extends Parent {
     private double dx;
     private double dy;
 
+    private ControllerPersonne controllerPersonne;
+
+    
+    public double getxDepart() {
+        return xDepart;
+    }
+
+    public double getyDepart() {
+        return yDepart;
+    }
+
+    public double getDx(){
+        return dx;
+    }
+
+    public double getDy(){
+        return dy;
+    }
+
+    public ControllerPersonne getControllerPersonne(){
+        return controllerPersonne;
+    }
+    
     public Personne(double posX , double posY){
         xDepart = posX;
         yDepart = posY;
-        Circle cercle = new Circle(xDepart, yDepart,r);
-        cercle.setFill(Color.RED);
-        this.getChildren().add(cercle);
+        controllerPersonne = new ControllerPersonne(posX,posY,this);
     }
 
     // Permet de savoir les coordonnés du coin de sortie le plus proche du perso
@@ -159,42 +171,8 @@ public class Personne extends Parent {
         return coordDxDy;
     }
 
-
-
     public void avancer () {
-        setTranslateX(getTranslateX() + dx);
-        setTranslateY(getTranslateY() + dy);
+        controllerPersonne.run(dx,dy);
     }
 
-
-    public double getxDepart() {
-        return xDepart;
-    }
-
-    public double getyDepart() {
-        return yDepart;
-    }
-
-
-    // Permet de savoir si le perso est sorti de la salle
-    public boolean estSorti(Salle salle) {
-        if (dx > 0) {
-            if (xDepart + getTranslateX() > salle.getLargeur() + salle.getMarge())
-                return true;
-        }
-        if (dx < 0) {
-            System.out.println(xDepart + getTranslateX());
-            if (xDepart + getTranslateX() < 0 + salle.getMarge())
-                return true;
-        }
-        if (dy > 0) {
-            if (yDepart + getTranslateY() > salle.getHauteur() + salle.getMarge())
-                return true;
-        }
-        if (dy < 0) {
-            if (yDepart + getTranslateY() < salle.getMarge())
-                return true;
-        }
-        return false;
-    }
 }

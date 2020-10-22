@@ -1,58 +1,34 @@
 package sample;
 
-import javafx.scene.Parent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
-public class Sortie extends Parent {
+public class Sortie {
     private int mur;
     private double longueur;
     private double distance;
-    private static double epaisseur = 15;
-
+    private double epaisseur = 15;
     private double x1;
     private double y1;
     private double x2;
     private double y2;
 
+    private ControllerSortie controllerSortie;
+
+    public double getEpaisseur(){
+        return epaisseur;
+    }
+
+    public ControllerSortie getControllerSortie(){
+        return controllerSortie;
+    }
 
     public Sortie(int m, double l, double d) {
         this.mur = m;
         this.longueur = l;
         this.distance = d;
-        Rectangle sortie = new Rectangle();
-
-        if(mur==1){
-            sortie.setWidth(longueur);
-            sortie.setHeight(epaisseur);
-        }
-        else if(mur==2){
-            sortie.setHeight(longueur);
-            sortie.setWidth(epaisseur);
-        }
-        else if(mur==3){
-            sortie.setWidth(longueur);
-            sortie.setHeight(epaisseur);
-        }
-        else if(mur==4) {
-            sortie.setWidth(epaisseur);
-            sortie.setHeight(longueur);
-        }
-        else {
-            System.out.println("Erreur dans constructeur Sortie");
-            return;
-        }
-        sortie.setFill(Color.NAVY);
-        this.getChildren().add(sortie);
-
+        controllerSortie = new ControllerSortie(m, l, d, epaisseur, this);
     }
 
     public double getDistance() {
         return distance;
-    }
-
-    public static double getEpaisseur() {
-        return epaisseur;
     }
 
     public double getLongueur() {

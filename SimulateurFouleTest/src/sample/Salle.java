@@ -1,141 +1,88 @@
 package sample;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.animation.Animation.Status;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Parent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class Salle extends Parent {
+public class Salle {
     private double largeur;
     private double hauteur;
     private double marge = 20;
-    private List<Personne> listPersonnes;
     private List<Sortie> listSorties;
+    private List<Personne> listPersonnes;
     private List<Obstacle> listObstacles;
-    private Timeline loop;
+    private ControllerSalle controllerSalle;
+
+    public ControllerSalle getControllerSalle(){
+        return controllerSalle;
+    }
 
     public Salle(double lar, double hau) {  // Créée une salle rectangle avec une marge
         this.largeur = lar - (2 * marge);
         this.hauteur = hau - (2 * marge);
-        this.listPersonnes = new ArrayList<>(); // HashList surement apres
-        this.listSorties = new ArrayList<>();
         this.listObstacles = new ArrayList<>();
-
-        Rectangle salle = new Rectangle(largeur, hauteur);
-        salle.setTranslateX(marge);
-        salle.setTranslateY(marge);
-        salle.setFill(Color.LIGHTCYAN);
-        this.getChildren().add(salle);
+        this.listSorties = new ArrayList<>();
+        this.listPersonnes = new ArrayList<>();
+        controllerSalle = new ControllerSalle(lar,hau,this);
     }
 
-    public List<Sortie> getListSorties() {
-        return listSorties;
+    public void addObstacle (Obstacle obstacle){
+        listObstacles.add(obstacle);
     }
 
-
-
-    // Permet d'ajouter une sortie à la salle et la place correctement
-    // Modifie x1 y1 x2 y2 de la sortie correspondante pour lui donner uniquement les coordonnées utiles
-    // (donc pas les coords exterrieurs à la salle)
     public void addSortie (Sortie sortie) {
         listSorties.add(sortie);
 
         if (sortie.getMur() == 1) {
-            sortie.setTranslateX(marge + sortie.getDistance());
-            sortie.setTranslateY(marge - sortie.getEpaisseur());
-
             sortie.setX1(marge + sortie.getDistance());
             sortie.setY1(marge);
             sortie.setX2(sortie.getX1() + sortie.getLongueur());
             sortie.setY2(marge);
         }
         if (sortie.getMur() == 2) {
-            sortie.setTranslateX(marge + largeur);
-            sortie.setTranslateY(marge + sortie.getDistance());
-
-            sortie.setX1(marge + largeur);
+            sortie.setX1(marge + getLargeur());
             sortie.setY1(marge + sortie.getDistance());
-            sortie.setX2(marge + largeur);
+            sortie.setX2(marge + getLargeur());
             sortie.setY2(sortie.getY1() + sortie.getLongueur());
         }
         if (sortie.getMur() == 3) {
-            sortie.setTranslateX(marge + sortie.getDistance());
-            sortie.setTranslateY(marge + hauteur);
-
             sortie.setX1(marge + sortie.getDistance());
-            sortie.setY1(marge + hauteur);
+            sortie.setY1(marge + getHauteur());
             sortie.setX2(sortie.getX1() + sortie.getLongueur());
-            sortie.setY2(marge + hauteur);
+            sortie.setY2(marge + getHauteur());
         }
         if (sortie.getMur() == 4) {
-            sortie.setTranslateX(marge - sortie.getEpaisseur());
-            sortie.setTranslateY(marge + sortie.getDistance());
-
             sortie.setX1(marge);
             sortie.setY1(marge + sortie.getDistance());
             sortie.setX2(marge);
             sortie.setY2(sortie.getY1() + sortie.getLongueur());
         }
 
-        this.getChildren().add(sortie);
-    }
-
-    public void addPersonne (Personne personne) {
-        listPersonnes.add(personne);
-        getChildren().add(personne);
-    }
-
-    public void addObstacle (Obstacle obstacle){
-        listObstacles.add(obstacle);
-        this.getChildren().add(obstacle);
+        controllerSalle.addSortie(sortie.getControllerSortie(), sortie.getMur());
     }
 
     public List<Obstacle> getListObstacles(){
         return listObstacles;
     }
 
-    public void demarrer () {
-        if(!listPersonnes.isEmpty()){
+    public List<Sortie> getListSorties(){
+        return listSorties;
+    }
+
+    public void initPersonneDxDy(){
         for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
             personne.getDxDy(this);         // Initialise dx et dy
         }
+    }
 
-          
+    public void demarrer () {    
         Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
-    if(loop==null){
-        loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent arg) {
-
-                for (int i = 0; i < listPersonnes.size(); i ++) {
-                    if (listPersonnes.get(i).estSorti(salle))
-                        removePersonne(listPersonnes.get(i));
-                    else
-                        listPersonnes.get(i).avancer();
-                }
-            }
-        }));
-        loop.setCycleCount(Timeline.INDEFINITE);
-        loop.play();
-    } else if(loop.getStatus() == Status.PAUSED){
-        loop.play();
-    }
-    }
-}
-
-    public void pause(){
-        if(loop != null && loop.getStatus() == Status.RUNNING){
-            loop.pause();
+        for (int i = 0; i < listPersonnes.size(); i ++) {
+            if (listPersonnes.get(i).getControllerPersonne().estSorti(salle))
+                removePersonne(listPersonnes.get(i));
+            else
+                listPersonnes.get(i).avancer();
         }
     }
-
 
     public double getLargeur() {
         return largeur;
@@ -148,22 +95,20 @@ public class Salle extends Parent {
     public double getMarge() {
         return marge;
     }
+    public void addPersonne(double x, double y){
+        Personne personne = new Personne(x, y);
+        listPersonnes.add(personne);
+        controllerSalle.createPersonne(personne.getControllerPersonne());
+    }
 
     public void removePersonne (Personne personne) {
         listPersonnes.remove(personne);
-        getChildren().remove(personne);
-        if (listPersonnes.isEmpty())
-            loop.stop(); 
+        controllerSalle.removePersonneGraphic(personne.getControllerPersonne());
     }
 
     public void removeAllPersonne(){
-        pause();
+        controllerSalle.removeAllPersonneGraphic();
         while(!listPersonnes.isEmpty())
             removePersonne(listPersonnes.get(0));
-    }
-
-    public boolean isRunning(){
-        if(loop!=null && loop.getStatus()==Status.RUNNING) return true;
-        else return false;
     }
 }
