@@ -197,4 +197,114 @@ public class Personne extends Parent {
         }
         return false;
     }
+
+    public double getA(double[] coordSortie){
+        return coordSortie[0]-xDepart;
+    }
+    public double getB(double[] coordSortie){
+        return coordSortie[1] - yDepart;
+    }
+    public double getC(double[] coordC,double[] coordD){
+        return coordC[0] - coordD[0];
+    }
+    public double getD(double[] coordC,double[] coordD){
+        return coordC[1] - coordD[1];
+    }
+    public double getU(double[] coordC){
+        return coordC[0] - xDepart;
+    }
+    public double getV(double[] coordC){
+        return coordC[1] - yDepart;
+    }
+
+    public boolean toucheObstacle (double[] coordSortie, double [] coordC, double[]coordD) {
+        if (determinant(coordSortie,coordC,coordD) == 0) {
+            return estColEtObs(coordSortie, coordC, coordD);
+        } else
+            return estCouper(coordSortie,coordC,coordD);
+    }
+
+    public double determinant(double[] coordSortie, double [] coordC, double[]coordD){
+        double a = getA(coordSortie);
+        double b = getB(coordSortie);
+        double c = getC(coordC,coordD);
+        double d = getD(coordC,coordD) ;
+        double u = getU(coordC);
+        double v = getV(coordC);
+
+        double determinant = (a * d) - (b * c);
+        return determinant;
+    }
+
+    public boolean estCouper(double[] coordSortie, double [] coordC, double[]coordD){
+        double determinant = determinant(coordSortie,coordC,coordD);
+        double mat1 = (1/determinant) * getD(coordC,coordD);
+        double mat2 = (1/determinant) * (-getB(coordSortie));
+        double mat3 = (1/determinant) * (-getC(coordC,coordD));
+        double mat4 = (1/determinant) * getA(coordSortie);
+        double u = getU(coordC);
+        double v=getV(coordC);
+        double k1 = (mat1*u) + (mat3*v);
+        double k2 = (mat2*u) + (mat4*v);
+        System.out.println("La valeur de K est "+k1 +"\n"+ "La valeur de k' est " +k2);
+        if ((0 <= k1 && k1 <= 1) && (0 <= k2 && k2 <= 1)) {
+            System.out.println("Les segments se touchent. ");
+            return true;
+        }
+        else {
+            System.out.println("Segments se touchent pas. ");
+            return false;
+        }
+    }
+
+
+    public boolean estColEtObs(double[] coordSortie, double [] coordC, double[]coordD){
+        if (coordSortie[0] == coordC[0]) {
+            System.out.println("Sur meme axe x. ");
+            if ( ((yDepart < coordC[1] && coordSortie[1] < coordC[1]) && (yDepart < coordD[1] && coordSortie[1] < coordD[1])) || ((yDepart > coordC[1] && coordSortie[1] > coordC[1]) && (yDepart > coordD[1] && coordSortie[1] > coordD[1]))) {
+                System.out.println("pas superposés. ");
+                return false;
+            }
+            else {
+                System.out.println("Superposés");
+                return true;
+            }
+        }
+        else {
+            System.out.println("sur meme axe y. ");
+            if ( ((xDepart < coordC[0] && coordSortie[0] < coordC[0]) && (xDepart < coordD[0] && coordSortie[0] < coordD[0])) || ((xDepart > coordC[0] && coordSortie[0] > coordC[0]) && (xDepart > coordD[0] && coordSortie[0] > coordD[0]))) {
+                System.out.println("pas superposés. ");
+                return false;
+            }
+            else {
+                System.out.println("Superposés");
+                return true;
+            }
+        }
+    }
+
+    public double[][] coordCointouche(double[] coordSortie, Obstacle o){
+        int compteur=0;
+        int n = o.getCoins().length;
+        int m=o.getCoins()[0].length;
+        double[][] tableau = new double[n][m];
+        for (int i =0; i<n;i++) {
+            if (i != 3) {
+                if (toucheObstacle(coordSortie, o.getCoins()[i], o.getCoins()[i + 1])) {
+                    tableau[compteur] = o.getCoins()[i];
+                    compteur = compteur + 1;
+                    tableau[compteur] = o.getCoins()[i + 1];
+                    compteur += 1;
+                }
+            } else {
+                if (toucheObstacle(coordSortie, o.getCoins()[i], o.getCoins()[0])) {
+                    tableau[compteur] = o.getCoins()[i];
+                    compteur = compteur + 1;
+                    tableau[compteur] = o.getCoins()[0];
+                    compteur = compteur + 1;
+                }
+            }
+        }
+        return tableau;
+    }
 }

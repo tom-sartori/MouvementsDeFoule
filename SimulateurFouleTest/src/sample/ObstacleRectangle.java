@@ -10,10 +10,7 @@ public class ObstacleRectangle extends Obstacle {
     private double y;
     private double largeur;
     private double hauteur;
-    private double[] coin1;
-    private double[] coin2;
-    private double[] coin3;
-    private double[] coin4;
+    private double[][] coins;
 
     public ObstacleRectangle(double xx, double yy, double larg, double haut) {
         x = xx;
@@ -21,15 +18,30 @@ public class ObstacleRectangle extends Obstacle {
         largeur = larg;
         hauteur = haut;
 
-        coin1 = new double[]{x, y};
-        coin2 = new double[]{x + largeur, y};
-        coin3 = new double[]{x + largeur, y + hauteur};
-        coin4 = new double[]{x, y + hauteur};
-
+        coins = new double[][]{{x, y},{x + largeur, y},{x + largeur, y + hauteur},{x, y + hauteur}};
         Rectangle obstacle = new Rectangle(x, y, largeur, hauteur);
         obstacle.setFill(Color.DARKCYAN);
         getChildren().add(obstacle);
     }
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getLargeur() {
+        return largeur;
+    }
+
+    public double getHauteur() {
+        return hauteur;
+    }
+
+    public double[][] getCoins() {
+        return coins;
+    }
 
 }
