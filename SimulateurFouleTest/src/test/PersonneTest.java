@@ -1,6 +1,7 @@
 package test;
 
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import sample.Obstacle;
 import sample.ObstacleRectangle;
@@ -127,14 +128,30 @@ class PersonneTest {
     }
 
     @Test
-    public void test_Coord_Obstacle_Avec_Chemin_Travers_Obstacle_Par_Diagonale(){
+    public void test_Coord_Obstacle_Avec_Chemin_Travers_Obstacle_Par_Diagonale_0_2(){
         Personne p =new Personne(20,20);
         double[] sortie = {100,100};
         Obstacle o = new ObstacleRectangle(40,40,20,20);
-        for(int i=0;i<4;i++){
-            for (int j=0;j<2;j++){
-                assertEquals(0,p.coordCointouche(sortie,o)[i][j]);
+        double[][] solution = {{40,40},{60,60}};
+
+        for(int i=0;i<solution.length;i++){
+            for (int j=0;j<solution[0].length;j++){
+                assertEquals(solution[i][j],p.coordCointouche(sortie,o)[i][j]);
             }
         }
     }
+
+   /* @Test
+    public void test_Coord_Obstacle_Avec_Chemin_Travers_Obstacle_Par_Diagonale_1_3(){
+        Personne p =new Personne(0,80);
+        double[] sortie = {120,0};
+        Obstacle o = new ObstacleRectangle(20,100,80,80);
+        double[][] solution = {{20,100},{100,20}};
+
+        for(int i=0;i<solution.length;i++){
+            for (int j=0;j<solution[0].length;j++){
+                assertEquals(solution[i][j],p.coordCointouche(sortie,o)[i][j]);
+            }
+        }
+    }*/
 }

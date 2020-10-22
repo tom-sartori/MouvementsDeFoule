@@ -266,8 +266,6 @@ public class Personne extends Parent {
                     compteur = compteur + 1;
                     tableau[compteur] = o.getCoins()[i + 1];
                     compteur += 1;
-                    System.out.println("Position i \n" + "X : "+o.getCoins()[i][0]+"\n"+"Y : " +o.getCoins()[i][1]);
-                    System.out.println("Position i+1 \n" + "X : "+o.getCoins()[i+1][0]+"\n"+"Y : " +o.getCoins()[i+1][1]);
                 }
             } else {
                 if (toucheObstacle(coordSortie, o.getCoins()[i], o.getCoins()[0])) {
@@ -275,8 +273,21 @@ public class Personne extends Parent {
                     compteur = compteur + 1;
                     tableau[compteur] = o.getCoins()[0];
                     compteur = compteur + 1;
-                    System.out.println("Position i \n" + "X : "+o.getCoins()[i][0]+"\n"+"Y : " +o.getCoins()[i][1]);
-                    System.out.println("Position i+1 \n" + "X : "+o.getCoins()[i+1][0]+"\n"+"Y : " +o.getCoins()[i+1][1]);
+                }
+            }
+            if (compteur == 0) {
+                if (toucheObstacle(coordSortie, o.getCoins()[0], o.getCoins()[2])) {
+                    tableau[compteur] = o.getCoins()[0];
+                    compteur = compteur + 1;
+                    tableau[compteur] = o.getCoins()[2];
+                    compteur = compteur + 1;
+                } else {
+                    if (toucheObstacle(coordSortie, o.getCoins()[1], o.getCoins()[3])) {
+                        tableau[compteur] = o.getCoins()[2];
+                        compteur = compteur + 1;
+                        tableau[compteur] = o.getCoins()[3];
+                        compteur = compteur + 1;
+                    }
                 }
             }
         }
