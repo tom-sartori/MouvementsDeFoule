@@ -4,6 +4,7 @@ import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Personne extends Parent {
     private double xDepart;
@@ -207,32 +208,14 @@ public class Personne extends Parent {
         return false;
     }
 
-
-
-    public boolean toucheObstacle (Point coordSortie, Point coordC, Point coordD) {
-        Point coordP= new Point(xDepart,yDepart);
-        if (MathsCalcule.determinant(coordP,coordSortie,coordC,coordD)== 0) {
-            return MathsCalcule.estColEtObs(coordP,coordSortie,coordC,coordD);
-        } else
-            return MathsCalcule.estCouper(coordP,coordSortie,coordC,coordD);
+    public boolean estTouche(Point coordSortie,Point coordC,Point coordD){
+        Point coordP = new Point(xDepart,yDepart);
+        return MathsCalcule.toucheObstacle(coordP,coordSortie,coordC,coordD);
     }
 
-    public ArrayList<Point> coordCointouche(Point coordSortie, Obstacle o){
-        ArrayList<Point> listTableau = new ArrayList<>();
-        for (int i =0; i<4;i++) {
-            if (i != 3) {
-                if (toucheObstacle(coordSortie, o.getCoins().get(i), o.getCoins().get(i+1))) {
-                    listTableau.add(o.getCoins().get(i));
-                    listTableau.add(o.getCoins().get(i+1));
-                }
-            } else {
-                if (toucheObstacle(coordSortie, o.getCoins().get(i), o.getCoins().get(0))) {
-                    listTableau.add(o.getCoins().get(i));
-                    listTableau.add(o.getCoins().get(0));
-                }
-            }
-        }
-        return listTableau;
+    public List<Point> segmentObstacle(Point coordSortie,Obstacle o){
+        Point coordP = new Point(xDepart,yDepart);
+        return MathsCalcule.coordSegments(coordP,coordSortie,o);
     }
 
 }
