@@ -1,13 +1,8 @@
 package sample;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +15,7 @@ public class Personne extends Parent {
 
     private double dx;
     private double dy;
+    private double vitesse = 1.5;
 
     public Personne(double posX , double posY){
         xDepart = posX;
@@ -155,14 +151,25 @@ public class Personne extends Parent {
 
 
     // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
-    // Retourne donc un tavleau du type [dx, dy]
-    public Point getDxDy (Salle salle) {
+    public void setDxDy(Salle salle) {
         double [] coordSortie = findCoordSortie(salle);
         Point coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
 
         this.dx = coordDxDy.getX();
         this.dy = coordDxDy.getY();
-        return coordDxDy;
+    }
+
+    // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
+    // En plus, dx et dy sont normalisés suivant la vitesse de la personne (vitesse est un attribut de Personne).
+    public void setDxDyNormalise (Salle salle) {
+        double [] coordSortie = findCoordSortie(salle);
+        Point coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
+
+        //argument = sqrt(x^2 + y^2)
+        double argument = Math.sqrt( (coordDxDy.getX() * coordDxDy.getX()) + (coordDxDy.getY() * coordDxDy.getY()) );
+
+        this.dx = (vitesse/argument) * coordDxDy.getX();
+        this.dy = (vitesse/argument) * coordDxDy.getY();
     }
 
 
@@ -189,7 +196,6 @@ public class Personne extends Parent {
                 return true;
         }
         if (dx < 0) {
-            System.out.println(xDepart + getTranslateX());
             if (xDepart + getTranslateX() < 0 + salle.getMarge())
                 return true;
         }

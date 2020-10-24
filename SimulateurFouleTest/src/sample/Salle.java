@@ -106,9 +106,8 @@ public class Salle extends Parent {
     public void demarrer () {
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                personne.getDxDy(this);         // Initialise dx et dy
+                personne.setDxDyNormalise(this);         // Initialise dx et dy
             }
-
 
             Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
 
@@ -122,7 +121,6 @@ public class Salle extends Parent {
                                 removePersonne(listPersonnes.get(i));
                             else
                                 listPersonnes.get(i).avancer();
-                            System.out.println("test for");
                         }
                     }
                 }));
