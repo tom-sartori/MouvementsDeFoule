@@ -1,3 +1,7 @@
 .class
 .DS_Store
+<<<<<<< HEAD
+/out
+=======
 ./out/
+>>>>>>> b33573f5c62407f225db29d972df90048e66feac
