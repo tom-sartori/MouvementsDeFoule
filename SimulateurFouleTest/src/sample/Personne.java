@@ -4,6 +4,10 @@ import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Personne extends Parent {
     private double xDepart;
     private double yDepart;
@@ -26,6 +30,7 @@ public class Personne extends Parent {
     public double[] findCoordSortie (Salle salle) {
         double [] tab = new double[3];
         double [] tabCoord = new double[2];
+        Point coordPoint =new Point();
 
         double minDistance = 1000000;
         int x1oux2 = -1;
@@ -43,17 +48,18 @@ public class Personne extends Parent {
 
         }
         if (x1oux2 == 1) {  // Si c'est le (x1 y1) d'une des sorties qui est le plus proche, alors :
-            tab[0] = salle.getListSorties().get(index).getX1();     // tab[0] prend le x1 de la sortie correspondante
-            tab[1] = salle.getListSorties().get(index).getY1();     // et tab[1] le y1
+            coordPoint.setX(salle.getListSorties().get(index).getX1());     // tab[0] prend le x1 de la sortie correspondante
+            coordPoint.setY(salle.getListSorties().get(index).getY1());     // et tab[1] le y1
         }
         else if (x1oux2 == 2) {     // Sinon, c'est le (x2, y2) de la sortie qui est plus proche, alors :
-            tab[0] = salle.getListSorties().get(index).getX2();     // tab[0] prend x2
-            tab[1] = salle.getListSorties().get(index).getY2();     // tab[1] prend y2
+            coordPoint.setX(salle.getListSorties().get(index).getX2());     // tab[0] prend x2
+            coordPoint.setY(salle.getListSorties().get(index).getY2());     // tab[1] prend y2
         }
         else
             System.out.println("Erreur findCoordSortie. ");
-
-        tab[2] = salle.getListSorties().get(index).getMur();    // tab[2] prend juste le mur correspondant à la sortie
+        tab[0]=coordPoint.getX();
+        tab[1]=coordPoint.getY();
+        tab[2]=salle.getListSorties().get(index).getMur();    // tab[2] prend juste le mur correspondant à la sortie
         return tab;
     }
 
@@ -93,52 +99,52 @@ public class Personne extends Parent {
     // Retourne donc un tableau du type [dx, dy]
     // Cependant, dx et dy ne sont pas normalisés. Un perso peut donc aller plus vite qu'un autre.
     // Une nouvelle version de cette fonction sera surement necessaire sans l'argument "mur" afin de convenir aux coordonnés des obstacles.
-    public double[] findDxDy (double xArrive, double yArrive, int mur) {
-        double[] tab = new double[2];
+    public Point findDxDy (double xArrive, double yArrive, int mur) {
+        Point tab = new Point();
 
         if (mur == 1) {
             double distX = Math.abs(xDepart - xArrive);
             double distY = Math.abs(yDepart - yArrive);
             if (xDepart - xArrive > 0) {
-                tab[0] = - (distX / distY);
+                tab.setX(- (distX / distY));
             }
             else
-                tab[0] = distX / distY;
-            tab[1] = -1;
+                tab.setX(distX / distY);
+            tab.setY(-1);
         }
         else if (mur == 2) {
             double distX = Math.abs(xDepart - xArrive);
             double distY = Math.abs(yDepart - yArrive);
             if (yDepart - yArrive > 0) {
-                tab[1] = - (distY / distX);
+                tab.setY(- (distY / distX));
             }
             else
-                tab[1] = distY / distX;
-            tab[0] = 1;
+                tab.setY(distY / distX);
+            tab.setX(1);
         }
         else if (mur == 3) {
             double distX = Math.abs(xDepart - xArrive);
             double distY = Math.abs(yDepart - yArrive);
             if (xDepart - xArrive > 0) {
-                tab[0] = - (distX / distY);
+                tab.setX(- (distX / distY));
             }
             else
-                tab[0] = distX / distY;
-            tab[1] = 1;
+                tab.setX(distX / distY);
+            tab.setY(1);
         }
         else if (mur == 4) {
             double distX = Math.abs(xDepart - xArrive);
             double distY = Math.abs(yDepart - yArrive);
             if (yDepart - yArrive > 0) {
-                tab[1] = - (distY / distX);
+                tab.setY(-(distY / distX));
             }
             else
-                tab[1] = distY / distX;
-            tab[0] = -1;
+                tab.setY(distY / distX);
+            tab.setX(-1);
         }
 
-        System.out.println("dx : " + tab[0]);
-        System.out.println("dy : " + tab[1]);
+        System.out.println("dx : " + tab.getX());
+        System.out.println("dy : " + tab.getY());
 
         return tab;
     }
@@ -147,23 +153,23 @@ public class Personne extends Parent {
     // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
     public void setDxDy(Salle salle) {
         double [] coordSortie = findCoordSortie(salle);
-        double [] coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
+        Point coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
 
-        this.dx = coordDxDy[0];
-        this.dy = coordDxDy[1];
+        this.dx = coordDxDy.getX();
+        this.dy = coordDxDy.getY();
     }
 
     // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
     // En plus, dx et dy sont normalisés suivant la vitesse de la personne (vitesse est un attribut de Personne).
     public void setDxDyNormalise (Salle salle) {
         double [] coordSortie = findCoordSortie(salle);
-        double [] coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
+        Point coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
 
         //argument = sqrt(x^2 + y^2)
-        double argument = Math.sqrt( (coordDxDy[0] * coordDxDy[0]) + (coordDxDy[1] * coordDxDy[1]) );
+        double argument = Math.sqrt( (coordDxDy.getX() * coordDxDy.getX()) + (coordDxDy.getY() * coordDxDy.getY()) );
 
-        this.dx = (vitesse/argument) * coordDxDy[0];
-        this.dy = (vitesse/argument) * coordDxDy[1];
+        this.dx = (vitesse/argument) * coordDxDy.getX();
+        this.dy = (vitesse/argument) * coordDxDy.getY();
     }
 
 
@@ -190,7 +196,6 @@ public class Personne extends Parent {
                 return true;
         }
         if (dx < 0) {
-            System.out.println(xDepart + getTranslateX());
             if (xDepart + getTranslateX() < 0 + salle.getMarge())
                 return true;
         }
@@ -205,113 +210,34 @@ public class Personne extends Parent {
         return false;
     }
 
-    public double getA(double[] coordSortie){
-        return coordSortie[0]-xDepart;
-    }
-    public double getB(double[] coordSortie){
-        return coordSortie[1] - yDepart;
-    }
-    public double getC(double[] coordC,double[] coordD){
-        return coordC[0] - coordD[0];
-    }
-    public double getD(double[] coordC,double[] coordD){
-        return coordC[1] - coordD[1];
-    }
-    public double getU(double[] coordC){
-        return coordC[0] - xDepart;
-    }
-    public double getV(double[] coordC){
-        return coordC[1] - yDepart;
-    }
 
-    public boolean toucheObstacle (double[] coordSortie, double [] coordC, double[]coordD) {
-        if (determinant(coordSortie,coordC,coordD) == 0) {
-            return estColEtObs(coordSortie, coordC, coordD);
+
+    public boolean toucheObstacle (Point coordSortie, Point coordC, Point coordD) {
+        Point coordP= new Point(xDepart,yDepart);
+        MathSys mathSys = new MathSys(coordP,coordSortie,coordC,coordD);
+        if (mathSys.determinant()== 0) {
+            return mathSys.estColEtObs();
         } else
-            return estCouper(coordSortie,coordC,coordD);
+            return mathSys.estCouper();
     }
 
-    public double determinant(double[] coordSortie, double [] coordC, double[]coordD){
-        double a = getA(coordSortie);
-        double b = getB(coordSortie);
-        double c = getC(coordC,coordD);
-        double d = getD(coordC,coordD) ;
-        double u = getU(coordC);
-        double v = getV(coordC);
-
-        double determinant = (a * d) - (b * c);
-        return determinant;
-    }
-
-    public boolean estCouper(double[] coordSortie, double [] coordC, double[]coordD){
-        double determinant = determinant(coordSortie,coordC,coordD);
-        double mat1 = (1/determinant) * getD(coordC,coordD);
-        double mat2 = (1/determinant) * (-getB(coordSortie));
-        double mat3 = (1/determinant) * (-getC(coordC,coordD));
-        double mat4 = (1/determinant) * getA(coordSortie);
-        double u = getU(coordC);
-        double v=getV(coordC);
-        double k1 = (mat1*u) + (mat3*v);
-        double k2 = (mat2*u) + (mat4*v);
-        System.out.println("La valeur de K est "+k1 +"\n"+ "La valeur de k' est " +k2);
-        if ((0 <= k1 && k1 <= 1) && (0 <= k2 && k2 <= 1)) {
-            System.out.println("Les segments se touchent. ");
-            return true;
-        }
-        else {
-            System.out.println("Segments se touchent pas. ");
-            return false;
-        }
-    }
-
-
-    public boolean estColEtObs(double[] coordSortie, double [] coordC, double[]coordD){
-        if (coordSortie[0] == coordC[0]) {
-            System.out.println("Sur meme axe x. ");
-            if ( ((yDepart < coordC[1] && coordSortie[1] < coordC[1]) && (yDepart < coordD[1] && coordSortie[1] < coordD[1])) || ((yDepart > coordC[1] && coordSortie[1] > coordC[1]) && (yDepart > coordD[1] && coordSortie[1] > coordD[1]))) {
-                System.out.println("pas superposés. ");
-                return false;
-            }
-            else {
-                System.out.println("Superposés");
-                return true;
-            }
-        }
-        else {
-            System.out.println("sur meme axe y. ");
-            if ( ((xDepart < coordC[0] && coordSortie[0] < coordC[0]) && (xDepart < coordD[0] && coordSortie[0] < coordD[0])) || ((xDepart > coordC[0] && coordSortie[0] > coordC[0]) && (xDepart > coordD[0] && coordSortie[0] > coordD[0]))) {
-                System.out.println("pas superposés. ");
-                return false;
-            }
-            else {
-                System.out.println("Superposés");
-                return true;
-            }
-        }
-    }
-
-    public double[][] coordCointouche(double[] coordSortie, Obstacle o){
-        int compteur=0;
-        int n = o.getCoins().length;
-        int m=o.getCoins()[0].length;
-        double[][] tableau = new double[n][m];
-        for (int i =0; i<n;i++) {
+    public ArrayList<Point> coordCointouche(Point coordSortie, Obstacle o){
+        ArrayList<Point> listTableau = new ArrayList<>();
+        for (int i =0; i<4;i++) {
             if (i != 3) {
-                if (toucheObstacle(coordSortie, o.getCoins()[i], o.getCoins()[i + 1])) {
-                    tableau[compteur] = o.getCoins()[i];
-                    compteur = compteur + 1;
-                    tableau[compteur] = o.getCoins()[i + 1];
-                    compteur += 1;
+                if (toucheObstacle(coordSortie, o.getCoins().get(i), o.getCoins().get(i+1))) {
+                    listTableau.add(o.getCoins().get(i));
+                    listTableau.add(o.getCoins().get(i+1));
                 }
             } else {
-                if (toucheObstacle(coordSortie, o.getCoins()[i], o.getCoins()[0])) {
-                    tableau[compteur] = o.getCoins()[i];
-                    compteur = compteur + 1;
-                    tableau[compteur] = o.getCoins()[0];
-                    compteur = compteur + 1;
+                if (toucheObstacle(coordSortie, o.getCoins().get(i), o.getCoins().get(0))) {
+                    listTableau.add(o.getCoins().get(i));
+                    listTableau.add(o.getCoins().get(0));
                 }
             }
         }
-        return tableau;
+        return listTableau;
     }
+
 }
+
