@@ -1,13 +1,8 @@
 package sample;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.util.Duration;
 
 public class Personne extends Parent {
     private double xDepart;
@@ -16,6 +11,7 @@ public class Personne extends Parent {
 
     private double dx;
     private double dy;
+    private double vitesse = 1.5;
 
     public Personne(double posX , double posY){
         xDepart = posX;
@@ -149,14 +145,25 @@ public class Personne extends Parent {
 
 
     // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
-    // Retourne donc un tavleau du type [dx, dy]
-    public double [] getDxDy (Salle salle) {
+    public void setDxDy(Salle salle) {
         double [] coordSortie = findCoordSortie(salle);
         double [] coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
 
         this.dx = coordDxDy[0];
         this.dy = coordDxDy[1];
-        return coordDxDy;
+    }
+
+    // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
+    // En plus, dx et dy sont normalisés suivant la vitesse de la personne (vitesse est un attribut de Personne).
+    public void setDxDyNormalise (Salle salle) {
+        double [] coordSortie = findCoordSortie(salle);
+        double [] coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
+
+        //argument = sqrt(x^2 + y^2)
+        double argument = Math.sqrt( (coordDxDy[0] * coordDxDy[0]) + (coordDxDy[1] * coordDxDy[1]) );
+
+        this.dx = (vitesse/argument) * coordDxDy[0];
+        this.dy = (vitesse/argument) * coordDxDy[1];
     }
 
 

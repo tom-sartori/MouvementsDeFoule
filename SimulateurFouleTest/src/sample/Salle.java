@@ -106,7 +106,7 @@ public class Salle extends Parent {
     public void demarrer () {
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                personne.getDxDy(this);         // Initialise dx et dy
+                personne.setDxDyNormalise(this);         // Initialise dx et dy
             }
 
 
