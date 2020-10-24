@@ -190,7 +190,6 @@ public class Personne extends Parent {
                 return true;
         }
         if (dx < 0) {
-            System.out.println(xDepart + getTranslateX());
             if (xDepart + getTranslateX() < 0 + salle.getMarge())
                 return true;
         }
