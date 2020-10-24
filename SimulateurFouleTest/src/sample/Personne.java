@@ -3,10 +3,7 @@ package sample;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Personne extends Parent {
     private double xDepart;
@@ -214,11 +211,10 @@ public class Personne extends Parent {
 
     public boolean toucheObstacle (Point coordSortie, Point coordC, Point coordD) {
         Point coordP= new Point(xDepart,yDepart);
-        MathSys mathSys = new MathSys(coordP,coordSortie,coordC,coordD);
-        if (mathSys.determinant()== 0) {
-            return mathSys.estColEtObs();
+        if (MathsCalcule.determinant(coordP,coordSortie,coordC,coordD)== 0) {
+            return MathsCalcule.estColEtObs(coordP,coordSortie,coordC,coordD);
         } else
-            return mathSys.estCouper();
+            return MathsCalcule.estCouper(coordP,coordSortie,coordC,coordD);
     }
 
     public ArrayList<Point> coordCointouche(Point coordSortie, Obstacle o){
