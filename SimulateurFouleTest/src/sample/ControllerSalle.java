@@ -13,10 +13,21 @@ public class ControllerSalle extends Parent{
 
     public ControllerSalle(double width, double height){
         salle = new Salle(width,height);
-        Sortie sortie = new Sortie(2,60,50);
-        Sortie sortie1 = new Sortie(3, 60, 80);
-        salle.addSortie(sortie);
-        salle.addSortie(sortie1);
+
+        //salle.addPersonne(new Personne(200, 300));
+
+        salle.addSortie(new Sortie(2,60,50));
+        salle.addSortie(new Sortie(3, 60, 80));
+
+        salle.addObstacle(new ObstacleRectangle(150, 200, 60, 70));
+        salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
+        salle.addObstacle(new ObstacleRectangle(600, 100, 70, 60));
+
+        Graphe graphe = new Graphe(salle);
+        graphe.creerChemins();
+        salle.addGraphe(graphe.afficher());
+
+
         salle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override

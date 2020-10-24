@@ -10,33 +10,32 @@ import java.util.List;
 
 public class ObstacleRectangle extends Obstacle {
 
-    private double x;
-    private double y;
+    private Point point1;
+    private Point point2;
+    private Point point3;
+    private Point point4;
     private double largeur;
     private double hauteur;
     private List<Point> listcoins;
 
-    public ObstacleRectangle(double xx, double yy, double larg, double haut) {
-        x = xx;
-        y = yy;
+    public ObstacleRectangle(double x, double y, double larg, double haut) {
         largeur = larg;
         hauteur = haut;
+
+        point1 = new Point(x, y);   // haut gauche
+        point2 = new Point(x + largeur, y);     // haut droit
+        point3 = new Point(x + largeur, y + hauteur);   // bas droit
+        point4 = new Point(x, y + hauteur);     // bas gauche
+
         listcoins= new ArrayList<>();
-        listcoins.add(new Point(x,y));
-        listcoins.add(new Point((x+largeur),y));
-        listcoins.add(new Point((x+largeur),(y+hauteur)));
-        listcoins.add(new Point(x,(y+hauteur)));
-        Rectangle obstacle = new Rectangle(x, y, largeur, hauteur);
+        listcoins.add(point1);  //addAll similaire ?
+        listcoins.add(point2);
+        listcoins.add(point3);
+        listcoins.add(point4);
+
+        Rectangle obstacle = new Rectangle(point1.getX(), point1.getY(), largeur, hauteur);
         obstacle.setFill(Color.DARKCYAN);
         getChildren().add(obstacle);
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
     }
 
     public double getLargeur() {
