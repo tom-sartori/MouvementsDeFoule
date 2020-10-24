@@ -207,4 +207,15 @@ public class Salle extends Parent {
         return plusProche;
     }
 
+    public boolean intersecObstacle(Point coordA,Point coordB) {
+        boolean b = false;
+        for(Obstacle obstacle: listObstacles){
+            if(MathsCalcule.coordSegments(coordA,coordB,obstacle).isEmpty()){
+                b= false;
+            }
+            else
+                return true;
+        }
+        return b;
+    }
 }

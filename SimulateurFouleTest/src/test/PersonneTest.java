@@ -23,7 +23,7 @@ class PersonneTest {
         Point sortie = new Point(60,40);
         Point coordC=new Point(20,40);
         Point coordD=new Point(30,20);
-       assertTrue(p.toucheObstacle(sortie,coordC,coordD));
+       assertTrue(p.estTouche(sortie,coordC,coordD));
     }
     @Test
     public void test_Chemin_Sans_Obstacle(){
@@ -31,7 +31,7 @@ class PersonneTest {
         Point sortie=new Point(60,40);
         Point coordC=new Point(10,40);
         Point coordD=new Point(20,30);
-        assertFalse(p.toucheObstacle(sortie,coordC,coordD));
+        assertFalse(p.estTouche(sortie,coordC,coordD));
     }
 
     @Test
@@ -40,7 +40,7 @@ class PersonneTest {
         Point sortie=new Point(60,40);
         Point coordC=new Point(28,24);
         Point coordD= new Point(10,30);
-        assertTrue(p.toucheObstacle(sortie,coordC,coordD));
+        assertFalse(p.estTouche(sortie,coordC,coordD));
     }
 
     @Test
@@ -49,7 +49,7 @@ class PersonneTest {
         Point sortie = new Point(60,20);
         Point coordC= new Point(80,20);
         Point coordD= new Point(100,20);
-        assertFalse(p.toucheObstacle(sortie,coordC,coordD));
+        assertFalse(p.estTouche(sortie,coordC,coordD));
     }
 
     @Test
@@ -58,7 +58,7 @@ class PersonneTest {
         Point sortie= new Point(100,20);
         Point coordC=new Point(60,20);
         Point coordD= new Point(20,20);
-        assertFalse(p.toucheObstacle(sortie,coordC,coordD));
+        assertFalse(p.estTouche(sortie,coordC,coordD));
     }
 
     @Test
@@ -67,7 +67,7 @@ class PersonneTest {
         Point sortie= new Point(100,20);
         Point coordC= new Point(60,20);
         Point coordD= new Point(80,20);
-        assertTrue(p.toucheObstacle(sortie,coordC,coordD));
+        assertTrue(p.estTouche(sortie,coordC,coordD));
     }
 
     @Test
@@ -76,7 +76,7 @@ class PersonneTest {
         Point sortie=new Point(20,60);
         Point coordC=new Point(20,80);
         Point coordD=new Point(20,100);
-        assertFalse(p.toucheObstacle(sortie,coordC,coordD));
+        assertFalse(p.estTouche(sortie,coordC,coordD));
     }
 
     @Test
@@ -85,7 +85,7 @@ class PersonneTest {
         Point sortie=new Point(20,100);
         Point coordC=new Point(20,60);
         Point coordD=new Point(20,20);
-        assertFalse(p.toucheObstacle(sortie,coordC,coordD));
+        assertFalse(p.estTouche(sortie,coordC,coordD));
     }
 
     @Test
@@ -94,7 +94,7 @@ class PersonneTest {
         Point sortie=new Point(20,100);
         Point coordC=new Point(20,60);
         Point coordD=new Point(20,80);
-        assertTrue(p.toucheObstacle(sortie,coordC,coordD));
+        assertTrue(p.estTouche(sortie,coordC,coordD));
     }
 
     @Test
@@ -111,9 +111,9 @@ class PersonneTest {
         listSolution.add(b);
         listSolution.add(b);
         listSolution.add(c);
-        for(int i=0;i<p.coordCointouche(sortie,o).size();i++){
-            assertEquals(listSolution.get(i).getX(),p.coordCointouche(sortie,o).get(i).getX());
-            assertEquals(listSolution.get(i).getY(),p.coordCointouche(sortie,o).get(i).getY());
+        for(int i=0;i<p.segmentObstacle(sortie,o).size();i++){
+            assertEquals(listSolution.get(i).getX(),p.segmentObstacle(sortie,o).get(i).getX());
+            assertEquals(listSolution.get(i).getY(),p.segmentObstacle(sortie,o).get(i).getY());
         }
     }
 
@@ -131,9 +131,9 @@ class PersonneTest {
         listSolution.add(b);
         listSolution.add(b);
         listSolution.add(c);
-        for(int i=0;i<p.coordCointouche(sortie,o).size();i++){
-            assertEquals(listSolution.get(i).getX(),p.coordCointouche(sortie,o).get(i).getX());
-            assertEquals(listSolution.get(i).getY(),p.coordCointouche(sortie,o).get(i).getY());
+        for(int i=0;i<p.segmentObstacle(sortie,o).size();i++){
+            assertEquals(listSolution.get(i).getX(),p.segmentObstacle(sortie,o).get(i).getX());
+            assertEquals(listSolution.get(i).getY(),p.segmentObstacle(sortie,o).get(i).getY());
         }
     }
 
@@ -143,21 +143,7 @@ class PersonneTest {
         Point sortie = new Point(100,20);
         Obstacle o = new ObstacleRectangle(40,20,20,20);
         ArrayList<Point> listSolution = new ArrayList<>();
-        Point a =new Point(40,20);
-        Point b=new Point(60,20);
-        Point c=new Point(60,40);
-        Point d=new Point(40,40);
-        listSolution.add(a);
-        listSolution.add(b);
-        listSolution.add(b);
-        listSolution.add(c);
-        listSolution.add(d);
-        listSolution.add(a);
-        for (int i=0;i<p.coordCointouche(sortie,o).size();i++) {
-            assertEquals(listSolution.get(i).getX(),p.coordCointouche(sortie,o).get(i).getX());
-            assertEquals(listSolution.get(i).getY(),p.coordCointouche(sortie,o).get(i).getY());
-
-        }
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
     }
 
     @Test
@@ -178,9 +164,9 @@ class PersonneTest {
         listSolution.add(d);
         listSolution.add(d);
         listSolution.add(a);
-        for(int i=0;i<p.coordCointouche(sortie,o).size();i++){
-            assertEquals(listSolution.get(i).getX(),p.coordCointouche(sortie,o).get(i).getX());
-            assertEquals(listSolution.get(i).getY(),p.coordCointouche(sortie,o).get(i).getY());
+        for(int i=0;i<p.segmentObstacle(sortie,o).size();i++){
+            assertEquals(listSolution.get(i).getX(),p.segmentObstacle(sortie,o).get(i).getX());
+            assertEquals(listSolution.get(i).getY(),p.segmentObstacle(sortie,o).get(i).getY());
         }
     }
 
@@ -203,9 +189,9 @@ class PersonneTest {
        listSolution.add(d);
        listSolution.add(a);
 
-        for(int i=0;i<p.coordCointouche(sortie,o).size();i++){
-            assertEquals(listSolution.get(i).getX(),p.coordCointouche(sortie,o).get(i).getX());
-            assertEquals(listSolution.get(i).getY(),p.coordCointouche(sortie,o).get(i).getY());
+        for(int i=0;i<p.segmentObstacle(sortie,o).size();i++){
+            assertEquals(listSolution.get(i).getX(),p.segmentObstacle(sortie,o).get(i).getX());
+            assertEquals(listSolution.get(i).getY(),p.segmentObstacle(sortie,o).get(i).getY());
         }
     }
 }
