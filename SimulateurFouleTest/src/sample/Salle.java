@@ -171,6 +171,42 @@ public class Salle extends Parent {
         else return false;
     }
 
+    public void addGraphe(ControllerGraphe controllerGraphe) {
+        getChildren().add(controllerGraphe);
+    }
+
+    public Point findSortiePlusProche(Point A) {
+        double distance1 = -1;
+        double distance2 = -1;
+
+        double distanceCourte = 1000000;
+        Point plusProche = new Point();
+
+        if (!listSorties.isEmpty()) {
+
+            for (Sortie sortie : listSorties) {
+                sortie.setPoint1(new Point(sortie.getX1(), sortie.getY1()));    //temporaire pour tester
+                sortie.setPoint2(new Point(sortie.getX2(), sortie.getY2()));
+
+                distance1 = MathsCalcule.distance(A, sortie.getPoint1());
+                distance2 = MathsCalcule.distance(A, sortie.getPoint2());
+
+                if (Math.min(distance1, distance2) < distanceCourte) {
+                    if (distance1 < distance2) {
+                        distanceCourte = distance1;
+                        plusProche = sortie.getPoint1();
+                    } else {
+                        distanceCourte = distance2;
+                        plusProche = sortie.getPoint2();
+                    }
+                }
+            }
+        }
+        else
+            System.out.println("Pas de sorties dans la salle");
+        return plusProche;
+    }
+
     public boolean intersecObstacle(Point coordA,Point coordB) {
         boolean b = false;
         for(Obstacle obstacle: listObstacles){
@@ -182,6 +218,4 @@ public class Salle extends Parent {
         }
         return b;
     }
-
-
 }
