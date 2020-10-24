@@ -4,21 +4,27 @@ import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ObstacleRectangle extends Obstacle {
 
     private double x;
     private double y;
     private double largeur;
     private double hauteur;
-    private double[][] coins;
+    private List<Point> listcoins;
 
     public ObstacleRectangle(double xx, double yy, double larg, double haut) {
         x = xx;
         y = yy;
         largeur = larg;
         hauteur = haut;
-
-        coins = new double[][]{{x, y},{x + largeur, y},{x + largeur, y + hauteur},{x, y + hauteur}};
+        listcoins= new ArrayList<>();
+        listcoins.add(new Point(x,y));
+        listcoins.add(new Point((x+largeur),y));
+        listcoins.add(new Point((x+largeur),(y+hauteur)));
+        listcoins.add(new Point(x,(y+hauteur)));
         Rectangle obstacle = new Rectangle(x, y, largeur, hauteur);
         obstacle.setFill(Color.DARKCYAN);
         getChildren().add(obstacle);
@@ -40,8 +46,8 @@ public class ObstacleRectangle extends Obstacle {
         return hauteur;
     }
 
-    public double[][] getCoins() {
-        return coins;
+    public List<Point> getCoins() {
+        return listcoins;
     }
 
 }
