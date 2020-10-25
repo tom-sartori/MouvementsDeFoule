@@ -30,11 +30,9 @@ public class ControllerSalle extends Parent{
         Point arrive = salle.getListSorties().get(0).getPoint1();
         graphe.creerPlusCourtChemin(depart, arrive);
 
-        System.out.println(arrive);
-        System.out.println(arrive.getPrecedent());
 
-        //List<Point> listeChemin = graphe.getListePointsCheminPlusCourt(depart, arrive);
-        //salle.addGraphe(graphe.afficher(listeChemin));
+        List<Point> listeChemin = graphe.getListePointsCheminPlusCourt(depart, arrive);
+        salle.addGraphe(graphe.afficher(listeChemin));
 
 
 

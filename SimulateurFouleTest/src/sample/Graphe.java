@@ -20,6 +20,10 @@ public class Graphe {
                 listePoints.add(point);
             }
         }
+        for (Sortie sortie : salle.getListSorties()) {
+            for (Point point : sortie.getListePointsSortie())
+                listePoints.add(point);
+        }
 
     }
 
