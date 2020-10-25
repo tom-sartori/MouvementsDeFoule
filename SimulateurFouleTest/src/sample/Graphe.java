@@ -22,11 +22,14 @@ public class Graphe {
             for (Point point : obstacle.getCoins()) {
                 for (Obstacle obstacle1 : salle.getListObstacles()) {
                     for (Point point1 : obstacle1.getCoins()) {
-                        //if ()
-                        addChemin(new Chemin(point, point1));
+                        if(!(point ==point1)) {
+                            if (!salle.intersecObstacle(point, point1)) {
+                                addChemin(new Chemin(point, point1));
+                            }
+                        }
                     }
                 }
-                addChemin(new Chemin(point, salle.findSortiePlusProche(point)));
+                //addChemin(new Chemin(point, salle.findSortiePlusProche(point)));
             }
         }
     }
