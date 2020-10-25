@@ -86,6 +86,10 @@ public class Salle extends Parent {
             sortie.setY2(sortie.getY1() + sortie.getLongueur());
         }
 
+        sortie.setPoint1(sortie.getX1(), sortie.getY1());
+        sortie.setPoint2(sortie.getX2(), sortie.getY2());
+
+
         this.getChildren().add(sortie);
     }
 
@@ -175,7 +179,9 @@ public class Salle extends Parent {
         getChildren().add(controllerGraphe);
     }
 
-    public Point findSortiePlusProche(Point A) {
+
+    // Ne prend pas en compte les obstacles
+    public Point findSortiePlusProcheIndirecte(Point A) {
         double distance1 = -1;
         double distance2 = -1;
 
@@ -185,8 +191,6 @@ public class Salle extends Parent {
         if (!listSorties.isEmpty()) {
 
             for (Sortie sortie : listSorties) {
-                sortie.setPoint1(new Point(sortie.getX1(), sortie.getY1()));    //temporaire pour tester
-                sortie.setPoint2(new Point(sortie.getX2(), sortie.getY2()));
 
                 distance1 = MathsCalcule.distance(A, sortie.getPoint1());
                 distance2 = MathsCalcule.distance(A, sortie.getPoint2());
@@ -206,6 +210,37 @@ public class Salle extends Parent {
             System.out.println("Pas de sorties dans la salle");
         return plusProche;
     }
+
+
+    public Point findSortiePlusProcheDirecte(Point A) {
+        double distance;
+        double distance1 = -1;
+        double distance2 = -1;
+
+        double distanceCourte = 1000000;
+        Point plusProche = null;
+
+        if (!listSorties.isEmpty()) {
+
+            for (Sortie sortie : listSorties) {
+                for (Point pointSortie : sortie.getListePointsSortie()) {
+                    if (!intersecObstacle(A, pointSortie)) {
+                        distance = MathsCalcule.distance(A, pointSortie);
+                        if (distance < distanceCourte) {
+                            distanceCourte = distance;
+                            plusProche = pointSortie;
+                        }
+                    }
+                }
+            }
+            return plusProche;
+        }
+        else {
+            System.out.println("Pas de sorties dans la salle");
+            return null;
+        }
+    }
+
 
     public boolean intersecObstacle(Point coordA,Point coordB) {
         boolean b = false;

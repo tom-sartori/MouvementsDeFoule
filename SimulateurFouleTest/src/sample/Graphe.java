@@ -17,16 +17,19 @@ public class Graphe {
         listeChemins.add(chemin);
     }
 
-    public void creerChemins () {
+    public void creerTousLesChemins() {
         for (Obstacle obstacle : salle.getListObstacles()) {
             for (Point point : obstacle.getCoins()) {
                 for (Obstacle obstacle1 : salle.getListObstacles()) {
                     for (Point point1 : obstacle1.getCoins()) {
-                        //if ()
-                        addChemin(new Chemin(point, point1));
+                        if (!salle.intersecObstacle(point, point1))
+                            addChemin(new Chemin(point, point1));
                     }
                 }
-                addChemin(new Chemin(point, salle.findSortiePlusProche(point)));
+                Point pointSortie = salle.findSortiePlusProcheDirecte(point);
+                if (pointSortie != null) {
+                    addChemin(new Chemin(point, pointSortie));
+                }
             }
         }
     }

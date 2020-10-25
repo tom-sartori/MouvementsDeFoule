@@ -24,7 +24,7 @@ public class ControllerSalle extends Parent{
         salle.addObstacle(new ObstacleRectangle(600, 100, 70, 60));
 
         Graphe graphe = new Graphe(salle);
-        graphe.creerChemins();
+        graphe.creerTousLesChemins();
         salle.addGraphe(graphe.afficher());
 
 
