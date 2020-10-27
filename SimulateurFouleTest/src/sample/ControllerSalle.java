@@ -19,6 +19,7 @@ public class ControllerSalle extends Parent{
     private double marge = 20;
     private List<ControllerSortie> listSorties;
     private List<ControllerPersonne> listPersonnes;
+    private List<ControllerObstacleRectangle> listObstacles;
     private Timeline loop;
     
     public Timeline getLoop(){
@@ -34,11 +35,12 @@ public class ControllerSalle extends Parent{
     public List<ControllerPersonne> getListPersonnes(){
         return listPersonnes;
     }
-    public ControllerSalle(double width, double height, Salle salle){
-        this.salle = salle;
+    public ControllerSalle(double lar, double hau){
+        salle = new Salle(lar,hau);
         this.listSorties = new ArrayList<>();
         this.listPersonnes = new ArrayList<>();
-        Rectangle salleGraphic = new Rectangle(width - (2 * marge), height - (2 * marge));
+        this.listObstacles = new ArrayList<>();
+        Rectangle salleGraphic = new Rectangle(lar - (2 * marge), hau - (2 * marge));
         salleGraphic.setTranslateX(marge);
         salleGraphic.setTranslateY(marge);
         salleGraphic.setFill(Color.LIGHTCYAN);
@@ -47,59 +49,67 @@ public class ControllerSalle extends Parent{
             @Override
             public void handle(MouseEvent event) {
                 if(!isRunning()){
-                    salle.addPersonne(event.getX(),event.getY());
+                    createPersonne(event.getX(),event.getY());
                 }
             }
         });
-        
+        salle.addObstacle(new ObstacleRectangle(150, 200, 60, 70));
+        salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
+        salle.addObstacle(new ObstacleRectangle(600, 100, 70, 60));
+
         this.getChildren().add(salleGraphic);
     }   
 
       // Permet d'ajouter une sortie à la salle et la place correctement
     // Modifie x1 y1 x2 y2 de la sortie correspondante pour lui donner uniquement les coordonnées utiles
     // (donc pas les coords exterrieurs à la salle)
-    public void addSortie (ControllerSortie sortie, int mur) {
-        listSorties.add(sortie);
-        double distance = sortie.getSortie().getDistance();
-        double epaisseur = sortie.getSortie().getEpaisseur();
+    public void addSortie (ControllerSortie sortieController) {
+        listSorties.add(sortieController);
+        double distance = sortieController.getSortie().getDistance();
+        double epaisseur = sortieController.getSortie().getEpaisseur();
+        int mur = sortieController.getMur();
         if (mur == 1) {
-            sortie.setTranslateX(marge + distance);
-            sortie.setTranslateY(marge - epaisseur);
+            sortieController.setTranslateX(marge + distance);
+            sortieController.setTranslateY(marge - epaisseur);
         }
         if (mur == 2) {
-            sortie.setTranslateX(marge + salle.getLargeur());
-            sortie.setTranslateY(marge + distance);
+            sortieController.setTranslateX(marge + salle.getLargeur());
+            sortieController.setTranslateY(marge + distance);
         }
         if (mur == 3) {
-            sortie.setTranslateX(marge + distance);
-            sortie.setTranslateY(marge + salle.getHauteur());
+            sortieController.setTranslateX(marge + distance);
+            sortieController.setTranslateY(marge + salle.getHauteur());
         }
         if (mur == 4) {
-            sortie.setTranslateX(marge - epaisseur);
-            sortie.setTranslateY(marge + distance);
+            sortieController.setTranslateX(marge - epaisseur);
+            sortieController.setTranslateY(marge + distance);
         }
-        this.getChildren().add(sortie);
+        this.getChildren().add(sortieController);
+        salle.addSortie(sortieController.getSortie());
     }
 
-    public void createPersonne(ControllerPersonne personne){
-        listPersonnes.add(personne);
-        this.getChildren().add(personne);
+    public void createPersonne(double x, double y){
+        ControllerPersonne personneController = new ControllerPersonne(x, y);
+        listPersonnes.add(personneController);
+        this.getChildren().add(personneController);
+        salle.addPersonne(personneController.getPersonne());
     }
 
-    public void removePersonneGraphic (ControllerPersonne personne) {
-        listPersonnes.remove(personne);
-        getChildren().remove(personne);
+    public void removePersonne(ControllerPersonne personneController) {
+        listPersonnes.remove(personneController);
+        getChildren().remove(personneController);
         if (listPersonnes.isEmpty())
-            loop.pause(); 
+            loop.pause();
+        salle.removePersonne(personneController.getPersonne());
     }
 
-    public void removeAllPersonneGraphic(){
+    public void removeAllPersonne(){
         if(loop!=null){
             loop.pause();
         }
         while(!listPersonnes.isEmpty())
-            removePersonneGraphic(listPersonnes.get(0));
-
+            removePersonne(listPersonnes.get(0));
+        salle.removeAllPersonne();
     }
 
     public void pause(){
@@ -119,7 +129,12 @@ public class ControllerSalle extends Parent{
             if(loop==null){
                 loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent arg) {
-                        salle.demarrer();
+                        for (int i = 0; i < listPersonnes.size(); i ++) {
+                            if (listPersonnes.get(i).estSorti(salle))
+                                removePersonne(listPersonnes.get(i));
+                            else
+                                listPersonnes.get(i).avancer();
+                        }
                     }
                 }));
                 loop.setCycleCount(Timeline.INDEFINITE);
@@ -130,4 +145,13 @@ public class ControllerSalle extends Parent{
         }
     }
 
+    public void addGraphe(ControllerGraphe controllerGraphe) {
+        getChildren().add(controllerGraphe);
+    }
+    
+    public void addObstacle(ControllerObstacleRectangle obstacleController){
+        listObstacles.add(obstacleController);
+        this.getChildren().add(obstacleController);
+        salle.addObstacle(obstacleController.getObstacle());
+    }
 }

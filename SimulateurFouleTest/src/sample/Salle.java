@@ -10,11 +10,6 @@ public class Salle {
     private List<Sortie> listSorties;
     private List<Personne> listPersonnes;
     private List<Obstacle> listObstacles;
-    private ControllerSalle controllerSalle;
-
-    public ControllerSalle getControllerSalle(){
-        return controllerSalle;
-    }
 
     public Salle(double lar, double hau) {  // Créée une salle rectangle avec une marge
         this.largeur = lar - (2 * marge);
@@ -22,7 +17,7 @@ public class Salle {
         this.listObstacles = new ArrayList<>();
         this.listSorties = new ArrayList<>();
         this.listPersonnes = new ArrayList<>();
-        controllerSalle = new ControllerSalle(lar,hau,this);
+
     }
 
     public void addObstacle (Obstacle obstacle){
@@ -56,8 +51,6 @@ public class Salle {
             sortie.setX2(marge);
             sortie.setY2(sortie.getY1() + sortie.getLongueur());
         }
-
-        controllerSalle.addSortie(sortie.getControllerSortie(), sortie.getMur());
     }
 
     public List<Obstacle> getListObstacles(){
@@ -70,17 +63,7 @@ public class Salle {
 
     public void initPersonneDxDy(){
         for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-            personne.getDxDy(this);         // Initialise dx et dy
-        }
-    }
-
-    public void demarrer () {    
-        Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
-        for (int i = 0; i < listPersonnes.size(); i ++) {
-            if (listPersonnes.get(i).getControllerPersonne().estSorti(salle))
-                removePersonne(listPersonnes.get(i));
-            else
-                listPersonnes.get(i).avancer();
+            personne.setDxDyNormalise(this);         // Initialise dx et dy
         }
     }
 
@@ -95,20 +78,90 @@ public class Salle {
     public double getMarge() {
         return marge;
     }
-    public void addPersonne(double x, double y){
-        Personne personne = new Personne(x, y);
+    public void addPersonne(Personne personne){
         listPersonnes.add(personne);
-        controllerSalle.createPersonne(personne.getControllerPersonne());
     }
 
     public void removePersonne (Personne personne) {
         listPersonnes.remove(personne);
-        controllerSalle.removePersonneGraphic(personne.getControllerPersonne());
     }
 
     public void removeAllPersonne(){
-        controllerSalle.removeAllPersonneGraphic();
         while(!listPersonnes.isEmpty())
             removePersonne(listPersonnes.get(0));
     }
+
+        // Ne prend pas en compte les obstacles
+        public Point findSortiePlusProcheIndirecte(Point A) {
+            double distance1 = -1;
+            double distance2 = -1;
+    
+            double distanceCourte = 1000000;
+            Point plusProche = new Point();
+    
+            if (!listSorties.isEmpty()) {
+    
+                for (Sortie sortie : listSorties) {
+    
+                    distance1 = MathsCalcule.distance(A, sortie.getPoint1());
+                    distance2 = MathsCalcule.distance(A, sortie.getPoint2());
+    
+                    if (Math.min(distance1, distance2) < distanceCourte) {
+                        if (distance1 < distance2) {
+                            distanceCourte = distance1;
+                            plusProche = sortie.getPoint1();
+                        } else {
+                            distanceCourte = distance2;
+                            plusProche = sortie.getPoint2();
+                        }
+                    }
+                }
+            }
+            else
+                System.out.println("Pas de sorties dans la salle");
+            return plusProche;
+        }
+    
+    
+        public Point findSortiePlusProcheDirecte(Point A) {
+            double distance;
+            double distance1 = -1;
+            double distance2 = -1;
+    
+            double distanceCourte = 1000000;
+            Point plusProche = null;
+    
+            if (!listSorties.isEmpty()) {
+    
+                for (Sortie sortie : listSorties) {
+                    for (Point pointSortie : sortie.getListePointsSortie()) {
+                        if (!intersecObstacle(A, pointSortie)) {
+                            distance = MathsCalcule.distance(A, pointSortie);
+                            if (distance < distanceCourte) {
+                                distanceCourte = distance;
+                                plusProche = pointSortie;
+                            }
+                        }
+                    }
+                }
+                return plusProche;
+            }
+            else {
+                System.out.println("Pas de sorties dans la salle");
+                return null;
+            }
+        }
+    
+    
+        public boolean intersecObstacle(Point coordA,Point coordB) {
+            boolean b = false;
+            for(Obstacle obstacle: listObstacles) {
+                if (MathsCalcule.coordSegments(coordA, coordB, obstacle).isEmpty()) {
+                    b = false;
+                } else
+                    return true;
+            }
+    
+            return b;
+        }
 }

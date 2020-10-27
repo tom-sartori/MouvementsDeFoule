@@ -17,7 +17,7 @@ public class Controller extends Parent{
     }
 
     public Controller(double width, double height){
-        cs = new Salle(width, height-40).getControllerSalle();
+        cs = new ControllerSalle(width, height-40);
         cp = new ControllerPanel();
         cp.setTranslateY(height-40);
         cp.minWidth(width);
@@ -41,7 +41,7 @@ public class Controller extends Parent{
 
         cp.getClearButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                cs.getSalle().removeAllPersonne();
+                cs.removeAllPersonne();
                 cp.setStatusLabel(false);
             }
         });

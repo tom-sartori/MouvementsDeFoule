@@ -8,16 +8,20 @@ public class ControllerPersonne extends Parent{
     private final double r = 15;
     private Personne personne;
 
-    public ControllerPersonne(double x, double y, Personne personne){
-        this.personne = personne;
+    public Personne getPersonne(){
+        return personne;
+    }
+    
+    public ControllerPersonne(double x, double y){
+        personne = new Personne(x,y);
         Circle personneGraphic = new Circle(x, y, r);
         personneGraphic.setFill(Color.RED);
         this.getChildren().add(personneGraphic);
     }
 
-    public void run(double dx, double dy){
-        setTranslateX(getTranslateX() + dx);
-        setTranslateY(getTranslateY() + dy);
+    public void avancer(){
+        setTranslateX(getTranslateX() + personne.getDx());
+        setTranslateY(getTranslateY() + personne.getDy());
     }
 
         // Permet de savoir si le perso est sorti de la salle
