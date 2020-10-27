@@ -1,6 +1,7 @@
 package sample;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MathsCalcule {
 
@@ -137,7 +138,6 @@ public class MathsCalcule {
         }
         return listTableau;
     }
-
 }
 
 
