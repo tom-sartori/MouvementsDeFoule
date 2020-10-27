@@ -4,6 +4,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 
+import java.util.List;
+
 public class ControllerSalle extends Parent{
     private Salle salle;
 
@@ -24,8 +26,18 @@ public class ControllerSalle extends Parent{
         salle.addObstacle(new ObstacleRectangle(600, 100, 70, 60));
 
         Graphe graphe = new Graphe(salle);
-        graphe.creerChemins();
-        salle.addGraphe(graphe.afficher());
+        Point depart = salle.getListObstacles().get(0).getCoins().get(3);
+        Point arrive = salle.getListSorties().get(0).getPoint1();
+        graphe.creerPlusCourtChemin(depart, arrive);
+
+
+        List<Point> listeChemin = graphe.getListePointsCheminPlusCourt(depart, arrive);
+        salle.addGraphe(graphe.afficher(listeChemin));
+
+
+
+        //graphe.creerTousLesChemins();
+        //salle.addGraphe(graphe.afficher());
 
 
         salle.setOnMouseClicked(new EventHandler<MouseEvent>() {
