@@ -36,16 +36,25 @@ public class Graphe {
             for (Point point : obstacle.getCoins()) {
                 for (Obstacle obstacle1 : salle.getListObstacles()) {
                     for (Point point1 : obstacle1.getCoins()) {
-                        if (!(point == point1)) {
-                            if (!salle.intersecObstacle(point, point1))
+<<<<<<<<< Temporary merge branch 1
+                        if(!(point ==point1)) {
+                            if (!salle.intersecObstacle(point, point1)) {
                                 addChemin(new Chemin(point, point1));
+                            }
                         }
                     }
-                    Point pointSortie = salle.findSortiePlusProcheDirecte(point);
-                    if (pointSortie != null) {
-                        addChemin(new Chemin(point, pointSortie));
+                }
+                //addChemin(new Chemin(point, salle.findSortiePlusProche(point)));
+=========
+                        if (!salle.intersecObstacle(point, point1))
+                            addChemin(new Chemin(point, point1));
                     }
                 }
+                Point pointSortie = salle.findSortiePlusProcheDirecte(point);
+                if (pointSortie != null) {
+                    addChemin(new Chemin(point, pointSortie));
+                }
+>>>>>>>>> Temporary merge branch 2
             }
         }
     }

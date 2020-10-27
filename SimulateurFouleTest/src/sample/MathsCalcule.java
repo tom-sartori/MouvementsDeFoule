@@ -99,7 +99,7 @@ public class MathsCalcule {
             w=i+j;
             if (w < o.getDiagonales().size() && w + 1 < o.getDiagonales().size()) {
                 //System.out.println("testDiagonales");
-                if (estSuperpose(coordA, coordB, o.getDiagonales().get(w), o.getDiagonales().get(w + 1))&& (!toucheObstacle(coordA, coordB, o.getCoins().get(i), o.getCoins().get(i + 1)))) {
+                if (estSuperpose(coordA, coordB, o.getDiagonales().get(w), o.getDiagonales().get(w + 1))) {
                     //System.out.println("est diagonalles");
                     for(int k=0; k<o.getCoins().size();k++){
                         if(o.getCoins().get(k).getX()==o.getDiagonales().get(w).getX() && o.getCoins().get(k).getY()==o.getDiagonales().get(w).getY()){
@@ -209,8 +209,12 @@ public class MathsCalcule {
         }
         return listTableau;
     }
+<<<<<<<<< Temporary merge branch 1
 
 
+
+=========
+>>>>>>>>> Temporary merge branch 2
 }
 
 
