@@ -3,6 +3,7 @@ package sample;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class ObstacleRectangle extends Obstacle {
     private double largeur;
     private double hauteur;
     private List<Point> listcoins;
+    private List<Point> listDiagonales;
 
     public ObstacleRectangle(double x, double y, double larg, double haut) {
         largeur = larg;
@@ -31,6 +33,12 @@ public class ObstacleRectangle extends Obstacle {
         listcoins.add(point2);
         listcoins.add(point3);
         listcoins.add(point4);
+
+        listDiagonales= new ArrayList<>();
+        listDiagonales.add(point1);
+        listDiagonales.add(point3);
+        listDiagonales.add(point2);
+        listDiagonales.add(point4);
 
         Rectangle obstacle = new Rectangle(point1.getX(), point1.getY(), largeur, hauteur);
         obstacle.setFill(Color.DARKCYAN);
@@ -49,4 +57,7 @@ public class ObstacleRectangle extends Obstacle {
         return listcoins;
     }
 
+    public List<Point> getDiagonales() {
+        return listDiagonales;
+    }
 }

@@ -210,7 +210,12 @@ public class Personne extends Parent {
 
     public boolean estTouche(Point coordSortie,Point coordC,Point coordD){
         Point coordP = new Point(xDepart,yDepart);
-        return MathsCalcule.toucheObstacle(coordP,coordSortie,coordC,coordD);
+        return MathsCalcule.estCouper(coordP,coordSortie,coordC,coordD);
+    }
+
+    public boolean estSuperpose(Point coordSortie,Point coordC,Point coordD){
+        Point coordP = new Point(xDepart,yDepart);
+        return MathsCalcule.estSuperpose(coordP,coordSortie,coordC,coordD);
     }
 
     public List<Point> segmentObstacle(Point coordSortie,Obstacle o){
