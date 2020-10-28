@@ -41,12 +41,12 @@ Idées :
 <br/>
 
 ### Semaine du 26/10
-- Gestion du Graphe 
+- Gestion du Graphe.
   - Creation des class **Chemin** et **Graphe**.
   - Les contrôleurs correspondants ont aussi été créée.
   - Le graphe affiche le plus court chemin mais sans prendre en compte les **Sortie** directe. 
-- Séparation de la partie physique et graphique du projet 
+- Séparation de la partie physique et graphique du projet. 
   - implique l'implementation des contrôleurs de toutes les class qu'on veut afficher.
-- Générailisation des codes une class **MathsCalcule** a donc été créée
-- Pour faciliter la lecture on a créée la class **Point** qui nout permet d'avoir le x et y d'un point. (27/10)
+- Générailisation des codes une class **MathsCalcule** a donc été créée.
+- Pour faciliter la lecture on a créée la class **Point** qui nous permet de connaître le x et y d'un point. (27/10)
 
