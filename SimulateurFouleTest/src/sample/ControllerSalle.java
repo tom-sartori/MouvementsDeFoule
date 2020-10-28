@@ -53,10 +53,6 @@ public class ControllerSalle extends Parent{
                 }
             }
         });
-        salle.addObstacle(new ObstacleRectangle(150, 200, 60, 70));
-        salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
-        salle.addObstacle(new ObstacleRectangle(600, 100, 70, 60));
-
         this.getChildren().add(salleGraphic);
     }   
 

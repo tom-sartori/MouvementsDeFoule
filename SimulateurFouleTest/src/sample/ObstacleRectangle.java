@@ -18,6 +18,11 @@ public class ObstacleRectangle extends Obstacle {
         largeur = larg;
         hauteur = haut;
 
+        point1 = new Point(x, y);
+        point2 = new Point(x + largeur, y);
+        point3 = new Point(x + largeur, y + hauteur);
+        point4 = new Point(x, y + hauteur);
+
         listCoins= new ArrayList<>();
         listCoins.add(point1);  //addAll similaire ?
         listCoins.add(point2);

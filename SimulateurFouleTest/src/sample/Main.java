@@ -1,5 +1,7 @@
 package sample;
 
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
@@ -20,7 +22,19 @@ public class Main extends Application {
         controller.getCS().addObstacle(new ControllerObstacleRectangle(150, 200, 60, 70));
         controller.getCS().addObstacle(new ControllerObstacleRectangle(300, 400, 50, 50));
         controller.getCS().addObstacle(new ControllerObstacleRectangle(600, 100, 70, 60));
-        
+
+        Graphe graphe = new Graphe(controller.getCS().getSalle());
+        Point depart = controller.getCS().getSalle().getListObstacles().get(0).getCoins().get(3);
+        Point arrive = controller.getCS().getSalle().getListSorties().get(0).getPoint1();
+        graphe.creerPlusCourtChemin(depart, arrive);
+
+
+        List<Point> listeChemin = graphe.getListePointsCheminPlusCourt(depart, arrive);
+        controller.getCS().addGraphe(graphe.afficher(listeChemin));
+
+        graphe.creerTousLesChemins();
+        controller.getCS().addGraphe(graphe.afficher());
+
         primaryStage.setTitle("TEST");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
