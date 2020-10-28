@@ -51,6 +51,8 @@ public class Salle {
             sortie.setX2(marge);
             sortie.setY2(sortie.getY1() + sortie.getLongueur());
         }
+        sortie.setPoint1(sortie.getX1(), sortie.getY1());
+        sortie.setPoint2(sortie.getX2(), sortie.getY2());
     }
 
     public List<Obstacle> getListObstacles(){

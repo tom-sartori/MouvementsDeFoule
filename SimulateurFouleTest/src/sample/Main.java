@@ -26,6 +26,7 @@ public class Main extends Application {
         Graphe graphe = new Graphe(controller.getCS().getSalle());
         Point depart = controller.getCS().getSalle().getListObstacles().get(0).getCoins().get(3);
         Point arrive = controller.getCS().getSalle().getListSorties().get(0).getPoint1();
+        System.out.println(arrive);
         graphe.creerPlusCourtChemin(depart, arrive);
 
 
