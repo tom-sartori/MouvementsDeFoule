@@ -39,6 +39,7 @@ Idées :
 - Une classe Maths pour faire des calculs génériques est-elle pertinante et necessaire ? 
 
 <br/>
+
 ### Semaine du 26/10
 - Gestion du Graphe 
   - Creation des class **Chemin** et **Graphe**.
