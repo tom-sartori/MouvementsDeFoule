@@ -11,6 +11,9 @@ public class Personne extends Parent {
     private double yDepart;
     private final double r = 15;
 
+    private Point coordCourant;
+    private Point objectif;
+
     private double dx;
     private double dy;
     private double vitesse = 1.5;
@@ -21,6 +24,8 @@ public class Personne extends Parent {
         Circle cercle = new Circle(xDepart, yDepart,r);
         cercle.setFill(Color.RED);
         this.getChildren().add(cercle);
+        coordCourant = new Point(xDepart, yDepart);
+        objectif = null;
     }
 
     // Permet de savoir les coordonnés du coin de sortie le plus proche du perso
@@ -175,6 +180,43 @@ public class Personne extends Parent {
     public void avancer () {
         setTranslateX(getTranslateX() + dx);
         setTranslateY(getTranslateY() + dy);
+        coordCourant.setX(xDepart + getTranslateX());
+        coordCourant.setY(yDepart + getTranslateY());
+    }
+
+    public boolean objectifAteint () {
+        if (coordCourant.getX() % 10 == objectif.getX() % 10)
+            return true;
+        else
+            return false;
+    }
+
+
+    public void setObjectif (Graphe graphe) {
+        if (objectif == null) {
+            objectif = findBonChemin(graphe);
+        }
+        else { // peut etre faire un cas pour la fin, car getSuiv() de l'arrive == null
+            objectif = objectif.getSuivant();
+        }
+    }
+
+    public Point findBonChemin (Graphe graphe) {
+        Point premierObjectif;
+        double distance, distanceCourante;
+
+        List<Point> listePointsDirectes = graphe.getListePointsDirectes2(coordCourant);
+        premierObjectif = listePointsDirectes.get(0);
+        distance = MathsCalcule.distance(coordCourant, premierObjectif) + premierObjectif.getDistanceSortie();
+
+        for (Point point : graphe.getListePointsDirectes2(coordCourant)) { // Fonctionne pas car personne pas dans le graphe
+            distanceCourante = MathsCalcule.distance(coordCourant, point) + point.getDistanceSortie();
+            if (distanceCourante < distance) {
+                distance = distanceCourante;
+                premierObjectif = point;
+            }
+        }
+        return premierObjectif;
     }
 
 
@@ -223,5 +265,16 @@ public class Personne extends Parent {
         return MathsCalcule.coordSegments(coordP,coordSortie,o);
     }
 
+    public Point getObjectif() {
+        return objectif;
+    }
+
+    public void setDx(double dx) {
+        this.dx = dx;
+    }
+
+    public void setDy(double dy) {
+        this.dy = dy;
+    }
 }
 

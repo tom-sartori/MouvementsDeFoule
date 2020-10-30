@@ -167,4 +167,16 @@ public class Graphe {
         return listePointsDirectes;
     }
 
+    public List<Point> getListePointsDirectes2 (Point A) {
+        List<Point> listePointsDirectes = new ArrayList<>();
+
+        listePoints.add(A);
+        for (Point point : listePoints) {
+            if (!salle.intersecObstacle(A, point))
+                listePointsDirectes.add(point);
+        }
+        listePoints.remove(A);
+        return listePointsDirectes;
+    }
+
 }

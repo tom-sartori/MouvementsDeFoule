@@ -22,6 +22,7 @@ public class Salle extends Parent {
     private List<Sortie> listSorties;
     private List<Obstacle> listObstacles;
     private Timeline loop;
+    private Graphe graphe;
 
     public Salle(double lar, double hau) {  // Créée une salle rectangle avec une marge
         this.largeur = lar - (2 * marge);
@@ -35,6 +36,7 @@ public class Salle extends Parent {
         salle.setTranslateY(marge);
         salle.setFill(Color.LIGHTCYAN);
         this.getChildren().add(salle);
+        graphe = new Graphe(this);
     }
 
     public List<Sortie> getListSorties() {
@@ -137,6 +139,44 @@ public class Salle extends Parent {
     }
 
 
+    public void demarrerV2 () {
+        graphe = new Graphe(this);
+        if (!listPersonnes.isEmpty()) {
+            for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
+                personne.setObjectif(graphe);
+                Point dxdy = personne.findDxDy(personne.getObjectif().getX(), personne.getObjectif().getY(), 1);
+                personne.setDx(dxdy.getX());
+                personne.setDy(dxdy.getY());
+            }
+
+            Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
+
+            if (loop == null) {
+
+                loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent arg) {
+
+                        for (int i = 0; i < listPersonnes.size(); i++) {
+                            if (listPersonnes.get(i).estSorti(salle))
+                                removePersonne(listPersonnes.get(i));
+                            else {
+                                if (listPersonnes.get(i).objectifAteint())
+                                    listPersonnes.get(i).setObjectif(graphe);
+                                else
+                                    listPersonnes.get(i).avancer();
+                            }
+                        }
+                    }
+                }));
+                loop.setCycleCount(Timeline.INDEFINITE);
+                loop.play();
+            } else if (loop.getStatus() == Animation.Status.PAUSED) {
+                loop.play();
+            }
+        }
+    }
+
+
     public void pause(){
         if(loop != null && loop.getStatus() == Status.RUNNING){
             loop.pause();
@@ -175,7 +215,11 @@ public class Salle extends Parent {
         else return false;
     }
 
-    public void addGraphe(ControllerGraphe controllerGraphe) {
+    public void addGraphe (Graphe g) {
+        graphe = g;
+    }
+
+    public void afficherGraphe(ControllerGraphe controllerGraphe) {
         getChildren().add(controllerGraphe);
     }
 
@@ -252,5 +296,9 @@ public class Salle extends Parent {
         }
 
         return b;
+    }
+
+    public Graphe getGraphe() {
+        return graphe;
     }
 }

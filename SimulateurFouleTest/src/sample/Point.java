@@ -43,8 +43,15 @@ public class Point {
         return "Point{" +
                 "x=" + x +
                 ", y=" + y +
+                '}';
+    }
+
+    public String toStringV2() {
+        return "Point{" +
+                "x=" + x +
+                ", y=" + y +
                 ", distanceSortie=" + distanceSortie +
-                ", suivant=" + getSuivant() +
+                ", suivant=" + suivant +
                 '}';
     }
 

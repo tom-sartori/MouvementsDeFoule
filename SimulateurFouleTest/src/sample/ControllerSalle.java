@@ -21,12 +21,12 @@ public class ControllerSalle extends Parent{
         salle.addSortie(new Sortie(2,60,50));
         salle.addSortie(new Sortie(3, 60, 80));
 
-        //salle.addObstacle(new ObstacleRectangle(150, 200, 60, 70));
-        //salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
+        salle.addObstacle(new ObstacleRectangle(150, 200, 60, 70));
+        salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
         salle.addObstacle(new ObstacleRectangle(600, 100, 70, 60));
         salle.addObstacle(new ObstacleRectangle(450, 100, 30, 30));
 
-        Graphe graphe = new Graphe(salle);
+        //Graphe graphe = new Graphe(salle);
         /*
         Point depart = salle.getListObstacles().get(0).getCoins().get(0);
         Point depart1 = salle.getListObstacles().get(2).getCoins().get(1);
@@ -35,11 +35,11 @@ public class ControllerSalle extends Parent{
         Point arrive1 = salle.getListSorties().get(1).getPoint2();
         graphe.creerPlusCourtChemin(depart1);
         */
-        graphe.creerCheminPlusCourtAvecSortie();
+        //graphe.creerCheminPlusCourtAvecSortie();
 
-        salle.addGraphe(graphe.afficher());
-
-        System.out.println(salle.getListObstacles().get(1).getCoins().get(2));
+        salle.getGraphe().creerCheminPlusCourtAvecSortie();
+        //salle.addGraphe(graphe);
+        salle.afficherGraphe(salle.getGraphe().afficher());
 
 
 
