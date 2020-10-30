@@ -97,7 +97,22 @@ class PersonneTest {
         assertTrue(p.estSuperpose(sortie,coordC,coordD));
     }
 
-    @Disabled
+    @Test
+    public void test_Coord_X_pas_obstacle(){
+        Personne p =new Personne(20,20);
+        Point sortie = new Point(100,20);
+        Obstacle o = new ObstacleRectangle(40,40,40,20);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+    @Test
+    public void test_Coord_Y_pas_obstacle(){
+        Personne p =new Personne(20,20);
+        Point sortie = new Point(20,100);
+        Obstacle o = new ObstacleRectangle(40,40,40,20);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+    
     @Test
     public void test_Coord_Obstacle(){
         Personne p =new Personne(20,20);
