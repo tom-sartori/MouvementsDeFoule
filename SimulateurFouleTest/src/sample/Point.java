@@ -12,6 +12,9 @@ public class Point {
     private double distance;
     private Point precedent;
 
+    private Point suivant;
+    private double distanceSortie;
+
 
     public Point(){
         x=0;
@@ -31,6 +34,7 @@ public class Point {
         x = p.getX();
         y = p.getY();
         precedent = p.getPrecedent();
+        suivant = p.getSuivant();
     }
 
 
@@ -39,6 +43,8 @@ public class Point {
         return "Point{" +
                 "x=" + x +
                 ", y=" + y +
+                ", distanceSortie=" + distanceSortie +
+                ", suivant=" + getSuivant() +
                 '}';
     }
 
@@ -89,4 +95,19 @@ public class Point {
         this.precedent = precedent;
     }
 
+    public Point getSuivant() {
+        return suivant;
+    }
+
+    public void setSuivant(Point suivant) {
+        this.suivant = suivant;
+    }
+
+    public double getDistanceSortie() {
+        return distanceSortie;
+    }
+
+    public void setDistanceSortie(double distanceSortie) {
+        this.distanceSortie = distanceSortie;
+    }
 }

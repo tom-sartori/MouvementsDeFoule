@@ -8,6 +8,7 @@ public class Graphe {
     private Salle salle;
     private List<Chemin> listeChemins;
     private List<Point> listePoints;
+    private List<Point> listePointsObstacles;
 
 
     public Graphe (Salle salle) {
@@ -15,9 +16,11 @@ public class Graphe {
         this.salle = salle;
 
         listePoints = new ArrayList<>();    // Pas forcement Array
+        listePointsObstacles = new ArrayList<>();
         for (Obstacle obstacle : salle.getListObstacles()) {
             for (Point point : obstacle.getCoins()) {
                 listePoints.add(point);
+                listePointsObstacles.add(point);
             }
         }
         for (Sortie sortie : salle.getListSorties()) {
@@ -48,7 +51,7 @@ public class Graphe {
         }
     }
 
-    public void creerPlusCourtChemin(Point depart, Point arrive) {
+    public void creerPlusCourtChemin(Point depart) {
         List<Point> listeCourante = new ArrayList<>();
 
         for (Point point : listePoints) {
@@ -75,7 +78,9 @@ public class Graphe {
             for (Point n : N) {
                 double nouveau = u.getDistance() + MathsCalcule.distance(u, n);
                 if (nouveau < n.getDistance()) {
-                    System.out.println(u);
+                    //System.out.println(u);
+                    //addChemin(new Chemin(n, u));
+
                     n.setDistance(nouveau);
                     n.setPrecedent(new Point(u));
                 }
@@ -83,6 +88,30 @@ public class Graphe {
         }
     }
 
+
+    public void creerCheminPlusCourtAvecSortie () {
+
+        for (Point pointObstacle : listePointsObstacles) {
+            creerPlusCourtChemin(pointObstacle);
+
+            affecteSuivants(getListePointsCheminPlusCourt(pointObstacle, salle.findSortiePlusProcheIndirecte(pointObstacle)));
+            //addChemin(getListePointsCheminPlusCourt(pointObstacle, salle.findSortiePlusProcheIndirecte(pointObstacle)));
+            //affecteLesSuivants(pointObstacle, salle.findSortiePlusProcheIndirecte(pointObstacle));
+        }
+
+
+
+        //System.out.println("testtt " + salle.getListObstacles().get(1).getCoins().get(2));
+
+
+    }
+
+
+
+    // Apres que tous les plus courts chemins ont été calculés pour un point,
+    // cette fonction permet de retourner une liste, composée des points du plus court chemin, du départ à l'arrivé en paramètre.
+    // On utilise le point précédent, de chaque point, de l'arrivé au départ.
+    // La liste retournée est dans l'ordre : [depart, ..., arrive]
     public List<Point> getListePointsCheminPlusCourt(Point depart, Point arrive) {
         List<Point> cheminPlusCourt = new ArrayList<>();
 
@@ -98,13 +127,22 @@ public class Graphe {
         return cheminPlusCourt;
     }
 
+    public void affecteSuivants (List<Point> listePointsChemin) {
+        listePointsChemin.get(listePointsChemin.size() -1).setDistanceSortie(0);
+
+        for (int i = listePointsChemin.size() -2; i >= 0; i--) {
+            listePointsChemin.get(i).setSuivant(listePointsChemin.get(i +1));
+            listePointsChemin.get(i).setDistanceSortie(listePointsChemin.get(i + 1).getDistanceSortie() + MathsCalcule.distance(listePointsChemin.get(i), listePointsChemin.get(i +1)));
+        }
+    }
+
 
 
     public ControllerGraphe afficher () {
         return new ControllerGraphe(this);
     }
 
-    public ControllerGraphe afficher (List<Point> parcourPoints) {
+    public ControllerGraphe addChemin (List<Point> parcourPoints) {
         for (int i = 0; i < parcourPoints.size() -1; i++) {
             addChemin(new Chemin(parcourPoints.get(i), parcourPoints.get(i +1)));
         }
