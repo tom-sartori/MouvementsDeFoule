@@ -153,6 +153,39 @@ public class Personne extends Parent {
     }
 
 
+    public Point findDxDy (Point point) {
+        System.out.println("point : " + point);
+        Point dxdy = new Point();
+
+        double distX = Math.abs(coordCourant.getX() - point.getX());
+        double distY = Math.abs(coordCourant.getY() - point.getY());
+
+        if (coordCourant.getX() < point.getX())
+            dxdy.setX(distX / distY);
+        else
+            dxdy.setX(- distX / distY);
+
+        if (coordCourant.getY() < point.getY())
+            dxdy.setY(1);
+        else
+            dxdy.setY(-1);
+
+        System.out.println("dxdy : " + dxdy);
+
+        return dxdy;
+    }
+
+    public void setDxDyNormalise (Point point) {
+        Point coordDxDy = findDxDy(point);
+
+        //argument = sqrt(x^2 + y^2)
+        double argument = Math.sqrt( (coordDxDy.getX() * coordDxDy.getX()) + (coordDxDy.getY() * coordDxDy.getY()) );
+
+        this.dx = (vitesse/argument) * coordDxDy.getX();
+        this.dy = (vitesse/argument) * coordDxDy.getY();
+    }
+
+
     // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
     public void setDxDy(Salle salle) {
         double [] coordSortie = findCoordSortie(salle);
@@ -166,7 +199,8 @@ public class Personne extends Parent {
     // En plus, dx et dy sont normalisés suivant la vitesse de la personne (vitesse est un attribut de Personne).
     public void setDxDyNormalise (Salle salle) {
         double [] coordSortie = findCoordSortie(salle);
-        Point coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
+        //Point coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
+        Point coordDxDy = findDxDy(new Point(coordSortie[0], coordSortie[1]));
 
         //argument = sqrt(x^2 + y^2)
         double argument = Math.sqrt( (coordDxDy.getX() * coordDxDy.getX()) + (coordDxDy.getY() * coordDxDy.getY()) );
@@ -185,8 +219,10 @@ public class Personne extends Parent {
     }
 
     public boolean objectifAteint () {
-        if (coordCourant.getX() % 10 == objectif.getX() % 10)
+        if ((int)coordCourant.getX() == (int)objectif.getX() || (int)coordCourant.getY() == (int)objectif.getY()) {
+            System.out.println("objectif ateint. ");
             return true;
+        }
         else
             return false;
     }
@@ -199,6 +235,8 @@ public class Personne extends Parent {
         else { // peut etre faire un cas pour la fin, car getSuiv() de l'arrive == null
             objectif = objectif.getSuivant();
         }
+        System.out.println("courant : " + coordCourant);
+        System.out.println("objectif : " + objectif);
     }
 
     public Point findBonChemin (Graphe graphe) {
@@ -207,15 +245,18 @@ public class Personne extends Parent {
 
         List<Point> listePointsDirectes = graphe.getListePointsDirectes2(coordCourant);
         premierObjectif = listePointsDirectes.get(0);
-        distance = MathsCalcule.distance(coordCourant, premierObjectif) + premierObjectif.getDistanceSortie();
+        distance = 1000000;
 
         for (Point point : graphe.getListePointsDirectes2(coordCourant)) { // Fonctionne pas car personne pas dans le graphe
-            distanceCourante = MathsCalcule.distance(coordCourant, point) + point.getDistanceSortie();
-            if (distanceCourante < distance) {
-                distance = distanceCourante;
-                premierObjectif = point;
+            if (MathsCalcule.distance(coordCourant, point) != 0) { // Car si 0,c'est lui meme.
+                distanceCourante = MathsCalcule.distance(coordCourant, point) + point.getDistanceSortie();
+                if (distanceCourante < distance) {
+                    distance = distanceCourante;
+                    premierObjectif = point;
+                }
             }
         }
+        System.out.println("prem obj " + premierObjectif);
         return premierObjectif;
     }
 
@@ -245,6 +286,27 @@ public class Personne extends Parent {
         }
         if (dy < 0) {
             if (yDepart + getTranslateY() < salle.getMarge())
+                return true;
+        }
+        return false;
+    }
+
+    // Permet de savoir si le perso est sorti de la salle
+    public boolean estSorti2(Salle salle) {
+        if (dx > 0) {
+            if (coordCourant.getX() >= salle.getLargeur() + salle.getMarge())
+                return true;
+        }
+        if (dx < 0) {
+            if (coordCourant.getX() <= 0 + salle.getMarge())
+                return true;
+        }
+        if (dy > 0) {
+            if (coordCourant.getY() >= salle.getHauteur() + salle.getMarge())
+                return true;
+        }
+        if (dy < 0) {
+            if (coordCourant.getY() <= salle.getMarge())
                 return true;
         }
         return false;

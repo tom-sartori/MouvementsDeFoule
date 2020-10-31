@@ -37,19 +37,15 @@ public class ControllerSalle extends Parent{
         */
         //graphe.creerCheminPlusCourtAvecSortie();
 
-        salle.getGraphe().creerCheminPlusCourtAvecSortie();
+        //salle.getGraphe().creerCheminPlusCourtAvecSortie();
         //salle.addGraphe(graphe);
-        salle.afficherGraphe(salle.getGraphe().afficher());
+        //salle.afficherGraphe(salle.getGraphe().afficher());
 
 
 
         //List<Point> listeChemin = graphe.getListePointsCheminPlusCourt(depart1, arrive);
         //salle.addGraphe(graphe.afficher(listeChemin));
 
-
-
-        //graphe.creerTousLesChemins();
-        //salle.addGraphe(graphe.afficher());
 
 
         salle.setOnMouseClicked(new EventHandler<MouseEvent>() {

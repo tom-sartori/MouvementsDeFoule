@@ -140,13 +140,11 @@ public class Salle extends Parent {
 
 
     public void demarrerV2 () {
-        graphe = new Graphe(this);
+        initialisationGraphe();
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
                 personne.setObjectif(graphe);
-                Point dxdy = personne.findDxDy(personne.getObjectif().getX(), personne.getObjectif().getY(), 1);
-                personne.setDx(dxdy.getX());
-                personne.setDy(dxdy.getY());
+                personne.setDxDyNormalise(personne.getObjectif());
             }
 
             Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
@@ -157,11 +155,13 @@ public class Salle extends Parent {
                     public void handle(ActionEvent arg) {
 
                         for (int i = 0; i < listPersonnes.size(); i++) {
-                            if (listPersonnes.get(i).estSorti(salle))
+                            if (listPersonnes.get(i).estSorti2(salle))
                                 removePersonne(listPersonnes.get(i));
                             else {
-                                if (listPersonnes.get(i).objectifAteint())
+                                if (listPersonnes.get(i).objectifAteint()) {
                                     listPersonnes.get(i).setObjectif(graphe);
+                                    listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
+                                }
                                 else
                                     listPersonnes.get(i).avancer();
                             }
@@ -174,6 +174,11 @@ public class Salle extends Parent {
                 loop.play();
             }
         }
+    }
+
+    public void initialisationGraphe () {
+        graphe = new Graphe(this);
+        graphe.creerCheminPlusCourtAvecSortie();
     }
 
 
