@@ -95,15 +95,9 @@ public class Graphe {
             creerPlusCourtChemin(pointObstacle);
 
             affecteSuivants(getListePointsCheminPlusCourt(pointObstacle, salle.findSortiePlusProcheIndirecte(pointObstacle)));
-            //addChemin(getListePointsCheminPlusCourt(pointObstacle, salle.findSortiePlusProcheIndirecte(pointObstacle)));
+            addChemin(getListePointsCheminPlusCourt(pointObstacle, salle.findSortiePlusProcheIndirecte(pointObstacle)));
             //affecteLesSuivants(pointObstacle, salle.findSortiePlusProcheIndirecte(pointObstacle));
         }
-
-
-
-        //System.out.println("testtt " + salle.getListObstacles().get(1).getCoins().get(2));
-
-
     }
 
 

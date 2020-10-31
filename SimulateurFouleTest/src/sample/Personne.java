@@ -9,7 +9,7 @@ import java.util.List;
 public class Personne extends Parent {
     private double xDepart;
     private double yDepart;
-    private final double r = 15;
+    private final double r = 10;
 
     private Point coordCourant;
     private Point objectif;

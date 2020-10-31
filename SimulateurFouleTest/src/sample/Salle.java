@@ -179,6 +179,7 @@ public class Salle extends Parent {
     public void initialisationGraphe () {
         graphe = new Graphe(this);
         graphe.creerCheminPlusCourtAvecSortie();
+        afficherGraphe(graphe.afficher());
     }
 
 
