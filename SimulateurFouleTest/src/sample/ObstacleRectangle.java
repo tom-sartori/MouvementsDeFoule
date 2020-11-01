@@ -1,10 +1,5 @@
 package sample;
 
-import javafx.scene.Parent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,45 +11,43 @@ public class ObstacleRectangle extends Obstacle {
     private Point point4;
     private double largeur;
     private double hauteur;
-    private List<Point> listcoins;
+    private List<Point> listCoins;
     private List<Point> listDiagonales;
 
     public ObstacleRectangle(double x, double y, double larg, double haut) {
         largeur = larg;
         hauteur = haut;
 
-        point1 = new Point(x, y);   // haut gauche
-        point2 = new Point(x + largeur, y);     // haut droit
-        point3 = new Point(x + largeur, y + hauteur);   // bas droit
-        point4 = new Point(x, y + hauteur);     // bas gauche
+        point1 = new Point(x, y);
+        point2 = new Point(x + largeur, y);
+        point3 = new Point(x + largeur, y + hauteur);
+        point4 = new Point(x, y + hauteur);
 
-        listcoins= new ArrayList<>();
-        listcoins.add(point1);  //addAll similaire ?
-        listcoins.add(point2);
-        listcoins.add(point3);
-        listcoins.add(point4);
+        listCoins= new ArrayList<>();
+        listCoins.add(point1);  //addAll similaire ?
+        listCoins.add(point2);
+        listCoins.add(point3);
+        listCoins.add(point4);
 
         listDiagonales= new ArrayList<>();
         listDiagonales.add(point1);
         listDiagonales.add(point3);
         listDiagonales.add(point2);
         listDiagonales.add(point4);
-
-        Rectangle obstacle = new Rectangle(point1.getX(), point1.getY(), largeur, hauteur);
-        obstacle.setFill(Color.DARKCYAN);
-        getChildren().add(obstacle);
     }
+
 
     public double getLargeur() {
         return largeur;
     }
+
 
     public double getHauteur() {
         return hauteur;
     }
 
     public List<Point> getCoins() {
-        return listcoins;
+        return listCoins;
     }
 
     public List<Point> getDiagonales() {

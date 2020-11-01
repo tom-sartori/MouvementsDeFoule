@@ -1,13 +1,10 @@
 package sample;
 
-import javafx.scene.Parent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class Sortie extends Parent {
+public class Sortie {
+
     private int mur;
     private double longueur;
     private double distance;
@@ -34,33 +31,6 @@ public class Sortie extends Parent {
         listePointsSortie = new ArrayList<>();
         listePointsSortie.add(point1);
         listePointsSortie.add(point2);
-
-
-        Rectangle sortie = new Rectangle();
-
-        if(mur==1){
-            sortie.setWidth(longueur);
-            sortie.setHeight(epaisseur);
-        }
-        else if(mur==2){
-            sortie.setHeight(longueur);
-            sortie.setWidth(epaisseur);
-        }
-        else if(mur==3){
-            sortie.setWidth(longueur);
-            sortie.setHeight(epaisseur);
-        }
-        else if(mur==4) {
-            sortie.setWidth(epaisseur);
-            sortie.setHeight(longueur);
-        }
-        else {
-            System.out.println("Erreur dans constructeur Sortie");
-            return;
-        }
-        sortie.setFill(Color.NAVY);
-        this.getChildren().add(sortie);
-
     }
 
     public double getDistance() {

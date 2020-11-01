@@ -1,26 +1,35 @@
 package sample;
 
-import javafx.scene.Parent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import java.util.ArrayList;
 import java.util.List;
 
-public class Personne extends Parent {
+public class Personne {
+
     private double xDepart;
     private double yDepart;
-    private final double r = 15;
 
     private double dx;
     private double dy;
     private double vitesse = 1.5;
+    
+    public double getxDepart() {
+        return xDepart;
+    }
 
+    public double getyDepart() {
+        return yDepart;
+    }
+
+    public double getDx(){
+        return dx;
+    }
+
+    public double getDy(){
+        return dy;
+    }
+    
     public Personne(double posX , double posY){
         xDepart = posX;
         yDepart = posY;
-        Circle cercle = new Circle(xDepart, yDepart,r);
-        cercle.setFill(Color.RED);
-        this.getChildren().add(cercle);
     }
 
     // Permet de savoir les coordonnés du coin de sortie le plus proche du perso
@@ -147,9 +156,8 @@ public class Personne extends Parent {
         return tab;
     }
 
-
-    // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
-    public void setDxDy(Salle salle) {
+   // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
+   public void setDxDy(Salle salle) {
         double [] coordSortie = findCoordSortie(salle);
         Point coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
 
@@ -170,22 +178,23 @@ public class Personne extends Parent {
         this.dy = (vitesse/argument) * coordDxDy.getY();
     }
 
-
-
-    public void avancer () {
-        setTranslateX(getTranslateX() + dx);
-        setTranslateY(getTranslateY() + dy);
+    public boolean estTouche(Point coordSortie,Point coordC,Point coordD){
+        Point coordP = new Point(xDepart,yDepart);
+        return MathsCalcule.estCouper(coordP,coordSortie,coordC,coordD);
     }
 
-
-    public double getxDepart() {
-        return xDepart;
+    public boolean estSuperpose(Point coordSortie,Point coordC,Point coordD){
+        Point coordP = new Point(xDepart,yDepart);
+        return MathsCalcule.estSuperpose(coordP,coordSortie,coordC,coordD);
     }
 
-    public double getyDepart() {
-        return yDepart;
+//<<<<<<< Joachim
+    public List<Point> segmentObstacle(Point coordSortie,Obstacle o){
+        Point coordP = new Point(xDepart,yDepart);
+        return MathsCalcule.coordSegments(coordP,coordSortie,o);
     }
 
+//=======
 
     // Permet de savoir si le perso est sorti de la salle
     public boolean estSorti(Salle salle) {
@@ -226,5 +235,6 @@ public class Personne extends Parent {
         return MathsCalcule.coordSegments(coordP,coordSortie,o);
     }
 
+//>>>>>>> main
 }
 
