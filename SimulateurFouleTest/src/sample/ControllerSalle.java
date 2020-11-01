@@ -31,7 +31,6 @@ public class ControllerSalle extends Parent{
         return salle;   
     }
 
-//<<<<<<< Joachim
     public List<ControllerSortie> getListSorties(){
         return listSorties;
     }
@@ -48,36 +47,6 @@ public class ControllerSalle extends Parent{
         salleGraphic.setTranslateY(marge);
         salleGraphic.setFill(Color.LIGHTCYAN);
         this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//=======
-    public ControllerSalle(double width, double height){
-        salle = new Salle(width,height);
-
-        //salle.addPersonne(new Personne(200, 300));
-
-        salle.addSortie(new Sortie(2,60,50));
-        salle.addSortie(new Sortie(3, 60, 80));
-
-        salle.addObstacle(new ObstacleRectangle(150, 200, 60, 70));
-        salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
-        salle.addObstacle(new ObstacleRectangle(600, 100, 70, 60));
-
-        Graphe graphe = new Graphe(salle);
-        Point depart = salle.getListObstacles().get(0).getCoins().get(3);
-        Point arrive = salle.getListSorties().get(0).getPoint1();
-        graphe.creerPlusCourtChemin(depart, arrive);
-
-
-        List<Point> listeChemin = graphe.getListePointsCheminPlusCourt(depart, arrive);
-        salle.addGraphe(graphe.afficher(listeChemin));
-
-
-
-        //graphe.creerTousLesChemins();
-        //salle.addGraphe(graphe.afficher());
-
-
-        salle.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//>>>>>>> main
 
             @Override
             public void handle(MouseEvent event) {

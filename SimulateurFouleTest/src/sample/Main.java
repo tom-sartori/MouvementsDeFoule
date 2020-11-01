@@ -38,10 +38,8 @@ public class Main extends Application {
         graphe.creerTousLesChemins();
         controller.getCS().addGraphe(graphe.afficher());
 
-        //primaryStage.setTitle("TEST");
-//=======
+
         primaryStage.setTitle("Simulateur de foule");
-//>>>>>>> main
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();

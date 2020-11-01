@@ -51,68 +51,17 @@ public class Salle {
             sortie.setX2(marge);
             sortie.setY2(sortie.getY1() + sortie.getLongueur());
         }
-//<<<<<<< Joachim
         sortie.setPoint1(sortie.getX1(), sortie.getY1());
         sortie.setPoint2(sortie.getX2(), sortie.getY2());
-//=======
-
-        sortie.setPoint1(sortie.getX1(), sortie.getY1());
-        sortie.setPoint2(sortie.getX2(), sortie.getY2());
-
-
-        this.getChildren().add(sortie);
-    }
-
-    public void addPersonne (Personne personne) {
-        listPersonnes.add(personne);
-        getChildren().add(personne);
-    }
-
-    public void addObstacle (Obstacle obstacle){
-        listObstacles.add(obstacle);
-        this.getChildren().add(obstacle);
-//>>>>>>> main
     }
 
     public List<Obstacle> getListObstacles(){
         return listObstacles;
     }
 
-//<<<<<<< Joachim
     public List<Sortie> getListSorties(){
         return listSorties;
     }
-//=======
-    public void demarrer () {
-        if (!listPersonnes.isEmpty()) {
-            for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                personne.setDxDyNormalise(this);         // Initialise dx et dy
-            }
-
-            Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
-
-            if (loop == null) {
-
-                loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent arg) {
-
-                        for (int i = 0; i < listPersonnes.size(); i++) {
-                            if (listPersonnes.get(i).estSorti(salle))
-                                removePersonne(listPersonnes.get(i));
-                            else
-                                listPersonnes.get(i).avancer();
-                        }
-                    }
-                }));
-                loop.setCycleCount(Timeline.INDEFINITE);
-                loop.play();
-            } else if (loop.getStatus() == Animation.Status.PAUSED) {
-                loop.play();
-            }
-        }
-    }
-
-//>>>>>>> main
 
     public void initPersonneDxDy(){
         for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
