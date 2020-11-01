@@ -9,14 +9,14 @@ import java.util.List;
 public class Personne extends Parent {
     private double xDepart;
     private double yDepart;
-    private final double r = 10;
+    private final double r = 2;
 
     private Point coordCourant;
     private Point objectif;
 
     private double dx;
     private double dy;
-    private double vitesse = 1.5;
+    private double vitesse = 1;
 
     public Personne(double posX , double posY){
         xDepart = posX;
