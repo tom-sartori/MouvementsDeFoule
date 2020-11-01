@@ -3,7 +3,7 @@ package sample;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class Personne extends Parent {
@@ -210,7 +210,6 @@ public class Personne extends Parent {
     }
 
 
-
     public void avancer () {
         setTranslateX(getTranslateX() + dx);
         setTranslateY(getTranslateY() + dy);
@@ -218,16 +217,9 @@ public class Personne extends Parent {
         coordCourant.setY(yDepart + getTranslateY());
     }
 
-    public boolean objectifAteint () {
-        if ((int)coordCourant.getX() == (int)objectif.getX() & (int)coordCourant.getY() == (int)objectif.getY()) {
-            System.out.println("objectif ateint. ");
-            return true;
-        }
-        else
-            return false;
-    }
 
-    public boolean objectifAteint2 () {
+    // Obligé de faire environ égale avec une petite precision car les doubles ne sont pas égaux.
+    public boolean objectifAteint () {
         if (coordCourant.environEgale(objectif)) {
             System.out.println("objectif ateint. ");
             return true;
@@ -237,26 +229,26 @@ public class Personne extends Parent {
     }
 
 
-    public void setObjectif (Graphe graphe) {
+    public void setObjectif (Salle salle) {
         if (objectif == null) {
-            objectif = findBonChemin(graphe);
+            objectif = findBonChemin(salle);
         }
         else { // peut etre faire un cas pour la fin, car getSuiv() de l'arrive == null
             objectif = objectif.getSuivant();
         }
-        System.out.println("courant : " + coordCourant);
-        System.out.println("objectif : " + objectif);
+        //System.out.println("courant : " + coordCourant);
+        //System.out.println("objectif : " + objectif);
     }
 
-    public Point findBonChemin (Graphe graphe) {
+    public Point findBonChemin (Salle salle) {
         Point premierObjectif;
         double distance, distanceCourante;
 
-        List<Point> listePointsDirectes = graphe.getListePointsDirectes2(coordCourant);
+        List<Point> listePointsDirectes = salle.getGraphe().getListePointsDirectesPerso(salle, coordCourant);
         premierObjectif = listePointsDirectes.get(0);
         distance = 1000000;
 
-        for (Point point : graphe.getListePointsDirectes2(coordCourant)) { // Fonctionne pas car personne pas dans le graphe
+        for (Point point : salle.getGraphe().getListePointsDirectesPerso(salle, coordCourant)) { // Fonctionne pas car personne pas dans le graphe
             if (MathsCalcule.distance(coordCourant, point) != 0) { // Car si 0,c'est lui meme.
                 distanceCourante = MathsCalcule.distance(coordCourant, point) + point.getDistanceSortie();
                 if (distanceCourante < distance) {
@@ -265,7 +257,7 @@ public class Personne extends Parent {
                 }
             }
         }
-        System.out.println("prem obj " + premierObjectif);
+        //System.out.println("Premier objectif : " + premierObjectif);
         return premierObjectif;
     }
 
@@ -279,28 +271,10 @@ public class Personne extends Parent {
     }
 
 
-    // Permet de savoir si le perso est sorti de la salle
-    public boolean estSorti(Salle salle) {
-        if (dx > 0) {
-            if (xDepart + getTranslateX() > salle.getLargeur() + salle.getMarge())
-                return true;
-        }
-        if (dx < 0) {
-            if (xDepart + getTranslateX() < 0 + salle.getMarge())
-                return true;
-        }
-        if (dy > 0) {
-            if (yDepart + getTranslateY() > salle.getHauteur() + salle.getMarge())
-                return true;
-        }
-        if (dy < 0) {
-            if (yDepart + getTranslateY() < salle.getMarge())
-                return true;
-        }
-        return false;
-    }
-
     // Permet de savoir si le perso est sorti de la salle avec plus ou moins de précision
+    // La précision est importante car sinon on detecte en premier qu'il est arrivé a son dernier objectif et donc,
+    // son prochain objectif est null.
+    // Du coup, on detecte un peu acant qu'il soit sorti, qu'il est sorti.
     public boolean estSorti2(Salle salle) {
         double precision = 3;
 

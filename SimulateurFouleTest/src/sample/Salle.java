@@ -24,6 +24,7 @@ public class Salle extends Parent {
     private Timeline loop;
     private Graphe graphe;
 
+
     public Salle(double lar, double hau) {  // Créée une salle rectangle avec une marge
         this.largeur = lar - (2 * marge);
         this.hauteur = hau - (2 * marge);
@@ -39,10 +40,10 @@ public class Salle extends Parent {
         graphe = new Graphe(this);
     }
 
+
     public List<Sortie> getListSorties() {
         return listSorties;
     }
-
 
 
     // Permet d'ajouter une sortie à la salle et la place correctement
@@ -95,56 +96,30 @@ public class Salle extends Parent {
         this.getChildren().add(sortie);
     }
 
+
     public void addPersonne (Personne personne) {
         listPersonnes.add(personne);
         getChildren().add(personne);
     }
+
 
     public void addObstacle (Obstacle obstacle){
         listObstacles.add(obstacle);
         this.getChildren().add(obstacle);
     }
 
+
     public List<Obstacle> getListObstacles(){
         return listObstacles;
     }
 
-    public void demarrer () {
-        if (!listPersonnes.isEmpty()) {
-            for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                personne.setDxDyNormalise(this);         // Initialise dx et dy
-            }
-
-            Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
-
-            if (loop == null) {
-
-                loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent arg) {
-
-                        for (int i = 0; i < listPersonnes.size(); i++) {
-                            if (listPersonnes.get(i).estSorti(salle))
-                                removePersonne(listPersonnes.get(i));
-                            else
-                                listPersonnes.get(i).avancer();
-                        }
-                    }
-                }));
-                loop.setCycleCount(Timeline.INDEFINITE);
-                loop.play();
-            } else if (loop.getStatus() == Animation.Status.PAUSED) {
-                loop.play();
-            }
-        }
-    }
-
 
     public void demarrerV2 () {
-        initialisationGraphe();
+        initialisationGrapheSansAffichage();
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                personne.setObjectif(graphe);
+                personne.setObjectif(this);
                 personne.setDxDyNormalise(personne.getObjectif());
             }
 
@@ -159,8 +134,8 @@ public class Salle extends Parent {
                             if (listPersonnes.get(i).estSorti2(salle))
                                 removePersonne(listPersonnes.get(i));
                             else {
-                                if (listPersonnes.get(i).objectifAteint2()) {
-                                    listPersonnes.get(i).setObjectif(graphe);
+                                if (listPersonnes.get(i).objectifAteint()) {
+                                    listPersonnes.get(i).setObjectif(salle);
                                     listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
                                 }
                                 else
@@ -177,9 +152,20 @@ public class Salle extends Parent {
         }
     }
 
-    public void initialisationGraphe () {
+
+    // Utilisé à chaque fois qu'on appuie sur "play", donc qu'on lance démarer.
+    // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
+    public void initialisationGrapheSansAffichage () {
         graphe = new Graphe(this);
-        graphe.creerCheminPlusCourtAvecSortie();
+        graphe.creerCheminPlusCourtAvecSortie(this);
+    }
+
+
+    // Utilisé à chaque fois qu'on appuie sur "play", donc qu'on lance démarer.
+    // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
+    public void initialisationGrapheAvecAffichage () {
+        graphe = new Graphe(this);
+        graphe.creerCheminPlusCourtAvecSortie(this);
         afficherGraphe(graphe.afficher());
     }
 
@@ -225,6 +211,7 @@ public class Salle extends Parent {
     public void addGraphe (Graphe g) {
         graphe = g;
     }
+
 
     public void afficherGraphe(ControllerGraphe controllerGraphe) {
         getChildren().add(controllerGraphe);
@@ -304,6 +291,7 @@ public class Salle extends Parent {
 
         return b;
     }
+
 
     public Graphe getGraphe() {
         return graphe;

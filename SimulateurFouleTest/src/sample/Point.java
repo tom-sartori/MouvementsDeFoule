@@ -64,11 +64,14 @@ public class Point {
                 Double.compare(point.y, y) == 0;
     }
 
+
+    // Utilisé pour la detection, lorsqu'un perso est arrivé à son objectif (coin d'un obstacle).
+    // Obligé de faire un environ égale car comme les coordonnés sont des doubles, c'était jamais égale.
     public boolean environEgale (Point p) {
-        double precision = 3;
+        double precision = 1;
         if ( (this.getX() - precision <= p.getX()) && (p.getX() <= this.getX() + precision) ) {
             if ( (this.getY() - precision <= p.getY()) && (p.getY() <= this.getY() + precision) ) {
-                System.out.println("Points environ egaux. ");
+                //System.out.println("Points environ egaux. ");
                 return true;
             }
         }
