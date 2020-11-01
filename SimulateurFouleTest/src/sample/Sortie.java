@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sortie {
+
     private int mur;
     private double longueur;
     private double distance;

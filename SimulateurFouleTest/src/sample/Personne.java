@@ -3,6 +3,7 @@ package sample;
 import java.util.List;
 
 public class Personne {
+
     private double xDepart;
     private double yDepart;
 
@@ -187,9 +188,53 @@ public class Personne {
         return MathsCalcule.estSuperpose(coordP,coordSortie,coordC,coordD);
     }
 
+//<<<<<<< Joachim
     public List<Point> segmentObstacle(Point coordSortie,Obstacle o){
         Point coordP = new Point(xDepart,yDepart);
         return MathsCalcule.coordSegments(coordP,coordSortie,o);
     }
 
+//=======
+
+    // Permet de savoir si le perso est sorti de la salle
+    public boolean estSorti(Salle salle) {
+        if (dx > 0) {
+            if (xDepart + getTranslateX() > salle.getLargeur() + salle.getMarge())
+                return true;
+        }
+        if (dx < 0) {
+            if (xDepart + getTranslateX() < 0 + salle.getMarge())
+                return true;
+        }
+        if (dy > 0) {
+            if (yDepart + getTranslateY() > salle.getHauteur() + salle.getMarge())
+                return true;
+        }
+        if (dy < 0) {
+            if (yDepart + getTranslateY() < salle.getMarge())
+                return true;
+        }
+        return false;
+    }
+
+    //returne True si un segment fait obstacle au déplacement d'une personne
+    public boolean estTouche(Point coordSortie,Point coordC,Point coordD){
+        Point coordP = new Point(xDepart,yDepart);
+        return MathsCalcule.estCouper(coordP,coordSortie,coordC,coordD);
+    }
+
+    //retourne True si un segment est superposé sur le chemin d'une personne
+    public boolean estSuperpose(Point coordSortie,Point coordC,Point coordD){
+        Point coordP = new Point(xDepart,yDepart);
+        return MathsCalcule.estSuperpose(coordP,coordSortie,coordC,coordD);
+    }
+
+    //retourne une liste de point pour connaître les segments qui font obstacle au déplacement d'une personne
+    public List<Point> segmentObstacle(Point coordSortie,Obstacle o){
+        Point coordP = new Point(xDepart,yDepart);
+        return MathsCalcule.coordSegments(coordP,coordSortie,o);
+    }
+
+//>>>>>>> main
 }
+

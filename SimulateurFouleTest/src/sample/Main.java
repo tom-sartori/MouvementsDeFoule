@@ -13,9 +13,11 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         double largeur = 1000;
         double hauteur = 600;
+
         Controller controller = new Controller(largeur, hauteur);
         Scene scene = new Scene(controller, largeur, hauteur, Color.LIGHTGRAY);
 
+//<<<<<<< Joachim
         controller.getCS().addSortie(new ControllerSortie(2,60,50));
         controller.getCS().addSortie(new ControllerSortie(3, 60, 80));
 
@@ -36,7 +38,10 @@ public class Main extends Application {
         graphe.creerTousLesChemins();
         controller.getCS().addGraphe(graphe.afficher());
 
-        primaryStage.setTitle("TEST");
+        //primaryStage.setTitle("TEST");
+//=======
+        primaryStage.setTitle("Simulateur de foule");
+//>>>>>>> main
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();

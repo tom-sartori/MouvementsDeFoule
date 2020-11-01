@@ -41,6 +41,7 @@ public class ObstacleRectangle extends Obstacle {
         return largeur;
     }
 
+
     public double getHauteur() {
         return hauteur;
     }
