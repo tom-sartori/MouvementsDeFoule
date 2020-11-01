@@ -64,6 +64,17 @@ public class Point {
                 Double.compare(point.y, y) == 0;
     }
 
+    public boolean environEgale (Point p) {
+        double precision = 3;
+        if ( (this.getX() - precision <= p.getX()) && (p.getX() <= this.getX() + precision) ) {
+            if ( (this.getY() - precision <= p.getY()) && (p.getY() <= this.getY() + precision) ) {
+                System.out.println("Points environ egaux. ");
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(x, y);

@@ -154,7 +154,7 @@ public class Personne extends Parent {
 
 
     public Point findDxDy (Point point) {
-        System.out.println("point : " + point);
+        System.out.println("findDxDy : courant : " + coordCourant + " objectif : " + point);
         Point dxdy = new Point();
 
         double distX = Math.abs(coordCourant.getX() - point.getX());
@@ -219,7 +219,16 @@ public class Personne extends Parent {
     }
 
     public boolean objectifAteint () {
-        if ((int)coordCourant.getX() == (int)objectif.getX() || (int)coordCourant.getY() == (int)objectif.getY()) {
+        if ((int)coordCourant.getX() == (int)objectif.getX() & (int)coordCourant.getY() == (int)objectif.getY()) {
+            System.out.println("objectif ateint. ");
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public boolean objectifAteint2 () {
+        if (coordCourant.environEgale(objectif)) {
             System.out.println("objectif ateint. ");
             return true;
         }
@@ -291,22 +300,24 @@ public class Personne extends Parent {
         return false;
     }
 
-    // Permet de savoir si le perso est sorti de la salle
+    // Permet de savoir si le perso est sorti de la salle avec plus ou moins de précision
     public boolean estSorti2(Salle salle) {
+        double precision = 3;
+
         if (dx > 0) {
-            if (coordCourant.getX() >= salle.getLargeur() + salle.getMarge())
+            if (coordCourant.getX() + precision >= salle.getLargeur() + salle.getMarge())
                 return true;
         }
         if (dx < 0) {
-            if (coordCourant.getX() <= 0 + salle.getMarge())
+            if (coordCourant.getX() - precision <= 0 + salle.getMarge())
                 return true;
         }
         if (dy > 0) {
-            if (coordCourant.getY() >= salle.getHauteur() + salle.getMarge())
+            if (coordCourant.getY() + precision >= salle.getHauteur() + salle.getMarge())
                 return true;
         }
         if (dy < 0) {
-            if (coordCourant.getY() <= salle.getMarge())
+            if (coordCourant.getY() - precision <= salle.getMarge())
                 return true;
         }
         return false;

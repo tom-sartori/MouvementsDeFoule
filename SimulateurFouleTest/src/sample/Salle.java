@@ -141,6 +141,7 @@ public class Salle extends Parent {
 
     public void demarrerV2 () {
         initialisationGraphe();
+
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
                 personne.setObjectif(graphe);
@@ -158,7 +159,7 @@ public class Salle extends Parent {
                             if (listPersonnes.get(i).estSorti2(salle))
                                 removePersonne(listPersonnes.get(i));
                             else {
-                                if (listPersonnes.get(i).objectifAteint()) {
+                                if (listPersonnes.get(i).objectifAteint2()) {
                                     listPersonnes.get(i).setObjectif(graphe);
                                     listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
                                 }
