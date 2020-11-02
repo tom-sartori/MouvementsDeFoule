@@ -12,6 +12,9 @@ public class Point {
     private double distance;
     private Point precedent;
 
+    private Point suivant;
+    private double distanceSortie;
+
 
     public Point(){
         x=0;
@@ -31,6 +34,7 @@ public class Point {
         x = p.getX();
         y = p.getY();
         precedent = p.getPrecedent();
+        suivant = p.getSuivant();
     }
 
 
@@ -42,6 +46,15 @@ public class Point {
                 '}';
     }
 
+    public String toStringV2() {
+        return "Point{" +
+                "x=" + x +
+                ", y=" + y +
+                ", distanceSortie=" + distanceSortie +
+                ", suivant=" + suivant +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -49,6 +62,20 @@ public class Point {
         Point point = (Point) o;
         return Double.compare(point.x, x) == 0 &&
                 Double.compare(point.y, y) == 0;
+    }
+
+
+    // Utilisé pour la detection, lorsqu'un perso est arrivé à son objectif (coin d'un obstacle).
+    // Obligé de faire un environ égale car comme les coordonnés sont des doubles, c'était jamais égale.
+    public boolean environEgale (Point p) {
+        double precision = 1;
+        if ( (this.getX() - precision <= p.getX()) && (p.getX() <= this.getX() + precision) ) {
+            if ( (this.getY() - precision <= p.getY()) && (p.getY() <= this.getY() + precision) ) {
+                //System.out.println("Points environ egaux. ");
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -89,4 +116,19 @@ public class Point {
         this.precedent = precedent;
     }
 
+    public Point getSuivant() {
+        return suivant;
+    }
+
+    public void setSuivant(Point suivant) {
+        this.suivant = suivant;
+    }
+
+    public double getDistanceSortie() {
+        return distanceSortie;
+    }
+
+    public void setDistanceSortie(double distanceSortie) {
+        this.distanceSortie = distanceSortie;
+    }
 }

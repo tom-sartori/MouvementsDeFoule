@@ -22,6 +22,8 @@ public class Salle extends Parent {
     private List<Sortie> listSorties;
     private List<Obstacle> listObstacles;
     private Timeline loop;
+    private Graphe graphe;
+
 
     public Salle(double lar, double hau) {  // Créée une salle rectangle avec une marge
         this.largeur = lar - (2 * marge);
@@ -35,12 +37,13 @@ public class Salle extends Parent {
         salle.setTranslateY(marge);
         salle.setFill(Color.LIGHTCYAN);
         this.getChildren().add(salle);
+        graphe = new Graphe(this);
     }
+
 
     public List<Sortie> getListSorties() {
         return listSorties;
     }
-
 
 
     // Permet d'ajouter une sortie à la salle et la place correctement
@@ -93,24 +96,31 @@ public class Salle extends Parent {
         this.getChildren().add(sortie);
     }
 
+
     public void addPersonne (Personne personne) {
         listPersonnes.add(personne);
         getChildren().add(personne);
     }
+
 
     public void addObstacle (Obstacle obstacle){
         listObstacles.add(obstacle);
         this.getChildren().add(obstacle);
     }
 
+
     public List<Obstacle> getListObstacles(){
         return listObstacles;
     }
 
-    public void demarrer () {
+
+    public void demarrerV2 () {
+        initialisationGrapheSansAffichage();
+
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                personne.setDxDyNormalise(this);         // Initialise dx et dy
+                personne.setObjectif(this);
+                personne.setDxDyNormalise(personne.getObjectif());
             }
 
             Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
@@ -121,10 +131,16 @@ public class Salle extends Parent {
                     public void handle(ActionEvent arg) {
 
                         for (int i = 0; i < listPersonnes.size(); i++) {
-                            if (listPersonnes.get(i).estSorti(salle))
+                            if (listPersonnes.get(i).estSorti2(salle))
                                 removePersonne(listPersonnes.get(i));
-                            else
-                                listPersonnes.get(i).avancer();
+                            else {
+                                if (listPersonnes.get(i).objectifAteint()) {
+                                    listPersonnes.get(i).setObjectif(salle);
+                                    listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
+                                }
+                                else
+                                    listPersonnes.get(i).avancer();
+                            }
                         }
                     }
                 }));
@@ -134,6 +150,23 @@ public class Salle extends Parent {
                 loop.play();
             }
         }
+    }
+
+
+    // Utilisé à chaque fois qu'on appuie sur "play", donc qu'on lance démarer.
+    // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
+    public void initialisationGrapheSansAffichage () {
+        graphe = new Graphe(this);
+        graphe.creerCheminPlusCourtAvecSortie(this);
+    }
+
+
+    // Utilisé à chaque fois qu'on appuie sur "play", donc qu'on lance démarer.
+    // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
+    public void initialisationGrapheAvecAffichage () {
+        graphe = new Graphe(this);
+        graphe.creerCheminPlusCourtAvecSortie(this);
+        afficherGraphe(graphe.afficher());
     }
 
 
@@ -175,7 +208,12 @@ public class Salle extends Parent {
         else return false;
     }
 
-    public void addGraphe(ControllerGraphe controllerGraphe) {
+    public void addGraphe (Graphe g) {
+        graphe = g;
+    }
+
+
+    public void afficherGraphe(ControllerGraphe controllerGraphe) {
         getChildren().add(controllerGraphe);
     }
 
@@ -252,5 +290,10 @@ public class Salle extends Parent {
         }
 
         return b;
+    }
+
+
+    public Graphe getGraphe() {
+        return graphe;
     }
 }
