@@ -8,18 +8,32 @@ public class Controller extends Parent{
     private ControllerSalle cs;
     private ControllerPanel cp;
 
+    public ControllerSalle getCS(){
+        return cs;
+    }
+
+    public ControllerPanel getCP(){
+        return cp;
+    }
+
     public Controller(double width, double height){
         cs = new ControllerSalle(width, height-40);
         cp = new ControllerPanel();
         cp.setTranslateY(height-40);
         cp.minWidth(width);
-        
-        Salle salle = cs.getSalle();
+    
 
         cp.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
+  /*
+//<<<<<<< Tom1
                 salle.demarrerV2();
                 if(salle.isRunning()){
+//=======
+                cs.startLoop();
+                if(cs.isRunning()){
+//>>>>>>> main
+*/
                     cp.setStatusLabel(true);
                 }
             }
@@ -27,14 +41,14 @@ public class Controller extends Parent{
 
         cp.getPauseButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                salle.pause();
+                cs.pause();
                 cp.setStatusLabel(false);
             }
         });
 
         cp.getClearButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                salle.removeAllPersonne();
+                cs.removeAllPersonne();
                 cp.setStatusLabel(false);
             }
         });
