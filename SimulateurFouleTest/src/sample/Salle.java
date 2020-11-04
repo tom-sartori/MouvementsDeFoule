@@ -103,6 +103,7 @@ public class Salle extends Parent {
         this.getChildren().add(obstacle);
     }
 
+
     public List<Obstacle> getListObstacles(){
         return listObstacles;
     }
