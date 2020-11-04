@@ -25,8 +25,15 @@ public class Controller extends Parent{
 
         cp.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
+  /*
+//<<<<<<< Tom1
+                salle.demarrerV2();
+                if(salle.isRunning()){
+//=======
                 cs.startLoop();
                 if(cs.isRunning()){
+//>>>>>>> main
+*/
                     cp.setStatusLabel(true);
                 }
             }

@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
 import java.util.List;
+import java.util.Random;
 
 public class ControllerSalle extends Parent{
     private Salle salle;
@@ -31,6 +32,36 @@ public class ControllerSalle extends Parent{
         return salle;   
     }
 
+  /*
+//<<<<<<< Tom1
+    public ControllerSalle(double width, double height){
+        salle = new Salle(width,height);
+
+        salle.addSortie(new Sortie(2,60,50));
+        salle.addSortie(new Sortie(3, 60, 80));
+        salle.addSortie(new Sortie(3, 40, 600));
+
+        salle.addObstacle(new ObstacleRectangle(150, 200, 120, 70));
+        salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
+        salle.addObstacle(new ObstacleRectangle(600, 100, 100, 400));
+        salle.addObstacle(new ObstacleRectangle(450, 80, 30, 300));
+        salle.addObstacle(new ObstacleRectangle(60, 400, 70, 100));
+        salle.addObstacle(new ObstacleRectangle(30, 40, 70, 100));
+
+
+
+        for (int i = 0; i < 10000; i++) {
+            Random ran = new Random();
+            double x = ran.nextInt(970 - 25 + 1) + 20;
+            double y = ran.nextInt(540 - 25 + 1) + 20;
+            System.out.println(x + " " + y);
+            salle.addPersonne(new Personne(x,y));
+        }
+        //salle.addPersonne(new Personne(200, 300));
+
+
+        salle.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//=======
     public List<ControllerSortie> getListSorties(){
         return listSorties;
     }
@@ -47,6 +78,8 @@ public class ControllerSalle extends Parent{
         salleGraphic.setTranslateY(marge);
         salleGraphic.setFill(Color.LIGHTCYAN);
         this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//>>>>>>> main
+          */
 
             @Override
             public void handle(MouseEvent event) {
