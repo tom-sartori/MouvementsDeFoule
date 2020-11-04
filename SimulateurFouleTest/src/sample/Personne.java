@@ -4,28 +4,27 @@ import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Personne extends Parent {
-    private double xDepart;
-    private double yDepart;
-    private final double r = 2;
-
-    private Point coordCourant;
+    private Point depart;
+    private final double r = 8;
     private Point objectif;
-
+    private Point objectifRayon;
+    private Point coordCourant;
     private double dx;
     private double dy;
     private double vitesse = 1;
 
     public Personne(double posX , double posY){
-        xDepart = posX;
-        yDepart = posY;
-        Circle cercle = new Circle(xDepart, yDepart,r);
+        depart = new Point(posX,posY);
+        Circle cercle = new Circle(depart.getX(), depart.getY(),r);
         cercle.setFill(Color.RED);
         this.getChildren().add(cercle);
-        coordCourant = new Point(xDepart, yDepart);
         objectif = null;
+        coordCourant = new Point(depart.getX(),depart.getY());
+        objectifRayon = new Point();
     }
 
     // Permet de savoir les coordonnés du coin de sortie le plus proche du perso
@@ -78,8 +77,8 @@ public class Personne extends Parent {
         double dist2 = 0;
 
         // calcul avec Pythagore
-        dist1 = Math.sqrt( Math.pow(Math.abs(xDepart - sortie.getX1()), 2) + Math.pow(Math.abs(yDepart - sortie.getY1()), 2));
-        dist2 = Math.sqrt( Math.pow(Math.abs(xDepart - sortie.getX2()), 2) + Math.pow(Math.abs(yDepart - sortie.getY2()), 2));
+        dist1 = Math.sqrt( Math.pow(Math.abs(depart.getX() - sortie.getX1()), 2) + Math.pow(Math.abs(depart.getY() - sortie.getY1()), 2));
+        dist2 = Math.sqrt( Math.pow(Math.abs(depart.getX() - sortie.getX2()), 2) + Math.pow(Math.abs(depart.getY() - sortie.getY2()), 2));
 
         //System.out.println("Distance 1 : " + dist1);
         //System.out.println("Distance 2 : " + dist2);
@@ -106,9 +105,9 @@ public class Personne extends Parent {
         Point tab = new Point();
 
         if (mur == 1) {
-            double distX = Math.abs(xDepart - xArrive);
-            double distY = Math.abs(yDepart - yArrive);
-            if (xDepart - xArrive > 0) {
+            double distX = Math.abs(depart.getX() - xArrive);
+            double distY = Math.abs(depart.getY() - yArrive);
+            if (depart.getX() - xArrive > 0) {
                 tab.setX(- (distX / distY));
             }
             else
@@ -116,9 +115,9 @@ public class Personne extends Parent {
             tab.setY(-1);
         }
         else if (mur == 2) {
-            double distX = Math.abs(xDepart - xArrive);
-            double distY = Math.abs(yDepart - yArrive);
-            if (yDepart - yArrive > 0) {
+            double distX = Math.abs(depart.getX() - xArrive);
+            double distY = Math.abs(depart.getY() - yArrive);
+            if (depart.getY() - yArrive > 0) {
                 tab.setY(- (distY / distX));
             }
             else
@@ -126,9 +125,9 @@ public class Personne extends Parent {
             tab.setX(1);
         }
         else if (mur == 3) {
-            double distX = Math.abs(xDepart - xArrive);
-            double distY = Math.abs(yDepart - yArrive);
-            if (xDepart - xArrive > 0) {
+            double distX = Math.abs(depart.getX() - xArrive);
+            double distY = Math.abs(depart.getY() - yArrive);
+            if (depart.getX() - xArrive > 0) {
                 tab.setX(- (distX / distY));
             }
             else
@@ -136,9 +135,9 @@ public class Personne extends Parent {
             tab.setY(1);
         }
         else if (mur == 4) {
-            double distX = Math.abs(xDepart - xArrive);
-            double distY = Math.abs(yDepart - yArrive);
-            if (yDepart - yArrive > 0) {
+            double distX = Math.abs(depart.getX() - xArrive);
+            double distY = Math.abs(depart.getY() - yArrive);
+            if (depart.getY() - yArrive > 0) {
                 tab.setY(-(distY / distX));
             }
             else
@@ -213,14 +212,14 @@ public class Personne extends Parent {
     public void avancer () {
         setTranslateX(getTranslateX() + dx);
         setTranslateY(getTranslateY() + dy);
-        coordCourant.setX(xDepart + getTranslateX());
-        coordCourant.setY(yDepart + getTranslateY());
+        coordCourant.setX(depart.getX() + getTranslateX());
+        coordCourant.setY(depart.getY() + getTranslateY());
     }
 
 
     // Obligé de faire environ égale avec une petite precision car les doubles ne sont pas égaux.
     public boolean objectifAteint () {
-        if (coordCourant.environEgale(objectif)) {
+        if (coordCourant.environEgale(objectifRayon)) {
             System.out.println("objectif ateint. ");
             return true;
         }
@@ -228,16 +227,86 @@ public class Personne extends Parent {
             return false;
     }
 
-
     public void setObjectif (Salle salle) {
         if (objectif == null) {
             objectif = findBonChemin(salle);
-        }
-        else { // peut etre faire un cas pour la fin, car getSuiv() de l'arrive == null
+
+        } else { // peut etre faire un cas pour la fin, car getSuiv() de l'arrive == null
             objectif = objectif.getSuivant();
         }
         //System.out.println("courant : " + coordCourant);
         //System.out.println("objectif : " + objectif);
+        objectifRayon.setX(objectif.getX());
+        objectifRayon.setY(objectif.getY());
+        for (Obstacle o : salle.getListObstacles()) {
+            for (Point p : o.getCoins()) {
+                if (p.environEgale(objectif)) {
+                    if (objectif.getSuivant() != null) {
+                        System.out.println("test suiv pas null");
+                        if (objectifRayon.environEgaleX(coordCourant.getX() - r) && objectifRayon.getY() > coordCourant.getY()) {
+                            System.out.println("objectifRayon.environEqualsX(coordCourant.getX()-r) && objectifRayon.getY()>coordCourant.getY()");
+                            objectifRayon.setX(objectif.getX() + r);
+                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
+                                System.out.println("objectifRayon était obstalce");
+                                objectifRayon.setX(objectif.getX() - r);
+                            }
+                        } else if (objectifRayon.environEgaleX(coordCourant.getX() + r) && objectifRayon.getY() > coordCourant.getY()) {
+                            System.out.println("objectifRayon.environEqualsX(coordCourant.getX()+r) && objectifRayon.getY()>coordCourant.getY()");
+                            objectifRayon.setX(objectif.getX() - r);
+                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
+                                System.out.println("objectifRayon était obstalce");
+                                objectifRayon.setX(objectif.getX() + r);
+                            }
+                        } else if (objectifRayon.environEgaleX(coordCourant.getX() + r) && objectifRayon.getY() < coordCourant.getY()) {
+                            System.out.println("objectifRayon.environEqualsX(coordCourant.getX()+r) && objectifRayon.getY()<coordCourant.getY()");
+                            objectifRayon.setX(objectif.getX() + r);
+                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
+                                System.out.println("objectifRayon était obstalce");
+                                objectifRayon.setX(objectif.getX() - r);
+                            }
+                        } else if (objectifRayon.environEgaleX(coordCourant.getX() - r) && objectifRayon.getY() < coordCourant.getY()) {
+                            System.out.println("objectifRayon.environEqualsX(coordCourant.getX()-r) && objectifRayon.getY()<coordCourant.getY()");
+                            objectifRayon.setX(objectif.getX() - r);
+                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
+                                System.out.println("objectifRayon était obstalce");
+                                objectifRayon.setX(objectif.getX() + r);
+                            }
+                        } else if (objectifRayon.getX() + r > coordCourant.getX() && objectifRayon.getY() > coordCourant.getY()) {
+                            System.out.println("objectif.getX()+r > coordCourant.getX() && objectifRayon.getY()<coordCourant.getY()");
+                            objectifRayon.setX(objectif.getX() + r);
+                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
+                                System.out.println("objectifRayon était obstalce");
+                                objectifRayon.setX(objectif.getX() - r);
+                            }
+                        } else if (objectifRayon.getX() - r < coordCourant.getX() && objectifRayon.getY() > coordCourant.getY()) {
+                            System.out.println("objectif.getX()-r < coordCourant.getX() && objectifRayon.getY()>coordCourant.getY()");
+                            objectifRayon.setX(objectif.getX() - r);
+                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
+                                System.out.println("objectifRayon était obstalce");
+                                objectifRayon.setX(objectif.getX() + r);
+                                objectifRayon.setY(objectif.getY() + r);
+                            }
+                        } else if (objectifRayon.getX() - r < coordCourant.getX() && objectifRayon.getY() < coordCourant.getY()) {
+                            System.out.println("objectif.getX()-r < coordCourant.getX() && objectifRayon.getY()<coordCourant.getY()");
+                            objectifRayon.setX(objectif.getX() - r);
+                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
+                                System.out.println("objectifRayon était obstalce ");
+                                objectifRayon.setX(objectif.getX() + r);
+                                objectifRayon.setY(objectif.getY() - r);
+                            }
+                        } else if (objectifRayon.getX() + r > coordCourant.getX() && objectifRayon.getY() < coordCourant.getY()) {
+                            System.out.println("objectif.getX()+r > coordCourant.getX() && objectifRayon.getY()<coordCourant.getY()");
+                            objectifRayon.setX(objectif.getX() + r);
+                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
+                                System.out.println("objectifRayon était obstalce");
+                                objectifRayon.setX(objectif.getX() - r);
+                                objectifRayon.setY(objectif.getY() - r);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public Point findBonChemin (Salle salle) {
@@ -263,18 +332,18 @@ public class Personne extends Parent {
 
 
     public double getxDepart() {
-        return xDepart;
+        return depart.getX();
     }
 
     public double getyDepart() {
-        return yDepart;
+        return depart.getY();
     }
 
 
     // Permet de savoir si le perso est sorti de la salle avec plus ou moins de précision
     // La précision est importante car sinon on detecte en premier qu'il est arrivé a son dernier objectif et donc,
     // son prochain objectif est null.
-    // Du coup, on detecte un peu acant qu'il soit sorti, qu'il est sorti.
+    // Du coup, on detecte un peu avant qu'il soit sorti, qu'il est sorti.
     public boolean estSorti2(Salle salle) {
         double precision = 3;
 
@@ -299,19 +368,19 @@ public class Personne extends Parent {
 
     //returne True si un segment fait obstacle au déplacement d'une personne
     public boolean estTouche(Point coordSortie,Point coordC,Point coordD){
-        Point coordP = new Point(xDepart,yDepart);
+        Point coordP = new Point(depart.getX(),depart.getY());
         return MathsCalcule.estCouper(coordP,coordSortie,coordC,coordD);
     }
 
     //retourne True si un segment est superposé sur le chemin d'une personne
     public boolean estSuperpose(Point coordSortie,Point coordC,Point coordD){
-        Point coordP = new Point(xDepart,yDepart);
+        Point coordP = new Point(depart.getX(),depart.getY());
         return MathsCalcule.estSuperpose(coordP,coordSortie,coordC,coordD);
     }
 
     //retourne une liste de point pour connaître les segments qui font obstacle au déplacement d'une personne
     public List<Point> segmentObstacle(Point coordSortie,Obstacle o){
-        Point coordP = new Point(xDepart,yDepart);
+        Point coordP = new Point(depart.getX(),depart.getY());
         return MathsCalcule.coordSegments(coordP,coordSortie,o);
     }
 
@@ -325,6 +394,10 @@ public class Personne extends Parent {
 
     public void setDy(double dy) {
         this.dy = dy;
+    }
+
+    public Point getObjectifRayon() {
+        return objectifRayon;
     }
 }
 

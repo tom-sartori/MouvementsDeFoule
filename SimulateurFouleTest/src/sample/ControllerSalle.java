@@ -18,8 +18,6 @@ public class ControllerSalle extends Parent{
         salle = new Salle(width,height);
 
         salle.addSortie(new Sortie(2,60,50));
-        salle.addSortie(new Sortie(3, 60, 80));
-        salle.addSortie(new Sortie(3, 40, 600));
 
         salle.addObstacle(new ObstacleRectangle(150, 200, 120, 70));
         salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
@@ -30,13 +28,13 @@ public class ControllerSalle extends Parent{
 
 
 
-        for (int i = 0; i < 10000; i++) {
+        /*for (int i = 0; i < 100; i++) {
             Random ran = new Random();
             double x = ran.nextInt(970 - 25 + 1) + 20;
             double y = ran.nextInt(540 - 25 + 1) + 20;
             System.out.println(x + " " + y);
             salle.addPersonne(new Personne(x,y));
-        }
+        }*/
         //salle.addPersonne(new Personne(200, 300));
 
 

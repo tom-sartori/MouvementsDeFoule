@@ -149,31 +149,7 @@ public class MathsCalcule {
         for (int i =0; i<o.getCoins().size();i++) {
             if (i != o.getCoins().size() - 1) {
                 if (estCouper(coordA, coordB, o.getCoins().get(i), o.getCoins().get(i + 1))) {
-                    /* peut-être un code qui peut nous servir plus tard
-                    if (estSuperpose(coordA,coordB, o.getCoins().get(i), o.getCoins().get(i + 1))) {
-                        //System.out.println("test");
-                        if (o.getCoins().size() > 4) {
-                            if (i - 1 >= 0) {
-                                //System.out.println("test1 i-1 " + (i-1));
-                                //System.out.println("test2 i-1 " + (i-1));
-                                if (toucheObstacle(coordA,coordB, o.getCoins().get(i + 1), o.getCoins().get(i - 1))) {
-                                    listTableau.add(o.getCoins().get(i));
-                                    listTableau.add(o.getCoins().get(i + 1));
-                                    listTableau.add(o.getCoins().get(i - 1));
-                                    listTableau.add(o.getCoins().get(i));
-                                }
-                            } else {
-                                //System.out.println("test3 i-1 " + o.getCoins().size());
-                                if (toucheObstacle(coordA,coordB, o.getCoins().get(o.getCoins().size()-1), o.getCoins().get(i + 1))) {
-                                    //System.out.println("test" + (i+1));
-                                    listTableau.add(o.getCoins().get(i));
-                                    listTableau.add(o.getCoins().get(i + 1));
-                                    listTableau.add(o.getCoins().get(i));
-                                    listTableau.add(o.getCoins().get(o.getCoins().size()-1));
-                                }
-                            }
-                        }
-                    }else{*/
+
                     //System.out.println("test2");
                     listTableau.add(o.getCoins().get(i));
                     listTableau.add(o.getCoins().get(i + 1));

@@ -55,13 +55,31 @@ public class Point {
                 '}';
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Point point = (Point) o;
-        return Double.compare(point.x, x) == 0 &&
+        return Double.compare(point.x,x) == 0 &&
                 Double.compare(point.y, y) == 0;
+    }
+
+    public boolean environEgaleY (double d) {
+        double precision = 1;
+        if ( (this.getY() - precision <= d) && (d <= this.getY() + precision) ) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean environEgaleX (double d) {
+        double precision = 1;
+        if ( (this.getX() - precision <= d) && (d <= this.getX() + precision) ) {
+                return true;
+        }
+        return false;
     }
 
 
