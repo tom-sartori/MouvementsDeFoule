@@ -323,5 +323,13 @@ public class Personne extends Parent {
     public void setDy(double dy) {
         this.dy = dy;
     }
+
+    public Point getCoordCourant() {
+        return coordCourant;
+    }
+
+    public double getR() {
+        return r;
+    }
 }
 

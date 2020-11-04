@@ -130,6 +130,8 @@ public class Salle extends Parent {
                 loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent arg) {
 
+                        boolean colision;
+                        int y;
                         for (int i = 0; i < listPersonnes.size(); i++) {
                             if (listPersonnes.get(i).estSorti2(salle))
                                 removePersonne(listPersonnes.get(i));
@@ -138,8 +140,16 @@ public class Salle extends Parent {
                                     listPersonnes.get(i).setObjectif(salle);
                                     listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
                                 }
-                                else
-                                    listPersonnes.get(i).avancer();
+                                else{
+                                    colision = false;
+                                    y = 0;
+                                    while (!colision && y < listPersonnes.size()) {
+                                        colision = colision2personnes(listPersonnes.get(i), listPersonnes.get(y));
+                                        y++;
+                                    }
+                                    if (!colision)
+                                        listPersonnes.get(i).avancer();
+                                }
                             }
                         }
                     }
@@ -296,4 +306,15 @@ public class Salle extends Parent {
     public Graphe getGraphe() {
         return graphe;
     }
+
+    public boolean colision2personnes(Personne p, Personne compare){
+        if (MathsCalcule.distance(p.getCoordCourant(), compare.getCoordCourant()) == 0){
+            return false;
+        } else if (MathsCalcule.distance(p.getCoordCourant(), compare.getCoordCourant()) <= p.getR()*2){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
+
