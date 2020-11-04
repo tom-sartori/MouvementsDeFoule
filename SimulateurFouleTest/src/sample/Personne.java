@@ -3,17 +3,20 @@ package sample;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class Personne extends Parent {
     private double xDepart;
     private double yDepart;
-    private final double r = 15;
+    private final double r = 2;
+
+    private Point coordCourant;
+    private Point objectif;
 
     private double dx;
     private double dy;
-    private double vitesse = 1.5;
+    private double vitesse = 1;
 
     public Personne(double posX , double posY){
         xDepart = posX;
@@ -21,6 +24,8 @@ public class Personne extends Parent {
         Circle cercle = new Circle(xDepart, yDepart,r);
         cercle.setFill(Color.RED);
         this.getChildren().add(cercle);
+        coordCourant = new Point(xDepart, yDepart);
+        objectif = null;
     }
 
     // Permet de savoir les coordonnés du coin de sortie le plus proche du perso
@@ -148,6 +153,39 @@ public class Personne extends Parent {
     }
 
 
+    public Point findDxDy (Point point) {
+        System.out.println("findDxDy : courant : " + coordCourant + " objectif : " + point);
+        Point dxdy = new Point();
+
+        double distX = Math.abs(coordCourant.getX() - point.getX());
+        double distY = Math.abs(coordCourant.getY() - point.getY());
+
+        if (coordCourant.getX() < point.getX())
+            dxdy.setX(distX / distY);
+        else
+            dxdy.setX(- distX / distY);
+
+        if (coordCourant.getY() < point.getY())
+            dxdy.setY(1);
+        else
+            dxdy.setY(-1);
+
+        System.out.println("dxdy : " + dxdy);
+
+        return dxdy;
+    }
+
+    public void setDxDyNormalise (Point point) {
+        Point coordDxDy = findDxDy(point);
+
+        //argument = sqrt(x^2 + y^2)
+        double argument = Math.sqrt( (coordDxDy.getX() * coordDxDy.getX()) + (coordDxDy.getY() * coordDxDy.getY()) );
+
+        this.dx = (vitesse/argument) * coordDxDy.getX();
+        this.dy = (vitesse/argument) * coordDxDy.getY();
+    }
+
+
     // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
     public void setDxDy(Salle salle) {
         double [] coordSortie = findCoordSortie(salle);
@@ -161,7 +199,8 @@ public class Personne extends Parent {
     // En plus, dx et dy sont normalisés suivant la vitesse de la personne (vitesse est un attribut de Personne).
     public void setDxDyNormalise (Salle salle) {
         double [] coordSortie = findCoordSortie(salle);
-        Point coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
+        //Point coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
+        Point coordDxDy = findDxDy(new Point(coordSortie[0], coordSortie[1]));
 
         //argument = sqrt(x^2 + y^2)
         double argument = Math.sqrt( (coordDxDy.getX() * coordDxDy.getX()) + (coordDxDy.getY() * coordDxDy.getY()) );
@@ -171,10 +210,55 @@ public class Personne extends Parent {
     }
 
 
-
     public void avancer () {
         setTranslateX(getTranslateX() + dx);
         setTranslateY(getTranslateY() + dy);
+        coordCourant.setX(xDepart + getTranslateX());
+        coordCourant.setY(yDepart + getTranslateY());
+    }
+
+
+    // Obligé de faire environ égale avec une petite precision car les doubles ne sont pas égaux.
+    public boolean objectifAteint () {
+        if (coordCourant.environEgale(objectif)) {
+            System.out.println("objectif ateint. ");
+            return true;
+        }
+        else
+            return false;
+    }
+
+
+    public void setObjectif (Salle salle) {
+        if (objectif == null) {
+            objectif = findBonChemin(salle);
+        }
+        else { // peut etre faire un cas pour la fin, car getSuiv() de l'arrive == null
+            objectif = objectif.getSuivant();
+        }
+        //System.out.println("courant : " + coordCourant);
+        //System.out.println("objectif : " + objectif);
+    }
+
+    public Point findBonChemin (Salle salle) {
+        Point premierObjectif;
+        double distance, distanceCourante;
+
+        List<Point> listePointsDirectes = salle.getGraphe().getListePointsDirectesPerso(salle, coordCourant);
+        premierObjectif = listePointsDirectes.get(0);
+        distance = 1000000;
+
+        for (Point point : salle.getGraphe().getListePointsDirectesPerso(salle, coordCourant)) { // Fonctionne pas car personne pas dans le graphe
+            if (MathsCalcule.distance(coordCourant, point) != 0) { // Car si 0,c'est lui meme.
+                distanceCourante = MathsCalcule.distance(coordCourant, point) + point.getDistanceSortie();
+                if (distanceCourante < distance) {
+                    distance = distanceCourante;
+                    premierObjectif = point;
+                }
+            }
+        }
+        //System.out.println("Premier objectif : " + premierObjectif);
+        return premierObjectif;
     }
 
 
@@ -187,22 +271,27 @@ public class Personne extends Parent {
     }
 
 
-    // Permet de savoir si le perso est sorti de la salle
-    public boolean estSorti(Salle salle) {
+    // Permet de savoir si le perso est sorti de la salle avec plus ou moins de précision
+    // La précision est importante car sinon on detecte en premier qu'il est arrivé a son dernier objectif et donc,
+    // son prochain objectif est null.
+    // Du coup, on detecte un peu acant qu'il soit sorti, qu'il est sorti.
+    public boolean estSorti2(Salle salle) {
+        double precision = 3;
+
         if (dx > 0) {
-            if (xDepart + getTranslateX() > salle.getLargeur() + salle.getMarge())
+            if (coordCourant.getX() + precision >= salle.getLargeur() + salle.getMarge())
                 return true;
         }
         if (dx < 0) {
-            if (xDepart + getTranslateX() < 0 + salle.getMarge())
+            if (coordCourant.getX() - precision <= 0 + salle.getMarge())
                 return true;
         }
         if (dy > 0) {
-            if (yDepart + getTranslateY() > salle.getHauteur() + salle.getMarge())
+            if (coordCourant.getY() + precision >= salle.getHauteur() + salle.getMarge())
                 return true;
         }
         if (dy < 0) {
-            if (yDepart + getTranslateY() < salle.getMarge())
+            if (coordCourant.getY() - precision <= salle.getMarge())
                 return true;
         }
         return false;
@@ -223,5 +312,16 @@ public class Personne extends Parent {
         return MathsCalcule.coordSegments(coordP,coordSortie,o);
     }
 
+    public Point getObjectif() {
+        return objectif;
+    }
+
+    public void setDx(double dx) {
+        this.dx = dx;
+    }
+
+    public void setDy(double dy) {
+        this.dy = dy;
+    }
 }
 
