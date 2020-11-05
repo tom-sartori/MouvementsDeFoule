@@ -6,14 +6,12 @@ import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Parent;
-
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Salle extends Parent {
+public class Salle {
     private double largeur;
     private double hauteur;
     private List<Personne> listPersonnes;
@@ -35,91 +33,37 @@ public class Salle extends Parent {
         graphe = new Graphe(this);
     }
 
+    // Permet d'initialiser le controller de la salle
+    // Créée les controllers des obstacles et sprties, puis les ajoutent au controller de la salle
+    public ControllerSalle afficher() {
+        cSalle = new ControllerSalle(this);
 
-    public List<Sortie> getListSorties() {
-        return listSorties;
+        for (ObstacleRectangle obstacleRectangle : listObstacles)
+            cSalle.afficherControllerObstacle(obstacleRectangle.afficher());
+
+        for (Sortie sortie : listSorties)
+            cSalle.afficherSortie(sortie.afficher());
+
+        for (Personne personne : listPersonnes)
+            cSalle.afficherPersonne(personne.afficher());
+
+        return cSalle;
     }
 
-/*
-    // Permet d'ajouter une sortie à la salle et la place correctement
-    // Modifie x1 y1 x2 y2 de la sortie correspondante pour lui donner uniquement les coordonnées utiles
-    // (donc pas les coords exterrieurs à la salle)
-    public void addSortieAncien (Sortie sortie) {
-        listSorties.add(sortie);
+    // Permet d'ajouter au controller de la salle, les controllers de tous les obstacles et sorties.
+    // Si afficher() a déjà été appelé, ceci superpose les controllers sur ceux deja existants.
+    public void refreshAffichage() {
+        for (ObstacleRectangle obstacleRectangle : listObstacles)
+            cSalle.afficherControllerObstacle(obstacleRectangle.afficher());
 
-        if (sortie.getMur() == 1) {
-            sortie.setTranslateX(marge + sortie.getDistance());
-            sortie.setTranslateY(marge - sortie.getEpaisseur());
-
-            sortie.setX1(marge + sortie.getDistance());
-            sortie.setY1(marge);
-            sortie.setX2(sortie.getX1() + sortie.getLongueur());
-            sortie.setY2(marge);
-        }
-        if (sortie.getMur() == 2) {
-            sortie.setTranslateX(marge + largeur);
-            sortie.setTranslateY(marge + sortie.getDistance());
-
-            sortie.setX1(marge + largeur);
-            sortie.setY1(marge + sortie.getDistance());
-            sortie.setX2(marge + largeur);
-            sortie.setY2(sortie.getY1() + sortie.getLongueur());
-        }
-        if (sortie.getMur() == 3) {
-            sortie.setTranslateX(marge + sortie.getDistance());
-            sortie.setTranslateY(marge + hauteur);
-
-            sortie.setX1(marge + sortie.getDistance());
-            sortie.setY1(marge + hauteur);
-            sortie.setX2(sortie.getX1() + sortie.getLongueur());
-            sortie.setY2(marge + hauteur);
-        }
-        if (sortie.getMur() == 4) {
-            sortie.setTranslateX(marge - sortie.getEpaisseur());
-            sortie.setTranslateY(marge + sortie.getDistance());
-
-            sortie.setX1(marge);
-            sortie.setY1(marge + sortie.getDistance());
-            sortie.setX2(marge);
-            sortie.setY2(sortie.getY1() + sortie.getLongueur());
-        }
-
-        sortie.setPoint1(sortie.getX1(), sortie.getY1());
-        sortie.setPoint2(sortie.getX2(), sortie.getY2());
-
-
-        this.getChildren().add(sortie);
+        for (Sortie sortie : listSorties)
+            cSalle.afficherSortie(sortie.afficher());
     }
 
- */
-/*
-    // Permet d'ajouter une sortie à la salle et la place correctement
-    // Modifie x1 y1 x2 y2 de la sortie correspondante pour lui donner uniquement les coordonnées utiles
-    // (donc pas les coords exterrieurs à la salle)
-    public void addSortieAncien (Sortie sortie) {
-        listSorties.add(sortie);
 
-        if (sortie.getMur() == 1) {     // Mur haut
-            sortie.getPoint1().setPoint(marge + sortie.getDistance(), marge);
-            sortie.getPoint2().setPoint(marge + sortie.getDistance() + sortie.getLongueur(), marge);
-        }
-        else if (sortie.getMur() == 2) {     // Mur droit
-            sortie.getPoint1().setPoint(marge + largeur, marge + sortie.getDistance());
-            sortie.getPoint2().setPoint(marge + largeur, marge + sortie.getDistance() + sortie.getLongueur());
-        }
-        else if (sortie.getMur() == 3) {     // Mur bas
-            sortie.getPoint1().setPoint(marge + sortie.getDistance(), marge + hauteur);
-            sortie.getPoint2().setPoint(marge + sortie.getDistance() + sortie.getLongueur(), marge + hauteur);
-        }
-        else if (sortie.getMur() == 4) {     // Mur gauche
-            sortie.getPoint1().setPoint(marge, marge + sortie.getDistance());
-            sortie.getPoint2().setPoint(marge, marge + sortie.getDistance() + sortie.getLongueur());
-        }
-        else
-            System.out.println("Salle, addSortie, problème de mur. ");
+    public void addObstacle (ObstacleRectangle obstacle){
+        listObstacles.add(obstacle);
     }
-
- */
 
     // Permet d'ajouter une sortie à la salle et la place correctement
     // Modifie x1 y1 x2 y2 de la sortie correspondante pour lui donner uniquement les coordonnées utiles
@@ -147,19 +91,21 @@ public class Salle extends Parent {
             System.out.println("Salle, addSortie, problème de mur. ");
     }
 
-
     public void addPersonne (Personne personne) {
         listPersonnes.add(personne);
     }
 
-
-    public void addObstacle (ObstacleRectangle obstacle){
-        listObstacles.add(obstacle);
+    public void removePersonne (Personne personne) {
+        listPersonnes.remove(personne);
+        if (listPersonnes.isEmpty())
+            loop.pause();
+        cSalle.retirerPersonne(personne);
     }
 
-
-    public List<ObstacleRectangle> getListObstacles(){
-        return listObstacles;
+    public void removeAllPersonne(){
+        pause();
+        while(!listPersonnes.isEmpty())
+            removePersonne(listPersonnes.get(0));
     }
 
 
@@ -180,7 +126,7 @@ public class Salle extends Parent {
                     public void handle(ActionEvent arg) {
 
                         for (int i = 0; i < listPersonnes.size(); i++) {
-                            if (listPersonnes.get(i).estSorti2(salle))
+                            if (listPersonnes.get(i).estSorti(salle))
                                 removePersonne(listPersonnes.get(i));
                             else {
                                 if (listPersonnes.get(i).objectifAteint()) {
@@ -203,6 +149,17 @@ public class Salle extends Parent {
         }
     }
 
+    public void pause(){
+        if(loop != null && loop.getStatus() == Status.RUNNING){
+            loop.pause();
+        }
+    }
+
+    public boolean isRunning(){
+        if(loop!=null && loop.getStatus()== Animation.Status.RUNNING) return true;
+        else return false;
+    }
+
 
     // Utilisé à chaque fois qu'on appuie sur "play", donc qu'on lance démarer.
     // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
@@ -220,13 +177,6 @@ public class Salle extends Parent {
         cSalle.afficherGraphe(graphe.afficher());
     }
 
-
-    public void pause(){
-        if(loop != null && loop.getStatus() == Status.RUNNING){
-            loop.pause();
-        }
-    }
-
     public void play(){
         if(loop != null && loop.getStatus() == Status.PAUSED){
             loop.play();
@@ -235,14 +185,6 @@ public class Salle extends Parent {
         }
     }
 
-
-    public double getLargeur() {
-        return largeur;
-    }
-
-    public double getHauteur() {
-        return hauteur;
-    }
 
     public void removePersonne (Personne personne) {
         listPersonnes.remove(personne);
@@ -256,21 +198,7 @@ public class Salle extends Parent {
             removePersonne(listPersonnes.get(0));
     }
 
-    public boolean isRunning(){
-        if(loop!=null && loop.getStatus() != Status.STOPPED) return true;
-        else return false;
-    }
-
-    public void addGraphe (Graphe g) {
-        graphe = g;
-    }
-
-
-    public void afficherGraphe(ControllerGraphe controllerGraphe) {
-        getChildren().add(controllerGraphe);
-    }
-
-
+  
     // Ne prend pas en compte les obstacles
     public Point findSortiePlusProcheIndirecte(Point A) {
         double distance1 = -1;
@@ -302,11 +230,8 @@ public class Salle extends Parent {
         return plusProche;
     }
 
-
     public Point findSortiePlusProcheDirecte(Point A) {
         double distance;
-        double distance1 = -1;
-        double distance2 = -1;
 
         double distanceCourte = 1000000;
         Point plusProche = null;
@@ -332,7 +257,6 @@ public class Salle extends Parent {
         }
     }
 
-
     public boolean intersecObstacle(Point coordA,Point coordB) {
         boolean b = false;
         for(Obstacle obstacle: listObstacles) {
@@ -346,36 +270,24 @@ public class Salle extends Parent {
     }
 
 
+    public List<Sortie> getListSorties() {
+        return listSorties;
+    }
+
     public Graphe getGraphe() {
         return graphe;
     }
 
-
-    // Permet d'initialiser le controller de la salle
-    // Créée les controllers des obstacles et sprties, puis les ajoutent au controller de la salle
-    public ControllerSalle afficher() {
-        cSalle = new ControllerSalle(this);
-
-        for (ObstacleRectangle obstacleRectangle : listObstacles)
-            cSalle.afficherControllerObstacle(obstacleRectangle.afficher());
-
-        for (Sortie sortie : listSorties)
-            cSalle.afficherSortie(sortie.afficher());
-
-        for (Personne personne : listPersonnes)
-            cSalle.afficherPersonne(personne.afficher());
-
-        return cSalle;
+    public List<ObstacleRectangle> getListObstacles(){
+        return listObstacles;
     }
 
-    // Permet d'ajouter au controller de la salle, les controllers de tous les obstacles et sorties.
-    // Si afficher() a déjà été appelé, ceci superpose les controllers sur ceux deja existants.
-    public void refreshAffichage() {
-        for (ObstacleRectangle obstacleRectangle : listObstacles)
-            cSalle.afficherControllerObstacle(obstacleRectangle.afficher());
+    public double getLargeur() {
+        return largeur;
+    }
 
-        for (Sortie sortie : listSorties)
-            cSalle.afficherSortie(sortie.afficher());
+    public double getHauteur() {
+        return hauteur;
     }
 
     public void setVitessePersonnes(double v){

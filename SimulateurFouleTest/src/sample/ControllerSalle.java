@@ -11,6 +11,7 @@ import java.util.List;
 
 public class ControllerSalle extends Parent{
     private Salle salle;
+    private Rectangle salleGraphique;
     private List<ControllerPersonne> listeControllerPersonne;
 
 
@@ -18,8 +19,10 @@ public class ControllerSalle extends Parent{
         this.salle = s;
         listeControllerPersonne = new ArrayList<>();
 
-        Rectangle salleGraphique = new Rectangle(salle.getLargeur(), salle.getHauteur());
+        salleGraphique = new Rectangle(salle.getLargeur(), salle.getHauteur());
         salleGraphique.setFill(Color.LIGHTCYAN);
+        //listeControllerPersonne = new ArrayList<>();
+
 
         // Event utilisé pour ajouter des Personne en cliquant.
         salleGraphique.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -78,9 +81,4 @@ public class ControllerSalle extends Parent{
     public void afficherGraphe (ControllerGraphe controllerGraphe) {
         getChildren().add(controllerGraphe);
     }
-
-    public Salle getSalle(){
-        return salle;
-    }
-
 }
