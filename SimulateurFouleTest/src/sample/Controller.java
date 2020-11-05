@@ -5,55 +5,99 @@ import javafx.event.EventHandler;
 import javafx.scene.Parent;
 
 public class Controller extends Parent{
-    private ControllerSalle cs;
-    private ControllerPanel cp;
+    private ControllerSalle cSalle;
+    private ControllerPanel cPanel;
 
-    public ControllerSalle getCS(){
-        return cs;
-    }
 
-    public ControllerPanel getCP(){
-        return cp;
-    }
+    public Controller (Salle salle) {
+        double marge = 30;
 
-    public Controller(double width, double height){
-        cs = new ControllerSalle(width, height-40);
-        cp = new ControllerPanel();
-        cp.setTranslateY(height-40);
-        cp.minWidth(width);
-    
+        cSalle = salle.afficher();
+        cSalle.setTranslateX(marge);
+        cSalle.setTranslateY(marge);
 
-        cp.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
+        cPanel = new ControllerPanel();
+        cPanel.setTranslateY(salle.getHauteur() + (3 * marge));
+
+
+
+        cPanel.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-  /*
-//<<<<<<< Tom1
                 salle.demarrerV2();
                 if(salle.isRunning()){
-//=======
-                cs.startLoop();
-                if(cs.isRunning()){
-//>>>>>>> main
-*/
-                    cp.setStatusLabel(true);
+                    cPanel.setStatusLabel(true);
                 }
             }
         });
 
-        cp.getPauseButton().setOnAction(new EventHandler<ActionEvent>() {
+        cPanel.getPauseButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                cs.pause();
-                cp.setStatusLabel(false);
+                salle.pause();
+                cPanel.setStatusLabel(false);
             }
         });
 
-        cp.getClearButton().setOnAction(new EventHandler<ActionEvent>() {
+        cPanel.getClearButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                cs.removeAllPersonne();
-                cp.setStatusLabel(false);
+                salle.removeAllPersonne();
+                cPanel.setStatusLabel(false);
             }
         });
 
-        this.getChildren().addAll(cs, cp);
+
+        getChildren().add(cSalle);
+        getChildren().add(cPanel);
     }
-    
+
+    public Controller(double width, double height){
+        cSalle = new ControllerSalle(width, height-40);
+        cPanel = new ControllerPanel();
+        cPanel.setTranslateY(height-40);
+        cPanel.minWidth(width);
+
+        Salle salle = cSalle.getSalle();
+
+        cPanel.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                salle.demarrerV2();
+                if(salle.isRunning()){
+                    cPanel.setStatusLabel(true);
+                }
+            }
+        });
+
+        cPanel.getPauseButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                salle.pause();
+                cPanel.setStatusLabel(false);
+            }
+        });
+
+        cPanel.getClearButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                salle.removeAllPersonne();
+                cPanel.setStatusLabel(false);
+            }
+        });
+
+        this.getChildren().addAll(cSalle, cPanel);
+    }
+
+    public void addControllerObstacle(ControllerObstacleRectangle controllerObstacleRectangle) {
+        cSalle.afficherControllerObstacle(controllerObstacleRectangle);
+    }
+
+    public void addControllerSortie(ControllerSortie controllerSortie) {
+        //cp.afficherSortie(controllerSortie);
+        getChildren().add(controllerSortie);
+    }
+
+
+    public ControllerSalle getcSalle() {
+        return cSalle;
+    }
+
+    public ControllerPanel getcPanel() {
+        return cPanel;
+    }
 }

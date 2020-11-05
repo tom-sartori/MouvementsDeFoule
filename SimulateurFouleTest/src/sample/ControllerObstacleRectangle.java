@@ -5,18 +5,20 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
 public class ControllerObstacleRectangle extends Parent{
-    private ObstacleRectangle obstacle;
+    private ObstacleRectangle obstacleRectangle;
 
-    public ObstacleRectangle getObstacle(){
-        return obstacle;
-    }
-    
-    public ControllerObstacleRectangle(double x, double y, double larg, double haut){
-        obstacle = new ObstacleRectangle(x, y, larg, haut);
-        
-        Rectangle obstacle = new Rectangle(x, y, larg, haut);
-        obstacle.setFill(Color.DARKCYAN);
-        this.getChildren().add(obstacle);
-    }
 
+    public ControllerObstacleRectangle(ObstacleRectangle obstacleRect) {
+        obstacleRectangle = obstacleRect;
+
+        //Rectangle obstacleGraphique = new Rectangle(obstacleRectangle.getPoint1().getX(), obstacleRectangle.getPoint1().getY(), obstacleRectangle.getLargeur(), obstacleRectangle.getLargeur());
+        Rectangle obstacleGraphique = new Rectangle();
+        obstacleGraphique.setX(obstacleRectangle.getPoint1().getX());
+        obstacleGraphique.setY(obstacleRectangle.getPoint1().getY());
+        obstacleGraphique.setWidth(obstacleRectangle.getLargeur());
+        obstacleGraphique.setHeight(obstacleRectangle.getHauteur());
+
+        obstacleGraphique.setFill(Color.DARKCYAN);
+        this.getChildren().add(obstacleGraphique);
+    }
 }

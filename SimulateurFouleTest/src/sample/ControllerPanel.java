@@ -9,7 +9,7 @@ public class ControllerPanel extends Parent {
     Button pauseButton;
     Button clearButton;
     Label statusLabel;
-    
+
     public Button getPlayButton(){
         return playButton;
     }
