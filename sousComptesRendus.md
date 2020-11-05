@@ -79,4 +79,5 @@ Idées :
   - Un Slider qui permet de changer la vitesse des personnes
   - Une CheckBox pour activer ou désactiver l'affichage du graphe
   - Une checkBox pour activer ou désactiver les collisions
+- Détection des collisions entre les personnes (classe salle.java)
   
