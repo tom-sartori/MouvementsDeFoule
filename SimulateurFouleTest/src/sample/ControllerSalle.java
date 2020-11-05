@@ -8,24 +8,22 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ControllerSalle extends Parent{
     private Salle salle;
+    private Rectangle salleGraphique;
     private List<ControllerPersonne> listeControllerPersonne;
 
 
     public ControllerSalle (Salle s) {
         this.salle = s;
 
-        Rectangle salleGraphique = new Rectangle(salle.getLargeur(), salle.getHauteur());
+        salleGraphique = new Rectangle(salle.getLargeur(), salle.getHauteur());
         salleGraphique.setFill(Color.LIGHTCYAN);
-        this.getChildren().add(salle);
-
         listeControllerPersonne = new ArrayList<>();
 
         // Event utilisé pour ajouter des Personne en cliquant.
-        salle.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        salleGraphique.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if(!salle.isRunning()){
@@ -37,28 +35,11 @@ public class ControllerSalle extends Parent{
         getChildren().add(salleGraphique);
     }
 
-    public ControllerSalle(double width, double height){
-        salle = new Salle(width,height);
-
-
-
-        salle.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                if(!salle.isRunning()){
-                    createPersonne(event.getX(),event.getY());
-                }
-            }
-        });
-
-        this.getChildren().add(salle);
-    }
-
     public void createPersonne(double x, double y){
         Personne personne = new Personne(x, y);
         salle.addPersonne(personne);
     }
+
     public void afficherControllerObstacle(ControllerObstacleRectangle controllerObstacleRectangle) {
         getChildren().add(controllerObstacleRectangle);
     }
@@ -97,9 +78,4 @@ public class ControllerSalle extends Parent{
     public void afficherGraphe (ControllerGraphe controllerGraphe) {
         getChildren().add(controllerGraphe);
     }
-
-    public Salle getSalle(){
-        return salle;
-    }
-
 }
