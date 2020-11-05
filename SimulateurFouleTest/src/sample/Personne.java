@@ -1,9 +1,5 @@
 package sample;
 
-import javafx.scene.Parent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-
 import java.util.List;
 
 public class Personne {
@@ -322,6 +318,10 @@ public class Personne {
 
     public Point getCoordCourant() {
         return coordCourant;
+    }
+
+    public void setVitesse(double v){
+        vitesse = v;
     }
 }
 

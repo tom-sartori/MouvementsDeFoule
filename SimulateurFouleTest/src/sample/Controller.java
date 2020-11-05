@@ -23,64 +23,32 @@ public class Controller extends Parent{
 
         cPanel.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                salle.demarrerV2();
-                if(salle.isRunning()){
-                    cPanel.setStatusLabel(true);
-                }
+                salle.setVitessePersonnes(cPanel.getVitesseValue());
+                salle.play();
             }
         });
 
         cPanel.getPauseButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.pause();
-                cPanel.setStatusLabel(false);
             }
         });
 
         cPanel.getClearButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.removeAllPersonne();
-                cPanel.setStatusLabel(false);
             }
         });
 
+        cPanel.getGrapheCB().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                if(!salle.isRunning())
+                    salle.initialisationGrapheAvecAffichage();
+            }
+        });
 
         getChildren().add(cSalle);
         getChildren().add(cPanel);
-    }
-
-    public Controller(double width, double height){
-        cSalle = new ControllerSalle(width, height-40);
-        cPanel = new ControllerPanel();
-        cPanel.setTranslateY(height-40);
-        cPanel.minWidth(width);
-
-        Salle salle = cSalle.getSalle();
-
-        cPanel.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                salle.demarrerV2();
-                if(salle.isRunning()){
-                    cPanel.setStatusLabel(true);
-                }
-            }
-        });
-
-        cPanel.getPauseButton().setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                salle.pause();
-                cPanel.setStatusLabel(false);
-            }
-        });
-
-        cPanel.getClearButton().setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                salle.removeAllPersonne();
-                cPanel.setStatusLabel(false);
-            }
-        });
-
-        this.getChildren().addAll(cSalle, cPanel);
     }
 
     public void addControllerObstacle(ControllerObstacleRectangle controllerObstacleRectangle) {

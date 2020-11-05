@@ -164,7 +164,7 @@ public class Salle extends Parent {
 
 
     public void demarrerV2 () {
-        initialisationGrapheAvecAffichage();
+        initialisationGrapheSansAffichage();
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
@@ -174,7 +174,7 @@ public class Salle extends Parent {
 
             Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
 
-            if (loop == null) {
+            if (loop == null || loop.getStatus()==Status.STOPPED) {
 
                 loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent arg) {
@@ -227,6 +227,14 @@ public class Salle extends Parent {
         }
     }
 
+    public void play(){
+        if(loop != null && loop.getStatus() == Status.PAUSED){
+            loop.play();
+        } else if(loop == null || loop.getStatus() == Status.STOPPED){
+            demarrerV2();
+        }
+    }
+
 
     public double getLargeur() {
         return largeur;
@@ -238,19 +246,18 @@ public class Salle extends Parent {
 
     public void removePersonne (Personne personne) {
         listPersonnes.remove(personne);
-        if (listPersonnes.isEmpty())
-            loop.pause();
+        if (listPersonnes.isEmpty() && loop != null)
+            loop.stop();
         cSalle.retirerPersonne(personne);
     }
 
     public void removeAllPersonne(){
-        pause();
         while(!listPersonnes.isEmpty())
             removePersonne(listPersonnes.get(0));
     }
 
     public boolean isRunning(){
-        if(loop!=null && loop.getStatus()== Animation.Status.RUNNING) return true;
+        if(loop!=null && loop.getStatus() != Status.STOPPED) return true;
         else return false;
     }
 
@@ -369,5 +376,11 @@ public class Salle extends Parent {
 
         for (Sortie sortie : listSorties)
             cSalle.afficherSortie(sortie.afficher());
+    }
+
+    public void setVitessePersonnes(double v){
+        for(Personne personne : listPersonnes){
+            personne.setVitesse(v);
+        }
     }
 }
