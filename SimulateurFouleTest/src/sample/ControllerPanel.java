@@ -12,25 +12,6 @@ public class ControllerPanel extends Parent {
     Slider vitesse;
     CheckBox graphe;
 
-    public Button getPlayButton(){
-        return playButton;
-    }
-
-    public Button getPauseButton(){
-        return pauseButton;
-    }
-
-    public Button getClearButton(){
-        return clearButton;
-    }
-
-    public double getVitesseValue(){
-        return vitesse.getValue();
-    }
-
-    public CheckBox getGrapheCB(){
-        return graphe;
-    }
 
     public ControllerPanel(){
         this.minHeight(40);
@@ -58,4 +39,23 @@ public class ControllerPanel extends Parent {
         return b;
     }
 
+    public Button getPlayButton(){
+        return playButton;
+    }
+
+    public Button getPauseButton(){
+        return pauseButton;
+    }
+
+    public Button getClearButton(){
+        return clearButton;
+    }
+
+    public double getVitesseValue(){
+        return vitesse.getValue();
+    }
+
+    public CheckBox getGrapheCB(){
+        return graphe;
+    }
 }
