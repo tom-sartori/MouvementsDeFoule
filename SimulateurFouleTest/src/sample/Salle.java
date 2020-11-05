@@ -206,7 +206,7 @@ public class Salle {
     }
 
     public boolean isRunning(){
-        if(loop!=null && loop.getStatus()== Animation.Status.RUNNING) return true;
+        if(loop!=null && loop.getStatus()!= Animation.Status.STOPPED) return true;
         else return false;
     }
 
@@ -227,11 +227,14 @@ public class Salle {
         cSalle.afficherGraphe(graphe.afficher());
     }
 
-    public void play(){
+    public void play(Boolean collisionActive){
         if(loop != null && loop.getStatus() == Status.PAUSED){
             loop.play();
         } else if(loop == null || loop.getStatus() == Status.STOPPED){
-            demarrerAvecCollisions();
+            if(collisionActive)
+                demarrerAvecCollisions();
+            else
+                demarrer();
         }
     }
 

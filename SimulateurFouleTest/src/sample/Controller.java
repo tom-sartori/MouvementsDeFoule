@@ -23,7 +23,9 @@ public class Controller extends Parent{
         cPanel.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.setVitessePersonnes(cPanel.getVitesseValue());
-                salle.play();
+                if(cPanel.getCollisionStatus())
+                    salle.play(true);
+                else salle.play(false);
             }
         });
 
@@ -41,8 +43,9 @@ public class Controller extends Parent{
 
         cPanel.getGrapheCB().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                if(!salle.isRunning())
+                if(cPanel.getGrapheCB().isSelected())
                     salle.initialisationGrapheAvecAffichage();
+                else cSalle.cacherGraphe();
             }
         });
 

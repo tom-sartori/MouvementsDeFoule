@@ -11,7 +11,7 @@ public class ControllerPanel extends Parent {
     Button clearButton;
     Slider vitesse;
     CheckBox graphe;
-
+    CheckBox collisions;
 
     public ControllerPanel(){
         this.minHeight(40);
@@ -27,8 +27,11 @@ public class ControllerPanel extends Parent {
         vitesse.setTranslateX(200);
         graphe = new CheckBox("Afficher graphe");
         graphe.setTranslateX(350);
+        collisions = new CheckBox("Activer les collisions");
+        collisions.setTranslateX(350);
+        collisions.setTranslateY(20);
 
-        this.getChildren().addAll(graphe, vitesse, playButton, pauseButton, clearButton);
+        this.getChildren().addAll(collisions, graphe, vitesse, playButton, pauseButton, clearButton);
     }
 
     public Button createButton(String text, int position){
@@ -57,5 +60,9 @@ public class ControllerPanel extends Parent {
 
     public CheckBox getGrapheCB(){
         return graphe;
+    }
+
+    public Boolean getCollisionStatus(){
+        return collisions.isSelected();
     }
 }

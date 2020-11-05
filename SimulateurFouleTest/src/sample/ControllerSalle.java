@@ -13,6 +13,7 @@ public class ControllerSalle extends Parent{
     private Salle salle;
     private Rectangle salleGraphique;
     private List<ControllerPersonne> listeControllerPersonne;
+    private ControllerGraphe controllerGraphe;
 
 
     public ControllerSalle (Salle s) {
@@ -79,6 +80,12 @@ public class ControllerSalle extends Parent{
     }
 
     public void afficherGraphe (ControllerGraphe controllerGraphe) {
+        this.controllerGraphe = controllerGraphe;
         getChildren().add(controllerGraphe);
+    }
+
+    public void cacherGraphe(){
+        if(controllerGraphe != null)
+            getChildren().remove(controllerGraphe);
     }
 }
