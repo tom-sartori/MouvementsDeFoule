@@ -180,7 +180,7 @@ public class Salle extends Parent {
                     public void handle(ActionEvent arg) {
 
                         for (int i = 0; i < listPersonnes.size(); i++) {
-                            if (listPersonnes.get(i).estSorti2(salle))
+                            if (listPersonnes.get(i).estSorti(salle))
                                 removePersonne(listPersonnes.get(i));
                             else {
                                 if (listPersonnes.get(i).objectifAteint()) {
