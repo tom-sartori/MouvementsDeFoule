@@ -185,19 +185,6 @@ public class Salle {
         }
     }
 
-
-    public void removePersonne (Personne personne) {
-        listPersonnes.remove(personne);
-        if (listPersonnes.isEmpty() && loop != null)
-            loop.stop();
-        cSalle.retirerPersonne(personne);
-    }
-
-    public void removeAllPersonne(){
-        while(!listPersonnes.isEmpty())
-            removePersonne(listPersonnes.get(0));
-    }
-
   
     // Ne prend pas en compte les obstacles
     public Point findSortiePlusProcheIndirecte(Point A) {
