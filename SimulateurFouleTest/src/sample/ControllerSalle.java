@@ -17,27 +17,30 @@ public class ControllerSalle extends Parent{
 
     public ControllerSalle (Salle s) {
         this.salle = s;
+        listeControllerPersonne = new ArrayList<>();
 
         salleGraphique = new Rectangle(salle.getLargeur(), salle.getHauteur());
         salleGraphique.setFill(Color.LIGHTCYAN);
-        listeControllerPersonne = new ArrayList<>();
+        //listeControllerPersonne = new ArrayList<>();
+
 
         // Event utilisé pour ajouter des Personne en cliquant.
         salleGraphique.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if(!salle.isRunning()){
-                    createPersonne(event.getX(),event.getY());
+                    afficherPersonne(createPersonne(event.getX(),event.getY()));
                 }
             }
         });
 
-        getChildren().add(salleGraphique);
+        this.getChildren().add(salleGraphique);
     }
 
-    public void createPersonne(double x, double y){
+    public ControllerPersonne createPersonne(double x, double y){
         Personne personne = new Personne(x, y);
         salle.addPersonne(personne);
+        return personne.afficher();
     }
 
     public void afficherControllerObstacle(ControllerObstacleRectangle controllerObstacleRectangle) {

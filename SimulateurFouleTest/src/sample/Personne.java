@@ -148,5 +148,9 @@ public class Personne {
     public Point getCoordCourant() {
         return coordCourant;
     }
+
+    public void setVitesse(double v){
+        vitesse = v;
+    }
 }
 

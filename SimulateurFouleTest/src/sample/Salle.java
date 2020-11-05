@@ -110,7 +110,7 @@ public class Salle {
 
 
     public void demarrerV2 () {
-        initialisationGrapheAvecAffichage();
+        initialisationGrapheSansAffichage();
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
@@ -120,7 +120,7 @@ public class Salle {
 
             Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
 
-            if (loop == null) {
+            if (loop == null || loop.getStatus()==Status.STOPPED) {
 
                 loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent arg) {
@@ -177,7 +177,28 @@ public class Salle {
         cSalle.afficherGraphe(graphe.afficher());
     }
 
+    public void play(){
+        if(loop != null && loop.getStatus() == Status.PAUSED){
+            loop.play();
+        } else if(loop == null || loop.getStatus() == Status.STOPPED){
+            demarrerV2();
+        }
+    }
 
+
+    public void removePersonne (Personne personne) {
+        listPersonnes.remove(personne);
+        if (listPersonnes.isEmpty() && loop != null)
+            loop.stop();
+        cSalle.retirerPersonne(personne);
+    }
+
+    public void removeAllPersonne(){
+        while(!listPersonnes.isEmpty())
+            removePersonne(listPersonnes.get(0));
+    }
+
+  
     // Ne prend pas en compte les obstacles
     public Point findSortiePlusProcheIndirecte(Point A) {
         double distance1 = -1;
@@ -267,5 +288,11 @@ public class Salle {
 
     public double getHauteur() {
         return hauteur;
+    }
+
+    public void setVitessePersonnes(double v){
+        for(Personne personne : listPersonnes){
+            personne.setVitesse(v);
+        }
     }
 }

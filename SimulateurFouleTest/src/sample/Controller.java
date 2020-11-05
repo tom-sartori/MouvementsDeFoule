@@ -23,27 +23,29 @@ public class Controller extends Parent{
 
         cPanel.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                salle.demarrerV2();
-                if(salle.isRunning()){
-                    cPanel.setStatusLabel(true);
-                }
+                salle.setVitessePersonnes(cPanel.getVitesseValue());
+                salle.play();
             }
         });
 
         cPanel.getPauseButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.pause();
-                cPanel.setStatusLabel(false);
             }
         });
 
         cPanel.getClearButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.removeAllPersonne();
-                cPanel.setStatusLabel(false);
             }
         });
 
+        cPanel.getGrapheCB().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                if(!salle.isRunning())
+                    salle.initialisationGrapheAvecAffichage();
+            }
+        });
 
         getChildren().add(cSalle);
         getChildren().add(cPanel);
