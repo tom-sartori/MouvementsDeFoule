@@ -23,6 +23,14 @@ public class Main extends Application {
         salle.addSortie(new Sortie(2,60,50));
         salle.addSortie(new Sortie(3, 60, 80));
         salle.addSortie(new Sortie(3, 40, 600));
+        
+        for (int i = 0; i < 100; i++) {
+            Random ran = new Random();
+            double x = ran.nextInt(1000);
+            double y = ran.nextInt(600);
+            System.out.println(x + " " + y);
+            salle.addPersonne(new Personne(x,y));
+        }
 
         Controller controller = new Controller(salle);
         root.getChildren().add(controller);
