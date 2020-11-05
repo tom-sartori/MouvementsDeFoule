@@ -164,7 +164,7 @@ public class Salle extends Parent {
 
 
     public void demarrerV2 () {
-        initialisationGrapheSansAffichage();
+        initialisationGrapheAvecAffichage();
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
@@ -217,7 +217,7 @@ public class Salle extends Parent {
     public void initialisationGrapheAvecAffichage () {
         graphe = new Graphe(this);
         graphe.creerCheminPlusCourtAvecSortie(this);
-        afficherGraphe(graphe.afficher());
+        cSalle.afficherGraphe(graphe.afficher());
     }
 
 

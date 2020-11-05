@@ -18,9 +18,9 @@ public class Main extends Application {
 
         Salle salle = new Salle(1000, 600);
 
-        salle.addObstacle(new ObstacleRectangle(150, 200, 120, 70));
+        salle.addObstacle(new ObstacleRectangle(150, 200, 70, 30));
         salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
-        salle.addObstacle(new ObstacleRectangle(600, 100, 100, 400));
+        salle.addObstacle(new ObstacleRectangle(600, 100, 10, 200));
 
         salle.addSortie(new Sortie(2,60,50));
         salle.addSortie(new Sortie(3, 60, 80));
@@ -31,8 +31,8 @@ public class Main extends Application {
 
         for (int i = 0; i < 100; i++) {
             Random ran = new Random();
-            double x = ran.nextInt(970 - 25 + 1) + 20;
-            double y = ran.nextInt(540 - 25 + 1) + 20;
+            double x = ran.nextInt(1000);
+            double y = ran.nextInt(600);
             System.out.println(x + " " + y);
             salle.addPersonne(new Personne(x,y));
         }

@@ -34,6 +34,12 @@ public class ObstacleRectangle extends Obstacle {
         listDiagonales.add(point3);
         listDiagonales.add(point2);
         listDiagonales.add(point4);
+
+        System.out.println("point 1" + point1);
+        System.out.println("point 2" + point2);
+        System.out.println("point 3" + point3);
+        System.out.println("point 4" + point4);
+
     }
 
     public ControllerObstacleRectangle afficher () {

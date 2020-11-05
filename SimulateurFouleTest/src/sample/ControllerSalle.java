@@ -94,6 +94,10 @@ public class ControllerSalle extends Parent{
         return false;
     }
 
+    public void afficherGraphe (ControllerGraphe controllerGraphe) {
+        getChildren().add(controllerGraphe);
+    }
+
     public Salle getSalle(){
         return salle;
     }
