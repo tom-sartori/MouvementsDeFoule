@@ -1,39 +1,53 @@
 package sample;
 
 import javafx.scene.Parent;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class ControllerSortie extends Parent {
+
     private Sortie sortie;
-    private double epaisseur = 15;
-    private int mur;
 
-    public Sortie getSortie(){
-        return sortie;
-    }
+    public ControllerSortie (Sortie s) {
+        sortie = s;
+        double epaisseurGraphique = 15;
+        int mur = sortie.getMur();
 
-    public int getMur(){
-        return mur;
-    }
-    
-    public ControllerSortie(int mur, double longueur, double d){
-        sortie = new Sortie(mur, longueur, d);
-        Rectangle sortieGraphic = new Rectangle();
+
+        Rectangle sortieGraphique = new Rectangle();
+
+        // Placement du rectangle par rapport au ControllerSalle
+        if (mur == 1) {
+            sortieGraphique.setX(sortie.getPoint1().getX());
+            sortieGraphique.setY(- epaisseurGraphique);
+        }
+        if (mur == 2 || mur == 3) {
+            sortieGraphique.setX(sortie.getPoint1().getX());
+            sortieGraphique.setY(sortie.getPoint1().getY());
+        }
+        else if (mur == 4) {
+            sortieGraphique.setX(- epaisseurGraphique);
+            sortieGraphique.setY(sortie.getPoint1().getY());
+        }
+        else
+            System.out.println("ControllerSortie, constructeur, erreur1. ");
+
+
+        // Forme du rectangle suivant la sortie sur la quelle il est.
         if(mur==1 || mur==3){
-            sortieGraphic.setWidth(longueur);
-            sortieGraphic.setHeight(epaisseur);
+            sortieGraphique.setWidth(sortie.getLongueur());
+            sortieGraphique.setHeight(epaisseurGraphique);
         }
         else if(mur==2 || mur==4){
-            sortieGraphic.setHeight(longueur);
-            sortieGraphic.setWidth(epaisseur);
+            sortieGraphique.setHeight(sortie.getLongueur());
+            sortieGraphique.setWidth(epaisseurGraphique);
         }
         else {
-            System.out.println("Erreur dans constructeur Sortie");
+            System.out.println("ControllerSortie, constructeur, erreur2. ");
             return;
         }
-        sortieGraphic.setFill(Color.NAVY);
-        this.mur = mur;
-        this.getChildren().add(sortieGraphic);
+
+        sortieGraphique.setFill(Color.NAVY);
+        getChildren().add(sortieGraphique);
     }
 }

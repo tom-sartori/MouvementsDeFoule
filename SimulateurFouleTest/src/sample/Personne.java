@@ -1,9 +1,12 @@
 package sample;
 
+import javafx.scene.Parent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
 import java.util.List;
 
-public class Personne {
-
+public class Personne extends Parent {
     private double xDepart;
     private double yDepart;
     private final double r = 2;
@@ -15,25 +18,14 @@ public class Personne {
     private double dy;
     private double vitesse = 1;
 
-    public double getxDepart() {
-        return xDepart;
-    }
-
-    public double getyDepart() {
-        return yDepart;
-    }
-
-    public double getDx(){
-        return dx;
-    }
-
-    public double getDy(){
-        return dy;
-    }
-    
     public Personne(double posX , double posY){
         xDepart = posX;
         yDepart = posY;
+        Circle cercle = new Circle(xDepart, yDepart,r);
+        cercle.setFill(Color.RED);
+        this.getChildren().add(cercle);
+        coordCourant = new Point(xDepart, yDepart);
+        objectif = null;
     }
 
     // Permet de savoir les coordonnés du coin de sortie le plus proche du perso
@@ -59,12 +51,12 @@ public class Personne {
 
         }
         if (x1oux2 == 1) {  // Si c'est le (x1 y1) d'une des sorties qui est le plus proche, alors :
-            coordPoint.setX(salle.getListSorties().get(index).getX1());     // tab[0] prend le x1 de la sortie correspondante
-            coordPoint.setY(salle.getListSorties().get(index).getY1());     // et tab[1] le y1
+            coordPoint.setX(salle.getListSorties().get(index).getPoint1().getX());     // tab[0] prend le x1 de la sortie correspondante
+            coordPoint.setY(salle.getListSorties().get(index).getPoint1().getY());     // et tab[1] le y1
         }
         else if (x1oux2 == 2) {     // Sinon, c'est le (x2, y2) de la sortie qui est plus proche, alors :
-            coordPoint.setX(salle.getListSorties().get(index).getX2());     // tab[0] prend x2
-            coordPoint.setY(salle.getListSorties().get(index).getY2());     // tab[1] prend y2
+            coordPoint.setX(salle.getListSorties().get(index).getPoint2().getX());     // tab[0] prend x2
+            coordPoint.setY(salle.getListSorties().get(index).getPoint2().getY());     // tab[1] prend y2
         }
         else
             System.out.println("Erreur findCoordSortie. ");
@@ -86,8 +78,8 @@ public class Personne {
         double dist2 = 0;
 
         // calcul avec Pythagore
-        dist1 = Math.sqrt( Math.pow(Math.abs(xDepart - sortie.getX1()), 2) + Math.pow(Math.abs(yDepart - sortie.getY1()), 2));
-        dist2 = Math.sqrt( Math.pow(Math.abs(xDepart - sortie.getX2()), 2) + Math.pow(Math.abs(yDepart - sortie.getY2()), 2));
+        dist1 = Math.sqrt( Math.pow(Math.abs(xDepart - sortie.getPoint1().getX()), 2) + Math.pow(Math.abs(yDepart - sortie.getPoint1().getY()), 2));
+        dist2 = Math.sqrt( Math.pow(Math.abs(xDepart - sortie.getPoint2().getX()), 2) + Math.pow(Math.abs(yDepart - sortie.getPoint2().getY()), 2));
 
         //System.out.println("Distance 1 : " + dist1);
         //System.out.println("Distance 2 : " + dist2);
@@ -194,9 +186,8 @@ public class Personne {
     }
 
 
-   // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
-   public void setDxDy(Salle salle) {
-
+    // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
+    public void setDxDy(Salle salle) {
         double [] coordSortie = findCoordSortie(salle);
         Point coordDxDy = findDxDy(coordSortie[0], coordSortie[1], (int)coordSortie[2]);
 
@@ -283,29 +274,28 @@ public class Personne {
     // Permet de savoir si le perso est sorti de la salle avec plus ou moins de précision
     // La précision est importante car sinon on detecte en premier qu'il est arrivé a son dernier objectif et donc,
     // son prochain objectif est null.
-    // Du coup, on detecte un peu acant qu'il soit sorti, qu'il est sorti.
+    // Du coup, on detecte un peu avant qu'il soit sorti, qu'il est sorti.
     public boolean estSorti2(Salle salle) {
         double precision = 3;
 
         if (dx > 0) {
-            if (coordCourant.getX() + precision >= salle.getLargeur() + salle.getMarge())
+            if (coordCourant.getX() + precision >= salle.getLargeur())
                 return true;
         }
         if (dx < 0) {
-            if (coordCourant.getX() - precision <= 0 + salle.getMarge())
+            if (coordCourant.getX() - precision <= 0)
                 return true;
         }
         if (dy > 0) {
-            if (coordCourant.getY() + precision >= salle.getHauteur() + salle.getMarge())
+            if (coordCourant.getY() + precision >= salle.getHauteur())
                 return true;
         }
         if (dy < 0) {
-            if (coordCourant.getY() - precision <= salle.getMarge())
+            if (coordCourant.getY() - precision <= 0)
                 return true;
         }
         return false;
     }
-
 
     public boolean estTouche(Point coordSortie,Point coordC,Point coordD){
         Point coordP = new Point(xDepart,yDepart);
@@ -333,6 +323,5 @@ public class Personne {
     public void setDy(double dy) {
         this.dy = dy;
     }
-
 }
 

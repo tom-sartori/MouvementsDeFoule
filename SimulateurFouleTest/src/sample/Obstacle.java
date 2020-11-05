@@ -3,7 +3,6 @@ package sample;
 import java.util.List;
 
 public abstract class Obstacle {
-
     private double x;
     private double y;
     private List<Point> listCoins;
