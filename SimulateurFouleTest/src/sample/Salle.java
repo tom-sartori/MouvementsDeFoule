@@ -22,7 +22,7 @@ public class Salle extends Parent {
     private Timeline loop;
     private Graphe graphe;
 
-    ControllerSalle cSalle;
+    private ControllerSalle cSalle;
 
 
     public Salle(double lar, double hau) {  // Créée une salle rectangle avec une marge
@@ -187,8 +187,10 @@ public class Salle extends Parent {
                                     listPersonnes.get(i).setObjectif(salle);
                                     listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
                                 }
-                                else
+                                else {
                                     listPersonnes.get(i).avancer();
+                                    cSalle.deplacerPersonne(listPersonnes.get(i));
+                                }
                             }
                         }
                     }
@@ -236,10 +238,9 @@ public class Salle extends Parent {
 
     public void removePersonne (Personne personne) {
         listPersonnes.remove(personne);
-        getChildren().remove(personne);
         if (listPersonnes.isEmpty())
             loop.pause();
-
+        cSalle.retirerPersonne(personne);
     }
 
     public void removeAllPersonne(){
@@ -353,6 +354,10 @@ public class Salle extends Parent {
 
         for (Sortie sortie : listSorties)
             cSalle.afficherSortie(sortie.afficher());
+
+        for (Personne personne : listPersonnes)
+            cSalle.afficherPersonne(personne.afficher());
+
         return cSalle;
     }
 

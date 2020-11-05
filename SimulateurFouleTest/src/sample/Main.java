@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.Random;
+
 public class Main extends Application {
 
     @Override
@@ -23,6 +25,18 @@ public class Main extends Application {
         salle.addSortie(new Sortie(2,60,50));
         salle.addSortie(new Sortie(3, 60, 80));
         salle.addSortie(new Sortie(3, 40, 600));
+
+        salle.addPersonne(new Personne(300, 300));
+        salle.addPersonne(new Personne(200, 50));
+
+        for (int i = 0; i < 100; i++) {
+            Random ran = new Random();
+            double x = ran.nextInt(970 - 25 + 1) + 20;
+            double y = ran.nextInt(540 - 25 + 1) + 20;
+            System.out.println(x + " " + y);
+            salle.addPersonne(new Personne(x,y));
+        }
+
 
 
 

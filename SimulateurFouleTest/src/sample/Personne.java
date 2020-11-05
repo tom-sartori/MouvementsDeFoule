@@ -6,26 +6,22 @@ import javafx.scene.shape.Circle;
 
 import java.util.List;
 
-public class Personne extends Parent {
-    private double xDepart;
-    private double yDepart;
-    private final double r = 2;
+public class Personne {
 
     private Point coordCourant;
     private Point objectif;
 
     private double dx;
     private double dy;
-    private double vitesse = 1;
+    private double vitesse = 2;
 
     public Personne(double posX , double posY){
-        xDepart = posX;
-        yDepart = posY;
-        Circle cercle = new Circle(xDepart, yDepart,r);
-        cercle.setFill(Color.RED);
-        this.getChildren().add(cercle);
-        coordCourant = new Point(xDepart, yDepart);
+        coordCourant = new Point(posX, posY);
         objectif = null;
+    }
+
+    public ControllerPersonne afficher() {
+        return new ControllerPersonne(this);
     }
 
     // Permet de savoir les coordonnés du coin de sortie le plus proche du perso
@@ -78,8 +74,8 @@ public class Personne extends Parent {
         double dist2 = 0;
 
         // calcul avec Pythagore
-        dist1 = Math.sqrt( Math.pow(Math.abs(xDepart - sortie.getPoint1().getX()), 2) + Math.pow(Math.abs(yDepart - sortie.getPoint1().getY()), 2));
-        dist2 = Math.sqrt( Math.pow(Math.abs(xDepart - sortie.getPoint2().getX()), 2) + Math.pow(Math.abs(yDepart - sortie.getPoint2().getY()), 2));
+        dist1 = Math.sqrt( Math.pow(Math.abs(coordCourant.getX() - sortie.getPoint1().getX()), 2) + Math.pow(Math.abs(coordCourant.getY() - sortie.getPoint1().getY()), 2));
+        dist2 = Math.sqrt( Math.pow(Math.abs(coordCourant.getX() - sortie.getPoint2().getX()), 2) + Math.pow(Math.abs(coordCourant.getY() - sortie.getPoint2().getY()), 2));
 
         //System.out.println("Distance 1 : " + dist1);
         //System.out.println("Distance 2 : " + dist2);
@@ -96,7 +92,7 @@ public class Personne extends Parent {
         }
     }
 
-
+/*
     // Prend des coordonnés (de sortie) en paramètre avec le mur correspondant
     // Retourne dx dy tels que par rapport à la position du perso, il arrivera à l'arrivée en paramètre en une succession de x + dx et y + dy
     // Retourne donc un tableau du type [dx, dy]
@@ -153,6 +149,8 @@ public class Personne extends Parent {
     }
 
 
+ */
+
     public Point findDxDy (Point point) {
         System.out.println("findDxDy : courant : " + coordCourant + " objectif : " + point);
         Point dxdy = new Point();
@@ -186,6 +184,7 @@ public class Personne extends Parent {
     }
 
 
+    /*
     // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
     public void setDxDy(Salle salle) {
         double [] coordSortie = findCoordSortie(salle);
@@ -194,6 +193,8 @@ public class Personne extends Parent {
         this.dx = coordDxDy.getX();
         this.dy = coordDxDy.getY();
     }
+
+     */
 
     // Cette fonction utilise les fonctions précédentes afin de retourner directement dx et dy suivant la Salle en argument
     // En plus, dx et dy sont normalisés suivant la vitesse de la personne (vitesse est un attribut de Personne).
@@ -211,10 +212,14 @@ public class Personne extends Parent {
 
 
     public void avancer () {
+        coordCourant.setPoint(coordCourant.getX() + dx, coordCourant.getY() + dy);
+        /*
         setTranslateX(getTranslateX() + dx);
         setTranslateY(getTranslateY() + dy);
         coordCourant.setX(xDepart + getTranslateX());
         coordCourant.setY(yDepart + getTranslateY());
+
+         */
     }
 
 
@@ -262,15 +267,6 @@ public class Personne extends Parent {
     }
 
 
-    public double getxDepart() {
-        return xDepart;
-    }
-
-    public double getyDepart() {
-        return yDepart;
-    }
-
-
     // Permet de savoir si le perso est sorti de la salle avec plus ou moins de précision
     // La précision est importante car sinon on detecte en premier qu'il est arrivé a son dernier objectif et donc,
     // son prochain objectif est null.
@@ -298,17 +294,17 @@ public class Personne extends Parent {
     }
 
     public boolean estTouche(Point coordSortie,Point coordC,Point coordD){
-        Point coordP = new Point(xDepart,yDepart);
+        Point coordP = new Point(coordCourant.getX(), coordCourant.getY());
         return MathsCalcule.estCouper(coordP,coordSortie,coordC,coordD);
     }
 
     public boolean estSuperpose(Point coordSortie,Point coordC,Point coordD){
-        Point coordP = new Point(xDepart,yDepart);
+        Point coordP = new Point(coordCourant.getX(), coordCourant.getY());
         return MathsCalcule.estSuperpose(coordP,coordSortie,coordC,coordD);
     }
 
     public List<Point> segmentObstacle(Point coordSortie,Obstacle o){
-        Point coordP = new Point(xDepart,yDepart);
+        Point coordP = new Point(coordCourant.getX(), coordCourant.getY());
         return MathsCalcule.coordSegments(coordP,coordSortie,o);
     }
 
@@ -322,6 +318,10 @@ public class Personne extends Parent {
 
     public void setDy(double dy) {
         this.dy = dy;
+    }
+
+    public Point getCoordCourant() {
+        return coordCourant;
     }
 }
 
