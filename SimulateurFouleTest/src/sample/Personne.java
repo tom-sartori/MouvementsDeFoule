@@ -7,6 +7,7 @@ public class Personne {
     private Point coordCourant;
     private Point objectif;
 
+    private double rayon;
     private double dx;
     private double dy;
     private double vitesse = 2;
@@ -14,6 +15,7 @@ public class Personne {
     public Personne(double posX , double posY){
         coordCourant = new Point(posX, posY);
         objectif = null;
+        rayon = 5;
     }
 
     public ControllerPersonne afficher() {
@@ -151,6 +153,10 @@ public class Personne {
 
     public void setVitesse(double v){
         vitesse = v;
+    }
+
+    public double getRayon() {
+        return rayon;
     }
 }
 
