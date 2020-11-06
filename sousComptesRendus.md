@@ -74,7 +74,7 @@ Idées :
     - Le ControllerPanel permet l'affichage des boutons play, pause...
   - La Salle est donc maintenant créée dans le main. 
   - Dans le main, on ajoute à la Salle des Obstacle et des Sortie. 
-- Le rayon des personnes sont pris en comptent 
+- Le rayon des personnes est pris en compte. 
 - Le controllerPanel a de nouveaux boutons (05/11)
   - Un Slider qui permet de changer la vitesse des personnes
   - Une CheckBox pour activer ou désactiver l'affichage du graphe
