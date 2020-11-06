@@ -50,6 +50,13 @@ public class Sortie {
         return point2;
     }
 
+    public ArrayList<Point> getCoins(){
+        ArrayList<Point> listCoins = new ArrayList<>();
+        listCoins.add(getPoint1());
+        listCoins.add(getPoint2());
+        return listCoins;
+    }
+
     public List<Point> getListePointsSortie() {
         return listePointsSortie;
     }
