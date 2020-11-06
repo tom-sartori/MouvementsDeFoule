@@ -55,16 +55,15 @@ public class Point {
                 '}';
     }
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Point point = (Point) o;
-        return Double.compare(point.x,x) == 0 &&
+        return Double.compare(point.x, x) == 0 &&
                 Double.compare(point.y, y) == 0;
     }
+
 
     public boolean environEgaleY (double d) {
         double precision = 1;
@@ -77,11 +76,10 @@ public class Point {
     public boolean environEgaleX (double d) {
         double precision = 1;
         if ( (this.getX() - precision <= d) && (d <= this.getX() + precision) ) {
-                return true;
+            return true;
         }
         return false;
     }
-
 
     // Utilisé pour la detection, lorsqu'un perso est arrivé à son objectif (coin d'un obstacle).
     // Obligé de faire un environ égale car comme les coordonnés sont des doubles, c'était jamais égale.
@@ -148,5 +146,10 @@ public class Point {
 
     public void setDistanceSortie(double distanceSortie) {
         this.distanceSortie = distanceSortie;
+    }
+
+    public void setPoint (double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 }

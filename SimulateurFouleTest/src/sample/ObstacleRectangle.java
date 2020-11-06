@@ -1,10 +1,5 @@
 package sample;
 
-import javafx.scene.Parent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +24,7 @@ public class ObstacleRectangle extends Obstacle {
         point4 = new Point(x, y + hauteur);     // bas gauche
 
         listcoins= new ArrayList<>();
-        listcoins.add(point1);  //addAll similaire ?
+        listcoins.add(point1);
         listcoins.add(point2);
         listcoins.add(point3);
         listcoins.add(point4);
@@ -40,9 +35,15 @@ public class ObstacleRectangle extends Obstacle {
         listDiagonales.add(point2);
         listDiagonales.add(point4);
 
-        Rectangle obstacle = new Rectangle(point1.getX(), point1.getY(), largeur, hauteur);
-        obstacle.setFill(Color.DARKCYAN);
-        getChildren().add(obstacle);
+        System.out.println("point 1" + point1);
+        System.out.println("point 2" + point2);
+        System.out.println("point 3" + point3);
+        System.out.println("point 4" + point4);
+
+    }
+
+    public ControllerObstacleRectangle afficher () {
+        return new ControllerObstacleRectangle(this);
     }
 
     public double getLargeur() {
@@ -59,5 +60,9 @@ public class ObstacleRectangle extends Obstacle {
 
     public List<Point> getDiagonales() {
         return listDiagonales;
+    }
+
+    public Point getPoint1() {
+        return point1;
     }
 }
