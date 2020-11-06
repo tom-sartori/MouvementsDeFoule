@@ -4,7 +4,6 @@ import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Personne extends Parent {
@@ -605,7 +604,7 @@ public class Personne extends Parent {
     //returne True si un segment fait obstacle au déplacement d'une personne
     public boolean estTouche(Point coordSortie,Point coordC,Point coordD){
         Point coordP = new Point(depart.getX(),depart.getY());
-        return MathsCalcule.estCouper(coordP,coordSortie,coordC,coordD);
+        return MathsCalcule.estCoupe(coordP,coordSortie,coordC,coordD);
     }
 
     //retourne True si un segment est superposé sur le chemin d'une personne

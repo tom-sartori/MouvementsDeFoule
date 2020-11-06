@@ -1,7 +1,6 @@
 package sample;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MathsCalcule {
 
@@ -19,7 +18,7 @@ public class MathsCalcule {
     }
 
     //returne true si les segments se coupent
-    public static boolean estCouper(Point coordA, Point coordB, Point coordC, Point coordD) {
+    public static boolean estCoupe(Point coordA, Point coordB, Point coordC, Point coordD) {
         double a = coordB.getX() - coordA.getX();
         double b = coordB.getY() - coordA.getY();
         double c = coordC.getX() - coordD.getX();
@@ -90,7 +89,7 @@ public class MathsCalcule {
             w=i+j;
             if (w < o.getDiagonales().size() && w + 1 < o.getDiagonales().size()) {
                 //System.out.println("testDiagonales");
-                if (estSuperpose(coordA, coordB, o.getDiagonales().get(w), o.getDiagonales().get(w + 1))&& (!estCouper(coordA, coordB, o.getCoins().get(i), o.getCoins().get(i + 1)))) {
+                if (estSuperpose(coordA, coordB, o.getDiagonales().get(w), o.getDiagonales().get(w + 1))&& (!estCoupe(coordA, coordB, o.getCoins().get(i), o.getCoins().get(i + 1)))) {
                     //System.out.println("est diagonalles");
                     for(int k=0; k<o.getCoins().size();k++){
                         if(o.getCoins().get(k).getX()==o.getDiagonales().get(w).getX() && o.getCoins().get(k).getY()==o.getDiagonales().get(w).getY()){
@@ -148,19 +147,19 @@ public class MathsCalcule {
         }
         for (int i =0; i<o.getCoins().size();i++) {
             if (i != o.getCoins().size() - 1) {
-                if (estCouper(coordA, coordB, o.getCoins().get(i), o.getCoins().get(i + 1))) {
+                if (estCoupe(coordA, coordB, o.getCoins().get(i), o.getCoins().get(i + 1))) {
 
                     //System.out.println("test2");
                     listTableau.add(o.getCoins().get(i));
                     listTableau.add(o.getCoins().get(i + 1));
                 }
             } else {
-                if (estCouper(coordA,coordB, o.getCoins().get(i), o.getCoins().get(0))) {
+                if (estCoupe(coordA,coordB, o.getCoins().get(i), o.getCoins().get(0))) {
                     //System.out.println("test3");
                     if (estSuperpose(coordA,coordB, o.getCoins().get(i), o.getCoins().get(0))) {
                         //System.out.println("test4");
                         if (o.getCoins().size() > 4) {
-                            if (estCouper(coordA,coordB, o.getCoins().get(0), o.getCoins().get(i - 1))) {
+                            if (estCoupe(coordA,coordB, o.getCoins().get(0), o.getCoins().get(i - 1))) {
                                 listTableau.add(o.getCoins().get(i));
                                 listTableau.add(o.getCoins().get(0));
                                 listTableau.add(o.getCoins().get(i - 1));

@@ -17,7 +17,7 @@ public class ControllerSalle extends Parent{
     public ControllerSalle(double width, double height){
         salle = new Salle(width,height);
 
-        salle.addSortie(new Sortie(1,60,190));
+        salle.addSortie(new Sortie(3,60,190));
 
 
         salle.addObstacle(new ObstacleRectangle(150, 200, 120, 70));
