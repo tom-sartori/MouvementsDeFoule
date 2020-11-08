@@ -103,7 +103,7 @@ public class Personne {
     public void setObjectifRayonObstacle (Salle salle) {
         for (Obstacle o : salle.getListObstacles()) {
             for (Point p : o.getCoins()) {
-                if (p.environEgale(objectif)) {
+                if (p.environEgale(objectif, 1)) {
 
                     if (objectifRayon.environEgaleX(coordCourant.getX() - rayon)) {
                         System.out.println("objectifRayon.environEgaleX(coordCourant.getX() - r) ligne 261");
@@ -366,7 +366,7 @@ public class Personne {
     public void setObjectifRayonSortie(Salle salle){
         for (Sortie sortie : salle.getListSorties()) {
             for (Point pointSortie : sortie.getCoins()) {
-                if (pointSortie.environEgale(objectif)) {
+                if (pointSortie.environEgale(objectif, 1)) {
                     System.out.println("pointSortie.environEgale(objectif)");
 
                     if (objectifRayon.environEgaleX(sortie.getCoins().get(0).getX() + sortie.getLongueur()) && (sortie.getMur() == 1 || sortie.getMur()==3)) {
@@ -395,7 +395,7 @@ public class Personne {
 
     // Obligé de faire environ égale avec une petite precision car les doubles ne sont pas égaux.
     public boolean objectifAteint () {
-        if (coordCourant.environEgale(objectifRayon)) {
+        if (coordCourant.equals(objectifRayon)) {
             System.out.println("objectif ateint. ");
             return true;
         }
@@ -430,7 +430,7 @@ public class Personne {
     // son prochain objectif est null.
     // Du coup, on detecte un peu avant qu'il soit sorti, qu'il est sorti.
     public boolean estSorti(Salle salle) {
-        double precision = 3;
+        double precision = 0;
 
         if (dx > 0) {
             if (coordCourant.getX() + precision >= salle.getLargeur())
