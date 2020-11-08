@@ -80,4 +80,7 @@ Idées :
   - Une CheckBox pour activer ou désactiver l'affichage du graphe
   - Une checkBox pour activer ou désactiver les collisions
 - Détection des collisions entre les personnes (classe salle.java)
-  
+- Modification fonction avancer de Personne. L'orsqu'un personne peut avancer jusqu'à son objectif, alors ses coordonnées deviennent ceux de l'objectif. Avant ça, la personne pouvait se déplacer plus loin que son objectif si ca vitesse était grande. 
+  - Du coup, plus besoin de environEgale pour capter si on ateint l'objectif ou pas. 
+- Ajout fonction addRandomPersonnes(int n), dans Salle, qui permet d'ajouter n Personnes à des positions aléatoires dans la salle. 
+  - Ajout de la fonction estDansObstacle(Point point) dans ObstacleRectangle pour éviter d'avoir des persos random dans les obstacles. 
