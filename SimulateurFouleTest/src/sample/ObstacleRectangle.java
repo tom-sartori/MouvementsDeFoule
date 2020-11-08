@@ -5,25 +5,25 @@ import java.util.List;
 
 public class ObstacleRectangle extends Obstacle {
 
-    private List<Point> listcoins;
+    private List<Point> listePoints;
     private List<Point> listDiagonales;
 
     public ObstacleRectangle(double x, double y, double largeur, double hauteur) {
-        listcoins= new ArrayList<>();
-        listcoins.add(new Point(x, y));     // haut gauche
-        listcoins.add(new Point(x + largeur, y));   // haut droit
-        listcoins.add(new Point(x + largeur, y + hauteur));     // bas droit
-        listcoins.add(new Point(x, y + hauteur));   // bas gauche
+        listePoints = new ArrayList<>();
+        listePoints.add(new Point(x, y));     // haut gauche
+        listePoints.add(new Point(x + largeur, y));   // haut droit
+        listePoints.add(new Point(x + largeur, y + hauteur));     // bas droit
+        listePoints.add(new Point(x, y + hauteur));   // bas gauche
 
         listDiagonales= new ArrayList<>();
-        listDiagonales.add(listcoins.get(0));
-        listDiagonales.add(listcoins.get(2));
-        listDiagonales.add(listcoins.get(1));
-        listDiagonales.add(listcoins.get(3));
+        listDiagonales.add(listePoints.get(0));
+        listDiagonales.add(listePoints.get(2));
+        listDiagonales.add(listePoints.get(1));
+        listDiagonales.add(listePoints.get(3));
     }
 
     public boolean estDansObstacle(Point point) {
-        if (listcoins.get(0).getX() <= point.getX() && point.getX() <= listcoins.get(1).getX() && listcoins.get(0).getY() <= point.getY() && point.getY() <= listcoins.get(2).getY())
+        if (listePoints.get(0).getX() <= point.getX() && point.getX() <= listePoints.get(1).getX() && listePoints.get(0).getY() <= point.getY() && point.getY() <= listePoints.get(2).getY())
             return true;
         else
             return false;
@@ -34,19 +34,19 @@ public class ObstacleRectangle extends Obstacle {
     }
 
     public double getLargeur() {
-        return listcoins.get(1).getX() - listcoins.get(0).getX();
+        return listePoints.get(1).getX() - listePoints.get(0).getX();
     }
 
     public double getHauteur() {
-        return listcoins.get(2).getY() - listcoins.get(0).getY();
+        return listePoints.get(2).getY() - listePoints.get(0).getY();
     }
 
     public List<Point> getCoins() {
-        return listcoins;
+        return listePoints;
     }
 
-    public List<Point> getListcoins() {
-        return listcoins;
+    public List<Point> getListePoints() {
+        return listePoints;
     }
 
     public List<Point> getDiagonales() {

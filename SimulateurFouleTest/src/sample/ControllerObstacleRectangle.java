@@ -12,8 +12,8 @@ public class ControllerObstacleRectangle extends Parent{
         obstacleRectangle = obstacleRect;
 
         Rectangle obstacleGraphique = new Rectangle();
-        obstacleGraphique.setX(obstacleRectangle.getListcoins().get(0).getX());
-        obstacleGraphique.setY(obstacleRectangle.getListcoins().get(0).getY());
+        obstacleGraphique.setX(obstacleRectangle.getListePoints().get(0).getX());
+        obstacleGraphique.setY(obstacleRectangle.getListePoints().get(0).getY());
         obstacleGraphique.setWidth(obstacleRectangle.getLargeur());
         obstacleGraphique.setHeight(obstacleRectangle.getHauteur());
 
