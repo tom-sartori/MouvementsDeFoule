@@ -42,6 +42,13 @@ public class ObstacleRectangle extends Obstacle {
 
     }
 
+    public boolean estDansObstacle(Point point) {
+        if (listcoins.get(0).getX() <= point.getX() && point.getX() <= listcoins.get(1).getX() && listcoins.get(0).getY() <= point.getY() && point.getY() <= listcoins.get(2).getY())
+            return true;
+        else
+            return false;
+    }
+
     public ControllerObstacleRectangle afficher () {
         return new ControllerObstacleRectangle(this);
     }

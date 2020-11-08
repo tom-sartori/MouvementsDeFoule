@@ -10,6 +10,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Salle {
     private double largeur;
@@ -93,6 +94,28 @@ public class Salle {
 
     public void addPersonne (Personne personne) {
         listPersonnes.add(personne);
+    }
+
+    public void addRandomPersonnes (int n) {
+        for (int i = 0; i < n; i++) {
+            boolean dansObstacle;
+            double x, y;
+            do {
+                dansObstacle = false;
+                Random ran = new Random();
+                x = ran.nextInt(1000);
+                y = ran.nextInt(600);
+
+
+                for (ObstacleRectangle obstacleRectangle : listObstacles) {
+                    if (obstacleRectangle.estDansObstacle(new Point(x, y)))
+                        dansObstacle = true;
+                }
+            }
+            while (dansObstacle);
+            System.out.println(x + " " + y);
+            addPersonne(new Personne(x,y));
+        }
     }
 
     public void removePersonne (Personne personne) {
