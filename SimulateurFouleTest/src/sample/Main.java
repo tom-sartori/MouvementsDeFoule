@@ -20,11 +20,16 @@ public class Main extends Application {
 
         salle.addObstacle(new ObstacleRectangle(150, 200, 70, 30));
         salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
-        salle.addObstacle(new ObstacleRectangle(600, 100, 10, 200));
+        salle.addObstacle(new ObstacleRectangle(600, 100, 15, 200));
+        salle.addObstacle(new ObstacleRectangle(50, 500, 200, 60));
+        salle.addObstacle(new ObstacleRectangle(400, 430, 200, 50));
+        salle.addObstacle(new ObstacleRectangle(700, 300, 80, 100));
+        salle.addObstacle(new ObstacleRectangle(820, 30, 70, 70));
+        salle.addObstacle(new ObstacleRectangle(330, 80, 150, 150));
 
-        salle.addSortie(new Sortie(2,60,50));
+        //salle.addSortie(new Sortie(2,60,50));
         salle.addSortie(new Sortie(3, 60, 80));
-        salle.addSortie(new Sortie(3, 40, 600));
+        //salle.addSortie(new Sortie(3, 40, 600));
         
         for (int i = 0; i < 100; i++) {
             Random ran = new Random();
