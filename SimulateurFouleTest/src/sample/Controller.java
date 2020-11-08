@@ -18,13 +18,14 @@ public class Controller extends Parent{
 
         cPanel = new ControllerPanel();
         cPanel.setTranslateY(salle.getHauteur() + (3 * marge));
-
-
+        
 
         cPanel.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.setVitessePersonnes(cPanel.getVitesseValue());
-                salle.play();
+                if(cPanel.getCollisionStatus())
+                    salle.play(true);
+                else salle.play(false);
             }
         });
 
@@ -42,30 +43,13 @@ public class Controller extends Parent{
 
         cPanel.getGrapheCB().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                if(!salle.isRunning())
+                if(cPanel.getGrapheCB().isSelected())
                     salle.initialisationGrapheAvecAffichage();
+                else cSalle.cacherGraphe();
             }
         });
 
         getChildren().add(cSalle);
         getChildren().add(cPanel);
-    }
-
-    public void addControllerObstacle(ControllerObstacleRectangle controllerObstacleRectangle) {
-        cSalle.afficherControllerObstacle(controllerObstacleRectangle);
-    }
-
-    public void addControllerSortie(ControllerSortie controllerSortie) {
-        //cp.afficherSortie(controllerSortie);
-        getChildren().add(controllerSortie);
-    }
-
-
-    public ControllerSalle getcSalle() {
-        return cSalle;
-    }
-
-    public ControllerPanel getcPanel() {
-        return cPanel;
     }
 }

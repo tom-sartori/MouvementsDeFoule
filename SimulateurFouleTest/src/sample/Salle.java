@@ -97,19 +97,18 @@ public class Salle {
 
     public void removePersonne (Personne personne) {
         listPersonnes.remove(personne);
-        if (listPersonnes.isEmpty())
-            loop.pause();
+        if (listPersonnes.isEmpty() && loop != null)
+            loop.stop();
         cSalle.retirerPersonne(personne);
     }
 
     public void removeAllPersonne(){
-        pause();
         while(!listPersonnes.isEmpty())
             removePersonne(listPersonnes.get(0));
     }
 
 
-    public void demarrerV2 () {
+    public void demarrer() {
         initialisationGrapheSansAffichage();
 
         if (!listPersonnes.isEmpty()) {
@@ -149,6 +148,57 @@ public class Salle {
         }
     }
 
+    public void demarrerAvecCollisions () {
+        initialisationGrapheSansAffichage();
+
+        if (!listPersonnes.isEmpty()) {
+            for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
+                personne.setObjectif(this);
+                personne.setDxDyNormalise(personne.getObjectif());
+            }
+
+            Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
+
+            if (loop == null || loop.getStatus()==Status.STOPPED) {
+
+                loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent arg) {
+
+                        boolean collision;
+                        int y;
+
+                        for (int i = 0; i < listPersonnes.size(); i++) {
+                            if (listPersonnes.get(i).estSorti(salle))
+                                removePersonne(listPersonnes.get(i));
+                            else {
+                                if (listPersonnes.get(i).objectifAteint()) {
+                                    listPersonnes.get(i).setObjectif(salle);
+                                    listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
+                                }
+                                else {
+                                    collision = false;
+                                    y = 0;
+                                    while (!collision && y < listPersonnes.size()) {
+                                        collision = colision2personnes(listPersonnes.get(i), listPersonnes.get(y));
+                                        y++;
+                                    }
+                                    if (!collision) {
+                                        listPersonnes.get(i).avancer();
+                                        cSalle.deplacerPersonne(listPersonnes.get(i));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }));
+                loop.setCycleCount(Timeline.INDEFINITE);
+                loop.play();
+            } else if (loop.getStatus() == Animation.Status.PAUSED) {
+                loop.play();
+            }
+        }
+    }
+
     public void pause(){
         if(loop != null && loop.getStatus() == Status.RUNNING){
             loop.pause();
@@ -156,7 +206,7 @@ public class Salle {
     }
 
     public boolean isRunning(){
-        if(loop!=null && loop.getStatus()== Animation.Status.RUNNING) return true;
+        if(loop!=null && loop.getStatus()!= Animation.Status.STOPPED) return true;
         else return false;
     }
 
@@ -177,25 +227,15 @@ public class Salle {
         cSalle.afficherGraphe(graphe.afficher());
     }
 
-    public void play(){
+    public void play(Boolean collisionActive){
         if(loop != null && loop.getStatus() == Status.PAUSED){
             loop.play();
         } else if(loop == null || loop.getStatus() == Status.STOPPED){
-            demarrerV2();
+            if(collisionActive)
+                demarrerAvecCollisions();
+            else
+                demarrer();
         }
-    }
-
-
-    public void removePersonne (Personne personne) {
-        listPersonnes.remove(personne);
-        if (listPersonnes.isEmpty() && loop != null)
-            loop.stop();
-        cSalle.retirerPersonne(personne);
-    }
-
-    public void removeAllPersonne(){
-        while(!listPersonnes.isEmpty())
-            removePersonne(listPersonnes.get(0));
     }
 
   
@@ -267,6 +307,16 @@ public class Salle {
         }
 
         return b;
+    }
+
+    public boolean colision2personnes(Personne p, Personne compare){
+        if (MathsCalcule.distance(p.getCoordCourant(), compare.getCoordCourant()) == 0){
+            return false;
+        } else if (MathsCalcule.distance(p.getCoordCourant(), compare.getCoordCourant()) <= p.getRayon()*2){
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

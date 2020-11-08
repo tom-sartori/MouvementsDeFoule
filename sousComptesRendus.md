@@ -68,10 +68,16 @@ Idées :
   - Pour chaque classe, on a un controller correspondant qui sert uniquement d'affichage. 
   - La Scene du main est la fenetre graphique de base (le fond). 
   - Le Controller est composé d'un ControllerSalle et d'un ControllerPanel. 
-    - Le ControllerSalle est créée grâge à une salle. 
+    - Le ControllerSalle est créée grâce à une salle. 
     - C'est à lui qu'on ajoute les ControllerObstacle, ControllerSortie et ControllerPersonne. 
     - Il est composé d'une liste de persos qui sont déplacés suivant les coordCourant de la Personne. 
     - Le ControllerPanel permet l'affichage des boutons play, pause...
   - La Salle est donc maintenant créée dans le main. 
   - Dans le main, on ajoute à la Salle des Obstacle et des Sortie. 
+- Le rayon des personnes est pris en compte. 
+- Le controllerPanel a de nouveaux boutons (05/11)
+  - Un Slider qui permet de changer la vitesse des personnes
+  - Une CheckBox pour activer ou désactiver l'affichage du graphe
+  - Une checkBox pour activer ou désactiver les collisions
+- Détection des collisions entre les personnes (classe salle.java)
   

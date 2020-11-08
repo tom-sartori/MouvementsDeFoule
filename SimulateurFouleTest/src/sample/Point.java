@@ -65,6 +65,22 @@ public class Point {
     }
 
 
+    public boolean environEgaleY (double d) {
+        double precision = 1;
+        if ( (this.getY() - precision <= d) && (d <= this.getY() + precision) ) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean environEgaleX (double d) {
+        double precision = 1;
+        if ( (this.getX() - precision <= d) && (d <= this.getX() + precision) ) {
+            return true;
+        }
+        return false;
+    }
+
     // Utilisé pour la detection, lorsqu'un perso est arrivé à son objectif (coin d'un obstacle).
     // Obligé de faire un environ égale car comme les coordonnés sont des doubles, c'était jamais égale.
     public boolean environEgale (Point p) {
