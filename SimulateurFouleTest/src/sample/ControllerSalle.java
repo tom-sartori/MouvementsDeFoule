@@ -44,8 +44,8 @@ public class ControllerSalle extends Parent{
         return personne.afficher();
     }
 
-    public void afficherControllerObstacle(ControllerObstacleRectangle controllerObstacleRectangle) {
-        getChildren().add(controllerObstacleRectangle);
+    public void afficherControllerObstacle(ControllerObstacle controllerObstacle) {
+        getChildren().add(controllerObstacle);
     }
 
     public void afficherSortie(ControllerSortie controllerSortie) {

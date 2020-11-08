@@ -102,7 +102,7 @@ public class Personne {
 
     public void setObjectifRayonObstacle (Salle salle) {
         for (Obstacle o : salle.getListObstacles()) {
-            for (Point p : o.getCoins()) {
+            for (Point p : o.getListePoints()) {
                 if (p.environEgale(objectif, 1)) {
 
                     if (objectifRayon.environEgaleX(coordCourant.getX() - rayon)) {

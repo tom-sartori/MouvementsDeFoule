@@ -3,7 +3,7 @@ package sample;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObstacleRectangle extends Obstacle {
+public class ObstacleRectangle implements Obstacle {
 
     private List<Point> listePoints;
     private List<Point> listDiagonales;
@@ -22,6 +22,7 @@ public class ObstacleRectangle extends Obstacle {
         listDiagonales.add(listePoints.get(3));
     }
 
+    @Override
     public boolean estDansObstacle(Point point) {
         if (listePoints.get(0).getX() <= point.getX() && point.getX() <= listePoints.get(1).getX() && listePoints.get(0).getY() <= point.getY() && point.getY() <= listePoints.get(2).getY())
             return true;
@@ -41,14 +42,12 @@ public class ObstacleRectangle extends Obstacle {
         return listePoints.get(2).getY() - listePoints.get(0).getY();
     }
 
-    public List<Point> getCoins() {
-        return listePoints;
-    }
-
+    @Override
     public List<Point> getListePoints() {
         return listePoints;
     }
 
+    @Override
     public List<Point> getDiagonales() {
         return listDiagonales;
     }

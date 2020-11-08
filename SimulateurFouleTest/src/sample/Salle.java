@@ -17,7 +17,7 @@ public class Salle {
     private double hauteur;
     private List<Personne> listPersonnes;
     private List<Sortie> listSorties;
-    private List<ObstacleRectangle> listObstacles;
+    private List<Obstacle> listObstacles;
     private Timeline loop;
     private Graphe graphe;
 
@@ -29,7 +29,7 @@ public class Salle {
         this.hauteur = hau;
         this.listPersonnes = new ArrayList<>(); // HashList surement apres
         this.listSorties = new ArrayList<>();
-        this.listObstacles = new ArrayList<ObstacleRectangle>();
+        this.listObstacles = new ArrayList<Obstacle>();
 
         graphe = new Graphe(this);
     }
@@ -39,8 +39,8 @@ public class Salle {
     public ControllerSalle afficher() {
         cSalle = new ControllerSalle(this);
 
-        for (ObstacleRectangle obstacleRectangle : listObstacles)
-            cSalle.afficherControllerObstacle(obstacleRectangle.afficher());
+        for (Obstacle obstacle : listObstacles)
+            cSalle.afficherControllerObstacle(obstacle.afficher());
 
         for (Sortie sortie : listSorties)
             cSalle.afficherSortie(sortie.afficher());
@@ -54,8 +54,8 @@ public class Salle {
     // Permet d'ajouter au controller de la salle, les controllers de tous les obstacles et sorties.
     // Si afficher() a déjà été appelé, ceci superpose les controllers sur ceux deja existants.
     public void refreshAffichage() {
-        for (ObstacleRectangle obstacleRectangle : listObstacles)
-            cSalle.afficherControllerObstacle(obstacleRectangle.afficher());
+        for (Obstacle obstacle : listObstacles)
+            cSalle.afficherControllerObstacle(obstacle.afficher());
 
         for (Sortie sortie : listSorties)
             cSalle.afficherSortie(sortie.afficher());
@@ -107,8 +107,8 @@ public class Salle {
                 y = ran.nextInt(600);
 
 
-                for (ObstacleRectangle obstacleRectangle : listObstacles) {
-                    if (obstacleRectangle.estDansObstacle(new Point(x, y)))
+                for (Obstacle obstacle : listObstacles) {
+                    if (obstacle.estDansObstacle(new Point(x, y)))
                         dansObstacle = true;
                 }
             }
@@ -351,7 +351,7 @@ public class Salle {
         return graphe;
     }
 
-    public List<ObstacleRectangle> getListObstacles(){
+    public List<Obstacle> getListObstacles(){
         return listObstacles;
     }
 

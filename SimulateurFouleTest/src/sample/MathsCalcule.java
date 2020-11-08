@@ -81,55 +81,55 @@ public class MathsCalcule {
 
                 if (estSuperpose(coordA, coordB, o.getDiagonales().get(w), o.getDiagonales().get(w + 1))) {
 
-                    for(int k=0; k<o.getCoins().size();k++){
-                        if(o.getCoins().get(k).getX()==o.getDiagonales().get(w).getX() && o.getCoins().get(k).getY()==o.getDiagonales().get(w).getY()){
+                    for(int k=0; k<o.getListePoints().size();k++){
+                        if(o.getListePoints().get(k).getX()==o.getDiagonales().get(w).getX() && o.getListePoints().get(k).getY()==o.getDiagonales().get(w).getY()){
 
-                            if(k-1>=0 && k+1<o.getCoins().size()){
-                                listTableau.add(o.getCoins().get(k-1));
-                                listTableau.add(o.getCoins().get(k));
-                                listTableau.add(o.getCoins().get(k));
-                                listTableau.add(o.getCoins().get(k+1));
+                            if(k-1>=0 && k+1<o.getListePoints().size()){
+                                listTableau.add(o.getListePoints().get(k-1));
+                                listTableau.add(o.getListePoints().get(k));
+                                listTableau.add(o.getListePoints().get(k));
+                                listTableau.add(o.getListePoints().get(k+1));
                             } else{
 
                                 if (k-1<0){
-                                    listTableau.add(o.getCoins().get(k));
-                                    listTableau.add(o.getCoins().get(k+1));
-                                    listTableau.add(o.getCoins().get(o.getCoins().size()-1));
-                                    listTableau.add(o.getCoins().get(k));
+                                    listTableau.add(o.getListePoints().get(k));
+                                    listTableau.add(o.getListePoints().get(k+1));
+                                    listTableau.add(o.getListePoints().get(o.getListePoints().size()-1));
+                                    listTableau.add(o.getListePoints().get(k));
                                 } else {
 
-                                    if(k+1>=o.getCoins().size()){
-                                        listTableau.add(o.getCoins().get(k-1));
-                                        listTableau.add(o.getCoins().get(k));
-                                        listTableau.add(o.getCoins().get(k));
-                                        listTableau.add(o.getCoins().get(0));
+                                    if(k+1>=o.getListePoints().size()){
+                                        listTableau.add(o.getListePoints().get(k-1));
+                                        listTableau.add(o.getListePoints().get(k));
+                                        listTableau.add(o.getListePoints().get(k));
+                                        listTableau.add(o.getListePoints().get(0));
                                     }
                                 }
                             }
                         } else {
 
-                            if(o.getCoins().get(k).getX()==o.getDiagonales().get(w+1).getX() && o.getCoins().get(k).getY()==o.getDiagonales().get(w+1).getY()){
+                            if(o.getListePoints().get(k).getX()==o.getDiagonales().get(w+1).getX() && o.getListePoints().get(k).getY()==o.getDiagonales().get(w+1).getY()){
 
-                                if(k-1>=0 && k+1<o.getCoins().size()){
-                                    listTableau.add(o.getCoins().get(k-1));
-                                    listTableau.add(o.getCoins().get(k));
-                                    listTableau.add(o.getCoins().get(k));
-                                    listTableau.add(o.getCoins().get(k+1));
+                                if(k-1>=0 && k+1<o.getListePoints().size()){
+                                    listTableau.add(o.getListePoints().get(k-1));
+                                    listTableau.add(o.getListePoints().get(k));
+                                    listTableau.add(o.getListePoints().get(k));
+                                    listTableau.add(o.getListePoints().get(k+1));
                                 } else{
 
                                     if (k-1<0){
-                                        listTableau.add(o.getCoins().get(k));
-                                        listTableau.add(o.getCoins().get(k+1));
-                                        listTableau.add(o.getCoins().get(o.getCoins().size()-1));
-                                        listTableau.add(o.getCoins().get(k));
+                                        listTableau.add(o.getListePoints().get(k));
+                                        listTableau.add(o.getListePoints().get(k+1));
+                                        listTableau.add(o.getListePoints().get(o.getListePoints().size()-1));
+                                        listTableau.add(o.getListePoints().get(k));
 
                                     } else {
 
-                                        if(k+1>=o.getCoins().size()){
-                                            listTableau.add(o.getCoins().get(k-1));
-                                            listTableau.add(o.getCoins().get(k));
-                                            listTableau.add(o.getCoins().get(k));
-                                            listTableau.add(o.getCoins().get(0));
+                                        if(k+1>=o.getListePoints().size()){
+                                            listTableau.add(o.getListePoints().get(k-1));
+                                            listTableau.add(o.getListePoints().get(k));
+                                            listTableau.add(o.getListePoints().get(k));
+                                            listTableau.add(o.getListePoints().get(0));
                                         }
 
                                     }
@@ -144,31 +144,31 @@ public class MathsCalcule {
         if(!listTableau.isEmpty()){
             return listTableau;
         }
-        for (int i =0; i<o.getCoins().size();i++) {
-            if (i != o.getCoins().size() - 1) {
+        for (int i =0; i<o.getListePoints().size();i++) {
+            if (i != o.getListePoints().size() - 1) {
 
-                if (estCoupe(coordA, coordB, o.getCoins().get(i), o.getCoins().get(i + 1))) {
-                    listTableau.add(o.getCoins().get(i));
-                    listTableau.add(o.getCoins().get(i + 1));
+                if (estCoupe(coordA, coordB, o.getListePoints().get(i), o.getListePoints().get(i + 1))) {
+                    listTableau.add(o.getListePoints().get(i));
+                    listTableau.add(o.getListePoints().get(i + 1));
                 }
 
             } else {
-                if (estCoupe(coordA,coordB, o.getCoins().get(i), o.getCoins().get(0))) {
+                if (estCoupe(coordA,coordB, o.getListePoints().get(i), o.getListePoints().get(0))) {
 
-                    if (estSuperpose(coordA,coordB, o.getCoins().get(i), o.getCoins().get(0))) {
+                    if (estSuperpose(coordA,coordB, o.getListePoints().get(i), o.getListePoints().get(0))) {
 
-                        if (o.getCoins().size() > 4) {
+                        if (o.getListePoints().size() > 4) {
 
-                            if (estCoupe(coordA,coordB, o.getCoins().get(0), o.getCoins().get(i - 1))) {
-                                listTableau.add(o.getCoins().get(i));
-                                listTableau.add(o.getCoins().get(0));
-                                listTableau.add(o.getCoins().get(i - 1));
-                                listTableau.add(o.getCoins().get(i));
+                            if (estCoupe(coordA,coordB, o.getListePoints().get(0), o.getListePoints().get(i - 1))) {
+                                listTableau.add(o.getListePoints().get(i));
+                                listTableau.add(o.getListePoints().get(0));
+                                listTableau.add(o.getListePoints().get(i - 1));
+                                listTableau.add(o.getListePoints().get(i));
                             }
                         }
                     }else {
-                        listTableau.add(o.getCoins().get(i));
-                        listTableau.add(o.getCoins().get(0));
+                        listTableau.add(o.getListePoints().get(i));
+                        listTableau.add(o.getListePoints().get(0));
                     }
                 }
             }
