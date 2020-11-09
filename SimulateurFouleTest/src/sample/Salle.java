@@ -10,13 +10,14 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Salle {
     private double largeur;
     private double hauteur;
     private List<Personne> listPersonnes;
     private List<Sortie> listSorties;
-    private List<ObstacleRectangle> listObstacles;
+    private List<Obstacle> listObstacles;
     private Timeline loop;
     private Graphe graphe;
 
@@ -28,7 +29,7 @@ public class Salle {
         this.hauteur = hau;
         this.listPersonnes = new ArrayList<>(); // HashList surement apres
         this.listSorties = new ArrayList<>();
-        this.listObstacles = new ArrayList<ObstacleRectangle>();
+        this.listObstacles = new ArrayList<Obstacle>();
 
         graphe = new Graphe(this);
     }
@@ -38,8 +39,8 @@ public class Salle {
     public ControllerSalle afficher() {
         cSalle = new ControllerSalle(this);
 
-        for (ObstacleRectangle obstacleRectangle : listObstacles)
-            cSalle.afficherControllerObstacle(obstacleRectangle.afficher());
+        for (Obstacle obstacle : listObstacles)
+            cSalle.afficherControllerObstacle(obstacle.afficher());
 
         for (Sortie sortie : listSorties)
             cSalle.afficherSortie(sortie.afficher());
@@ -53,8 +54,8 @@ public class Salle {
     // Permet d'ajouter au controller de la salle, les controllers de tous les obstacles et sorties.
     // Si afficher() a déjà été appelé, ceci superpose les controllers sur ceux deja existants.
     public void refreshAffichage() {
-        for (ObstacleRectangle obstacleRectangle : listObstacles)
-            cSalle.afficherControllerObstacle(obstacleRectangle.afficher());
+        for (Obstacle obstacle : listObstacles)
+            cSalle.afficherControllerObstacle(obstacle.afficher());
 
         for (Sortie sortie : listSorties)
             cSalle.afficherSortie(sortie.afficher());
@@ -93,6 +94,28 @@ public class Salle {
 
     public void addPersonne (Personne personne) {
         listPersonnes.add(personne);
+    }
+
+    public void addRandomPersonnes (int n) {
+        for (int i = 0; i < n; i++) {
+            boolean dansObstacle;
+            double x, y;
+            do {
+                dansObstacle = false;
+                Random ran = new Random();
+                x = ran.nextInt(1000);
+                y = ran.nextInt(600);
+
+
+                for (Obstacle obstacle : listObstacles) {
+                    if (obstacle.estDansObstacle(new Point(x, y)))
+                        dansObstacle = true;
+                }
+            }
+            while (dansObstacle);
+            System.out.println(x + " " + y);
+            addPersonne(new Personne(x,y));
+        }
     }
 
     public void removePersonne (Personne personne) {
@@ -328,7 +351,7 @@ public class Salle {
         return graphe;
     }
 
-    public List<ObstacleRectangle> getListObstacles(){
+    public List<Obstacle> getListObstacles(){
         return listObstacles;
     }
 

@@ -16,7 +16,7 @@ public class Graphe {
         listePoints = new ArrayList<>();    // Pas forcement Array
         listePointsObstacles = new ArrayList<>();
         for (Obstacle obstacle : salle.getListObstacles()) {
-            for (Point point : obstacle.getCoins()) {
+            for (Point point : obstacle.getListePoints()) {
                 listePoints.add(point);
                 listePointsObstacles.add(point);
             }
@@ -47,9 +47,9 @@ public class Graphe {
     // Pas très utile car trace des chemins sur un meme point et compare des memes diagoles.
     public void creerTousLesChemins(Salle salle) {
         for (Obstacle obstacle : salle.getListObstacles()) {
-            for (Point point : obstacle.getCoins()) {
+            for (Point point : obstacle.getListePoints()) {
                 for (Obstacle obstacle1 : salle.getListObstacles()) {
-                    for (Point point1 : obstacle1.getCoins()) {
+                    for (Point point1 : obstacle1.getListePoints()) {
                         if (!salle.intersecObstacle(point, point1))
                             addChemin(new Chemin(point, point1));
                     }
