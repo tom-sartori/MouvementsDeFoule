@@ -94,10 +94,10 @@
 <br/> 
 
 #### Réunion du 06/11/2020 
-- Nous avons discuté du code fait depuis le début du projet avec les professeurs cela leur a permis d'un peu plus comprendre notre code et de nous faire leur retour par rapport à leur compréhension.
-- Modification à apporter:
-  - Enlever la répétition qui se trouve dans les classes Obstacle Rectangles, Sortie
-  - Déplacer une Personne par rapport à son objectif et sa vitesse. (Pour ne plus qu'elle dépasse son objectif quand elle va trop vite)
-  - Simplifier la classe Sortie en enlevant les attributs mur, longueur, distance
-  - Point faire une sous-classe de Point qui va permettre de séparer les simples Point (un x et un y) d'un Point plus compliqué (qui contient un Point précédent, suivant)
-  - Salle essayée de séparer la fonction Handle de la fonction démarrer pour simplifier au maximum la classe salle.
+- Nous avons discuté du code fait depuis le début du projet avec les professeurs. Cela leur a permis de mieux comprendre notre code et de nous faire des retours par rapport à leur compréhension.
+- Modifications à apporter:
+  - Enlever les répétitions qui se trouvent dans les classes ObstacleRectangles, Sortie et Point. 
+  - Déplacer une Personne par rapport à son objectif et sa vitesse. (Pour ne plus qu'elle dépasse son objectif quand la vitesse est trop grande.)
+  - Simplifier la classe Sortie en enlevant les attributs mur, longueur, distance et garder juste listePoint. 
+  - Pour Point, faire une sous-classe qui va permettre de séparer les simples Point (un x et un y), des Point plus compliqués (qui contient un Point précédent, suivant). 
+  - Salle ; essayer de séparer la fonction Handle de la fonction démarrer pour simplifier au maximum la classe salle.
