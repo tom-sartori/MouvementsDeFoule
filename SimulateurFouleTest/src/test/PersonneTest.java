@@ -153,8 +153,6 @@ class PersonneTest {
         assertTrue(p.segmentObstacle(sortie,o).isEmpty());
     }
 
-    /*Problème*/
-
     @Test
     public void test_Coord_Obstacle_Avec_Chemin_Travers_Obstacle_Par_Diagonale_0_2(){
         Personne p =new Personne(20,20);
@@ -181,8 +179,6 @@ class PersonneTest {
         }
     }
 
-    /*problème*/
-
    @Test
     public void test_Coord_Obstacle_Avec_Chemin_Travers_Obstacle_Par_Diagonale_1_3(){
         Personne p =new Personne(20,80);
@@ -208,4 +204,6 @@ class PersonneTest {
             assertEquals(listSolution.get(i).getY(),listTrouver.get(i).getY());
         }
     }
+
+
 }
