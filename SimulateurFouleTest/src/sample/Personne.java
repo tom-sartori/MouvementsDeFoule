@@ -8,6 +8,7 @@ public class Personne {
     private Point objectif;
     private Point objectifRayon;
 
+
     private double rayon;
     private double dx;
     private double dy;
