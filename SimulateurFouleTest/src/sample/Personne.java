@@ -31,12 +31,20 @@ public class Personne {
         double distX = Math.abs(coordCourant.getX() - arrivee.getX());
         double distY = Math.abs(coordCourant.getY() - arrivee.getY());
 
-        if (coordCourant.getX() < arrivee.getX())
+        if (distY == 0) {
+            if (coordCourant.getX() < arrivee.getX())
+                dxdy.setX(1);
+            else
+                dxdy.setX(-1);
+        }
+        else if (coordCourant.getX() < arrivee.getX())
             dxdy.setX(distX / distY);
         else
             dxdy.setX(- distX / distY);
 
-        if (coordCourant.getY() < arrivee.getY())
+        if (distY == 0)
+            dxdy.setY(0);
+        else if (coordCourant.getY() < arrivee.getY())
             dxdy.setY(1);
         else
             dxdy.setY(-1);
@@ -54,6 +62,8 @@ public class Personne {
 
         this.dx = (vitesse/argument) * coordDxDy.getX();
         this.dy = (vitesse/argument) * coordDxDy.getY();
+        System.out.println("dx : " + dx);
+        System.out.println("dy : " + dy);
     }
 
 
@@ -61,13 +71,13 @@ public class Personne {
     // Si le perso dépasse en x ou y son objectif, cela signifie qu'il ateint son objectif et donc coordCourant prend les coord de l'objectif.
     // Sinon, il avance simplement de dx et dy
     public void avancer () {
-        if (dx > 0 && coordCourant.getX() + dx > objectif.getX())   // Tous les if sont les cas où il ateint son objectif.
+        if (dx >= 0 && dy >= 0 && coordCourant.getX() + dx >= objectif.getX() && coordCourant.getY() + dy >= objectif.getY())
             coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else if (dx < 0 && coordCourant.getX() + dx < objectif.getX())
+        else if (dx >= 0 && dy <= 0 && coordCourant.getX() + dx >= objectif.getX() && coordCourant.getY() + dy <= objectif.getY())
             coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else if (dy > 0 && coordCourant.getY() + dy > objectif.getY())
+        else if (dx <= 0 && dy <= 0 && coordCourant.getX() + dx <= objectif.getX() && coordCourant.getY() + dy <= objectif.getY())
             coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else if (dy < 0 && coordCourant.getY() + dy < objectif.getY())
+        else if (dx <= 0 && dy >= 0 && coordCourant.getX() + dx <= objectif.getX() && coordCourant.getY() + dy >= objectif.getY())
             coordCourant.setPoint(objectif.getX(), objectif.getY());
         else
             coordCourant.setPoint(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.

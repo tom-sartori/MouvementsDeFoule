@@ -30,7 +30,7 @@ public class ObstacleRectangle implements Obstacle {
             return false;
     }
 
-    public ControllerObstacleRectangle afficher () {
+    public ControllerObstacle afficher () {
         return new ControllerObstacleRectangle(this);
     }
 

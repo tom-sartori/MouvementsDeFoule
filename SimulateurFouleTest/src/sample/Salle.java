@@ -62,7 +62,7 @@ public class Salle {
     }
 
 
-    public void addObstacle (ObstacleRectangle obstacle){
+    public void addObstacle (Obstacle obstacle){
         listObstacles.add(obstacle);
     }
 
