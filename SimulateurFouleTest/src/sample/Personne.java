@@ -110,6 +110,9 @@ public class Personne {
         }
     }
 
+
+
+
     public void setObjectifRayonObstacle (Salle salle) {
         for (Obstacle o : salle.getListObstacles()) {
             for (Point p : o.getListePoints()) {
@@ -375,20 +378,20 @@ public class Personne {
 
     public void setObjectifRayonSortie(Salle salle){
         for (Sortie sortie : salle.getListSorties()) {
-            for (Point pointSortie : sortie.getCoins()) {
+            for (Point pointSortie : sortie.getListePointsSortie()) {
                 if (pointSortie.environEgale(objectif, 1)) {
                     System.out.println("pointSortie.environEgale(objectif)");
 
-                    if (objectifRayon.environEgaleX(sortie.getCoins().get(0).getX() + sortie.getLongueur()) && (sortie.getMur() == 1 || sortie.getMur()==3)) {
+                    if (objectifRayon.environEgaleX(sortie.getListePointsSortie().get(0).getX() + sortie.getLargeurPorte()) && (sortie.estMur1ou3())) {
                         System.out.println("objectifRayon.environEgaleX(sortie.getCoins().get(0).getX() + sortie.getLongueur()) && (sortie.getMur() == 1 || sortie.getMur()==3)");
                         System.out.println("X2");
                         objectifRayon.setX(objectif.getX() - rayon);
 
-                    } else if(objectifRayon.environEgaleX(pointSortie.getX()) && (sortie.getMur() == 1 || sortie.getMur()==3)) {
+                    } else if(objectifRayon.environEgaleX(pointSortie.getX()) && (sortie.estMur1ou3())) {
                         System.out.println("X1");
                         objectifRayon.setX(objectif.getX() + rayon);
 
-                    }else if(objectifRayon.environEgaleY(sortie.getCoins().get(0).getY() + sortie.getLongueur()) && (sortie.getMur()==2 || sortie.getMur()==4)){
+                    }else if(objectifRayon.environEgaleY(sortie.getListePointsSortie().get(0).getY() + sortie.getLargeurPorte()) && (!sortie.estMur1ou3())){
                         System.out.println("objectifRayon.environEgaleX(sortie.getCoins().get(0).getX() + sortie.getLongueur()) && (sortie.getMur()==2 || sortie.getMur()==4)");
                         System.out.println("X2");
                         objectifRayon.setY(objectif.getY() - rayon);
@@ -402,6 +405,8 @@ public class Personne {
             }
         }
     }
+
+
 
     // Obligé de faire environ égale avec une petite precision car les doubles ne sont pas égaux.
     public boolean objectifAteint () {
