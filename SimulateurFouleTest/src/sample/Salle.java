@@ -143,7 +143,7 @@ public class Salle {
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                personne.setObjectifAvecRayon(this);
+                personne.setObjectif(this);
                 personne.setDxDyNormalise(personne.getObjectifRayon());
             }
 
@@ -159,7 +159,7 @@ public class Salle {
                                 removePersonne(listPersonnes.get(i));
                             else {
                                 if (listPersonnes.get(i).objectifAteint()) {
-                                    listPersonnes.get(i).setObjectifAvecRayon(salle);
+                                    listPersonnes.get(i).setObjectif(salle);
                                     listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
                                 }
                                 else {
