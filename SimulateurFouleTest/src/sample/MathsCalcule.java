@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class MathsCalcule {
 
+    // A commenter
     public static double determinant(Point coordA, Point coordB, Point coordC, Point coordD) {
         double a = coordB.getX() - coordA.getX();
         double b = coordB.getY() - coordA.getY();
@@ -16,6 +17,8 @@ public class MathsCalcule {
         return determinant;
     }
 
+    // A commenter
+    // Renvoie vrais si les segements AB et CD coupent en un point intérieur strictement à AB et CD.
     public static boolean estCoupe(Point coordA, Point coordB, Point coordC, Point coordD) {
         double a = coordB.getX() - coordA.getX();
         double b = coordB.getY() - coordA.getY();
@@ -31,21 +34,15 @@ public class MathsCalcule {
         double k1 = (mat1 * u) + (mat3 * v);
         double k2 = (mat2 * u) + (mat4 * v);
         //System.out.println("La valeur de K est "+k1 +"\n"+ "La valeur de k' est " +k2);
-        if ((0 < k1 && k1 < 1) && (0 < k2 && k2 < 1)) {
-            //System.out.println("Les segments se touchent. ");
-            return true;
-        } else {
-            //System.out.println("Segments se touchent pas. ");
-            return false;
-        }
+        //System.out.println("Les segments se touchent. ");
+        return (0 < k1 && k1 < 1) && (0 < k2 && k2 < 1);
     }
-
-
 
     public static double distance(Point A, Point B) {
         return Math.sqrt(Math.pow(A.getX() - B.getX(), 2) + Math.pow(A.getY() - B.getY(), 2));
     }
 
+    // Retourne vrais si AB est colinéaire à CD et qu'ils se chevauchent sur plus d'un point.
     public static boolean estSuperpose(Point coordA, Point coordB, Point coordC, Point coordD) {
         if (MathsCalcule.determinant(coordA, coordB, coordC, coordD) == 0) {
             if (coordB.getX() == coordC.getX()) {
@@ -69,8 +66,8 @@ public class MathsCalcule {
         return false;
     }
 
-
-
+    // Retourne les segments d'obstacles qu'intersectent le segment AB.
+    // Devrait renvoyer vrais si le mouvement de A à B est valide, ou sinon, faux.
     public static ArrayList<Point> coordSegments(Point coordA,Point coordB, Obstacle o){
         ArrayList<Point> listTableau = new ArrayList<>();
         int j = 0;

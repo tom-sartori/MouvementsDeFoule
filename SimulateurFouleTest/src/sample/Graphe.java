@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Graphe {
 
-    private List<Chemin> listeChemins;
-    private List<Point> listePoints;
+    private List<Chemin> listeChemins;  // Que pour l'affichage
+    private List<Point> listePoints;    // Probleme redondance
     private List<Point> listePointsObstacles;
 
 
@@ -66,6 +66,7 @@ public class Graphe {
     // Pour un point de départ, cette fonction calcule tous les plus courts chemins vers ce point (algorithme de Dijkstra).
     // Cette fonctionne affecte donc pour chaque Point, son précédent ainsi que la distance vers le depart.
     // Nous avons donc le chemin inverse entre le depart et la sortie grace aux précédents.
+    // Pré-requis : depart est un point obstacle
     public void creerPlusCourtChemin(Salle salle, Point depart) {
         List<Point> listeCourante = new ArrayList<>();
 
