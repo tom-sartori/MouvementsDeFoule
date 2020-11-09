@@ -62,34 +62,41 @@ public class Salle {
     }
 
 
-    public void addObstacle (ObstacleRectangle obstacle){
+    public void addObstacle (Obstacle obstacle){
         listObstacles.add(obstacle);
     }
 
     // Permet d'ajouter une sortie à la salle et la place correctement
     // Modifie x1 y1 x2 y2 de la sortie correspondante pour lui donner uniquement les coordonnées utiles
     // (donc pas les coords exterrieurs à la salle)
-    public void addSortie (Sortie sortie) {
-        listSorties.add(sortie);
+    public void addSortie (int mur, int largeurPorte, int distanceOrigine) {
+        Point point1 = new Point();
+        Point point2 = new Point();
 
-        if (sortie.getMur() == 1) {     // Mur haut
-            sortie.getPoint1().setPoint(sortie.getDistance(), 0);
-            sortie.getPoint2().setPoint( sortie.getDistance() + sortie.getLongueur(), 0);
+        if (mur == 1) {     // Mur haut
+            point1.setPoint(distanceOrigine, 0);
+            point2.setPoint( distanceOrigine + largeurPorte, 0);
         }
-        else if (sortie.getMur() == 2) {     // Mur droit
-            sortie.getPoint1().setPoint(largeur, sortie.getDistance());
-            sortie.getPoint2().setPoint(largeur,sortie.getDistance() + sortie.getLongueur());
+        else if (mur == 2) {     // Mur droit
+            point1.setPoint(largeur, distanceOrigine);
+            point2.setPoint(largeur,distanceOrigine + largeurPorte);
         }
-        else if (sortie.getMur() == 3) {     // Mur bas
-            sortie.getPoint1().setPoint(sortie.getDistance(), hauteur);
-            sortie.getPoint2().setPoint(sortie.getDistance() + sortie.getLongueur(), hauteur);
+        else if (mur == 3) {     // Mur bas
+            point1.setPoint(distanceOrigine, hauteur);
+            point2.setPoint(distanceOrigine + largeurPorte, hauteur);
         }
-        else if (sortie.getMur() == 4) {     // Mur gauche
-            sortie.getPoint1().setPoint(0, sortie.getDistance());
-            sortie.getPoint2().setPoint(0,sortie.getDistance() + sortie.getLongueur());
+        else if (mur == 4) {     // Mur gauche
+            point1.setPoint(0, distanceOrigine);
+            point2.setPoint(0,distanceOrigine + largeurPorte);
         }
         else
             System.out.println("Salle, addSortie, problème de mur. ");
+
+        List<Point> list = new ArrayList<>();
+        list.add(point1);
+        list.add(point2);
+
+        listSorties.add(new Sortie(list));
     }
 
     public void addPersonne (Personne personne) {
@@ -261,7 +268,6 @@ public class Salle {
         }
     }
 
-  
     // Ne prend pas en compte les obstacles
     public Point findSortiePlusProcheIndirecte(Point A) {
         double distance1 = -1;
@@ -274,16 +280,16 @@ public class Salle {
 
             for (Sortie sortie : listSorties) {
 
-                distance1 = MathsCalcule.distance(A, sortie.getPoint1());
-                distance2 = MathsCalcule.distance(A, sortie.getPoint2());
+                distance1 = MathsCalcule.distance(A, sortie.getListePointsSortie().get(0));   // Surement à adapter si nb points de sortie > 2
+                distance2 = MathsCalcule.distance(A, sortie.getListePointsSortie().get(1));
 
                 if (Math.min(distance1, distance2) < distanceCourte) {
                     if (distance1 < distance2) {
                         distanceCourte = distance1;
-                        plusProche = sortie.getPoint1();
+                        plusProche = sortie.getListePointsSortie().get(0);
                     } else {
                         distanceCourte = distance2;
-                        plusProche = sortie.getPoint2();
+                        plusProche = sortie.getListePointsSortie().get(1);
                     }
                 }
             }

@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 
 public class ControllerObstacleRectangle extends ControllerObstacle{
 
-    public ControllerObstacleRectangle(Obstacle obstacleRectangle) {
+    public ControllerObstacleRectangle(ObstacleRectangle obstacleRectangle) {
         Rectangle obstacleGraphique = new Rectangle();
         obstacleGraphique.setX(obstacleRectangle.getListePoints().get(0).getX());
         obstacleGraphique.setY(obstacleRectangle.getListePoints().get(0).getY());

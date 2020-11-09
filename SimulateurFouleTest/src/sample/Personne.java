@@ -31,12 +31,20 @@ public class Personne {
         double distX = Math.abs(coordCourant.getX() - arrivee.getX());
         double distY = Math.abs(coordCourant.getY() - arrivee.getY());
 
-        if (coordCourant.getX() < arrivee.getX())
+        if (distY == 0) {
+            if (coordCourant.getX() < arrivee.getX())
+                dxdy.setX(1);
+            else
+                dxdy.setX(-1);
+        }
+        else if (coordCourant.getX() < arrivee.getX())
             dxdy.setX(distX / distY);
         else
             dxdy.setX(- distX / distY);
 
-        if (coordCourant.getY() < arrivee.getY())
+        if (distY == 0)
+            dxdy.setY(0);
+        else if (coordCourant.getY() < arrivee.getY())
             dxdy.setY(1);
         else
             dxdy.setY(-1);
@@ -54,22 +62,23 @@ public class Personne {
 
         this.dx = (vitesse/argument) * coordDxDy.getX();
         this.dy = (vitesse/argument) * coordDxDy.getY();
+        System.out.println("dx : " + dx);
+        System.out.println("dy : " + dy);
     }
-
 
     // Permet de faire avancer Personne suivant ses dx, dy (donc normalement en direction de son Point objectif).
     // Si le perso dépasse en x ou y son objectif, cela signifie qu'il ateint son objectif et donc coordCourant prend les coord de l'objectif.
     // Sinon, il avance simplement de dx et dy
-    public void avancer () { /*
-        if (dx > 0 && coordCourant.getX() + dx > objectif.getX())   // Tous les if sont les cas où il ateint son objectif.
+    public void avancer () {
+        if (dx >= 0 && dy >= 0 && coordCourant.getX() + dx >= objectif.getX() && coordCourant.getY() + dy >= objectif.getY())
             coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else if (dx < 0 && coordCourant.getX() + dx < objectif.getX())
+        else if (dx >= 0 && dy <= 0 && coordCourant.getX() + dx >= objectif.getX() && coordCourant.getY() + dy <= objectif.getY())
             coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else if (dy > 0 && coordCourant.getY() + dy > objectifRayon.getY())
+        else if (dx <= 0 && dy <= 0 && coordCourant.getX() + dx <= objectif.getX() && coordCourant.getY() + dy <= objectif.getY())
             coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else if (dy < 0 && coordCourant.getY() + dy < objectif.getY())
+        else if (dx <= 0 && dy >= 0 && coordCourant.getX() + dx <= objectif.getX() && coordCourant.getY() + dy >= objectif.getY())
             coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else*/
+        else
             coordCourant.setPoint(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.
     }
 
@@ -112,6 +121,9 @@ public class Personne {
             setObjectifRayonSortie(salle);
         }
     }
+
+
+
 
     public void setObjectifRayonObstacle (Salle salle) {
         for (Obstacle o : salle.getListObstacles()) {
@@ -381,20 +393,20 @@ public class Personne {
 
     public void setObjectifRayonSortie(Salle salle){
         for (Sortie sortie : salle.getListSorties()) {
-            for (Point pointSortie : sortie.getCoins()) {
+            for (Point pointSortie : sortie.getListePointsSortie()) {
                 if (pointSortie.environEgale(objectif, 1)) {
                     System.out.println("pointSortie.environEgale(objectif)");
 
-                    if (objectifRayon.environEgaleX(sortie.getCoins().get(0).getX() + sortie.getLongueur()) && (sortie.getMur() == 1 || sortie.getMur()==3)) {
+                    if (objectifRayon.environEgaleX(sortie.getListePointsSortie().get(0).getX() + sortie.getLargeurPorte()) && (sortie.estMur1ou3())) {
                         System.out.println("objectifRayon.environEgaleX(sortie.getCoins().get(0).getX() + sortie.getLongueur()) && (sortie.getMur() == 1 || sortie.getMur()==3)");
                         System.out.println("X2");
                         objectifRayon.setX(objectif.getX() - rayon);
 
-                    } else if(objectifRayon.environEgaleX(pointSortie.getX()) && (sortie.getMur() == 1 || sortie.getMur()==3)) {
+                    } else if(objectifRayon.environEgaleX(pointSortie.getX()) && (sortie.estMur1ou3())) {
                         System.out.println("X1");
                         objectifRayon.setX(objectif.getX() + rayon);
 
-                    }else if(objectifRayon.environEgaleY(sortie.getCoins().get(0).getY() + sortie.getLongueur()) && (sortie.getMur()==2 || sortie.getMur()==4)){
+                    }else if(objectifRayon.environEgaleY(sortie.getListePointsSortie().get(0).getY() + sortie.getLargeurPorte()) && (!sortie.estMur1ou3())){
                         System.out.println("objectifRayon.environEgaleX(sortie.getCoins().get(0).getX() + sortie.getLongueur()) && (sortie.getMur()==2 || sortie.getMur()==4)");
                         System.out.println("X2");
                         objectifRayon.setY(objectif.getY() - rayon);
@@ -408,6 +420,8 @@ public class Personne {
             }
         }
     }
+
+
 
     // Obligé de faire environ égale avec une petite precision car les doubles ne sont pas égaux.
     public boolean objectifAteint () {

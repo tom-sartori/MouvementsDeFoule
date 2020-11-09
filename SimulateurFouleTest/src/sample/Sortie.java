@@ -1,63 +1,42 @@
 package sample;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Sortie {
-    private int mur;
-    private double longueur;
-    private double distance;
-
-    private Point point1;  // temporaire avant de modifier toute la classe avec juste point1 et point2 sans x1, y1, x2, y2.
-    private Point point2;
     private List<Point> listePointsSortie;
 
 
-    public Sortie(int m, double l, double d) {
-        this.mur = m;
-        this.longueur = l;
-        this.distance = d;
-
-        point1 = new Point();   // Initialisés lorsqu'on ajoute la sortie à la salle.
-        point2 = new Point();
-
-        listePointsSortie = new ArrayList<>();
-        listePointsSortie.add(point1);
-        listePointsSortie.add(point2);
+    public Sortie (List<Point> listePoints) {
+        listePointsSortie = listePoints;
     }
 
     public ControllerSortie afficher() {
         return new ControllerSortie(this);
     }
 
-    public double getDistance() {
-        return distance;
-    }
-
-    public double getLongueur() {
-        return longueur;
-    }
-
-    public int getMur() {
-        return mur;
-    }
-
-    public Point getPoint1() {
-        return point1;
-    }
-
-    public Point getPoint2() {
-        return point2;
-    }
-
-    public ArrayList<Point> getCoins(){
-        ArrayList<Point> listCoins = new ArrayList<>();
-        listCoins.add(getPoint1());
-        listCoins.add(getPoint2());
-        return listCoins;
-    }
-
     public List<Point> getListePointsSortie() {
         return listePointsSortie;
+    }
+
+    public double getLargeurPorte() {
+        Point point1 = listePointsSortie.get(0);
+        Point point2 = listePointsSortie.get(1);
+
+        if (point1.getY() == point2.getY()) {   // mur==1 || mur==3)
+            return Math.abs(point1.getX() - point2.getX());
+        }
+        else if(point1.getX() == point2.getX()) {  //mur==2 || mur==4
+            return Math.abs(point1.getY() - point2.getY());
+        }
+        else {
+            System.out.println("Sortie, getLongueur, erreur. ");
+            return 0;
+        }
+    }
+
+    public boolean estMur1ou3 () {
+        if (listePointsSortie.get(0).getY() == listePointsSortie.get(1).getY()) {   // mur==1 || mur==3
+            return true;
+        } else return false;
     }
 }
