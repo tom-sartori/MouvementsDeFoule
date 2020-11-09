@@ -19,20 +19,22 @@ public class Main extends Application {
         Salle salle = new Salle(1000, 600);
 
         salle.addObstacle(new ObstacleRectangle(150, 200, 70, 30));
-        salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
-        salle.addObstacle(new ObstacleRectangle(600, 100, 10, 200));
+        //salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
+        salle.addObstacle(new ObstacleRectangle(600, 100, 15, 200));
+        salle.addObstacle(new ObstacleRectangle(30, 500, 200, 60));
+        //salle.addObstacle(new ObstacleRectangle(400, 430, 200, 50));
+        salle.addObstacle(new ObstacleRectangle(700, 300, 80, 100));
+        salle.addObstacle(new ObstacleRectangle(820, 30, 70, 70));
+        salle.addObstacle(new ObstacleRectangle(330, 80, 150, 150));
+        salle.addObstacle(new ObstacleTriangle(new Point(300, 480), new Point(350, 480), new Point(400, 520)));
 
-        salle.addSortie(new Sortie(2,60,50));
-        salle.addSortie(new Sortie(3, 60, 80));
-        salle.addSortie(new Sortie(3, 40, 600));
-        
-        for (int i = 0; i < 100; i++) {
-            Random ran = new Random();
-            double x = ran.nextInt(1000);
-            double y = ran.nextInt(600);
-            System.out.println(x + " " + y);
-            salle.addPersonne(new Personne(x,y));
-        }
+        salle.addSortie(1, 40, 60);
+        salle.addSortie(2,60,400);
+        salle.addSortie(3, 20, 80);
+        salle.addSortie(4, 40, 400);
+
+
+        salle.addRandomPersonnes(100);
 
         Controller controller = new Controller(salle);
         root.getChildren().add(controller);

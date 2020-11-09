@@ -44,8 +44,8 @@ public class ControllerSalle extends Parent{
         return personne.afficher();
     }
 
-    public void afficherControllerObstacle(ControllerObstacleRectangle controllerObstacleRectangle) {
-        getChildren().add(controllerObstacleRectangle);
+    public void afficherControllerObstacle(ControllerObstacle controllerObstacle) {
+        getChildren().add(controllerObstacle);
     }
 
     public void afficherSortie(ControllerSortie controllerSortie) {
@@ -60,7 +60,7 @@ public class ControllerSalle extends Parent{
     // Retourne boolean uniquement utilisé pour faire un parcours partiel
     public boolean deplacerPersonne(Personne personne) {
         for (ControllerPersonne controllerPersonne : listeControllerPersonne) {
-            if (controllerPersonne.getPersonne().getCoordCourant().equals(personne.getCoordCourant())) {
+            if (controllerPersonne.getPersonne().equals(personne)) {
                 controllerPersonne.deplacer(personne.getCoordCourant().getX(), personne.getCoordCourant().getY());
                 return true;
             }
