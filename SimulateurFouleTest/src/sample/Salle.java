@@ -136,7 +136,7 @@ public class Salle {
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                personne.setObjectif(this);
+                personne.setObjectifAvecRayon(this);
                 personne.setDxDyNormalise(personne.getObjectifRayon());
             }
 
@@ -152,11 +152,11 @@ public class Salle {
                                 removePersonne(listPersonnes.get(i));
                             else {
                                 if (listPersonnes.get(i).objectifAteint()) {
-                                    listPersonnes.get(i).setObjectif(salle);
+                                    listPersonnes.get(i).setObjectifAvecRayon(salle);
                                     listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
                                 }
                                 else {
-                                    listPersonnes.get(i).avancer();
+                                    listPersonnes.get(i).avancerRayon();
                                     cSalle.deplacerPersonne(listPersonnes.get(i));
                                 }
                             }
