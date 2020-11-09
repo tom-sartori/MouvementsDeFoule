@@ -32,7 +32,7 @@ public class Main extends Application {
         salle.addSortie(3, 20, 80);
         salle.addSortie(4, 40, 400);
         
-        //salle.addRandomPersonnes(100);
+        salle.addRandomPersonnes(100);
 
         Controller controller = new Controller(salle);
         root.getChildren().add(controller);
