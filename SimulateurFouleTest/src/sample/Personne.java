@@ -100,7 +100,7 @@ public class Personne {
             objectif = findBonChemin(salle);
 
         } else { // peut etre faire un cas pour la fin, car getSuiv() de l'arrive == null
-            objectif = objectif.getSuivant();
+            objectif = objectif.getSuivanttttttttttttt();
         }
         //System.out.println("courant : " + coordCourant);
         //System.out.println("objectif : " + objectif);
@@ -111,7 +111,7 @@ public class Personne {
     // Prend aussi en compte le rayon de la personne.
     public void setObjectifAvecRayon (Salle salle) {
         setObjectif(salle);
-        if (objectif.getSuivant() != null) {
+        if (objectif.getSuivanttttttttttttt() != null) {
 
             System.out.println("objectif.getSuivant() != null");
             setObjectifRayonObstacle(salle);
@@ -443,7 +443,7 @@ public class Personne {
 
         for (Point point : salle.getGraphe().getListePointsDirectesPerso(salle, coordCourant)) { // Fonctionne pas car personne pas dans le graphe
             if (MathsCalcule.distance(coordCourant, point) != 0) { // Car si 0,c'est lui meme.
-                distanceCourante = MathsCalcule.distance(coordCourant, point) + point.getDistanceSortie();
+                distanceCourante = MathsCalcule.distance(coordCourant, point) + point.getDistanceSortieeeeeeeeeeeeeeeee();
                 if (distanceCourante < distance) {
                     distance = distanceCourante;
                     premierObjectif = point;

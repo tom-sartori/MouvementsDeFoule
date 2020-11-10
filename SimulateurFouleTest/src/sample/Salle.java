@@ -72,6 +72,8 @@ public class Salle {
     public void addSortie (int mur, int largeurPorte, int distanceOrigine) {
         Point point1 = new Point();
         Point point2 = new Point();
+        point1.setEstSortie(true);
+        point2.setEstSortie(true);
 
         if (mur == 1) {     // Mur haut
             point1.setPoint(distanceOrigine, 0);
@@ -245,7 +247,7 @@ public class Salle {
     // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
     public void initialisationGrapheSansAffichage () {
         graphe = new Graphe(this);
-        graphe.creerCheminPlusCourtAvecSortie(this);
+        graphe.creerTousLesPlusCourtsChemins();
     }
 
 
@@ -253,12 +255,22 @@ public class Salle {
     // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
     public void initialisationGrapheAvecAffichage () {
         graphe = new Graphe(this);
-        graphe.creerCheminPlusCourtAvecSortie(this);
+        graphe.creerTousLesPlusCourtsChemins();
         cSalle.afficherGraphe(graphe.afficher());
     }
 
     public void initialisationGrapheBasique () {
         graphe = new Graphe(this);
+        //graphe.creerPlusCourtChemin(graphe.getListePointsSorties().get(1));
+        //graphe.afficherPrecedentsListPointsObstacles();
+        graphe.creerTousLesPlusCourtsChemins();
+
+        /*
+        System.out.println(graphe.getListePointsSorties().get(0).toStringV3());
+        System.out.println(listObstacles.get(0).getListePoints().get(3).toStringV3());
+        System.out.println(listObstacles.get(0).getListePoints().get(2).toStringV3());
+
+         */
         cSalle.afficherGraphe(graphe.afficher());
     }
 
@@ -362,7 +374,7 @@ public class Salle {
 
      */
 
-    public Point findPointSortiePlusProcheDirecte(Point A) {
+    public Point findPointSortiePlusProcheDirect(Point A) {
         double distance;
 
         double distanceCourte = 1000000;
@@ -371,7 +383,7 @@ public class Salle {
 
         if (!listSorties.isEmpty()) {
             for (Sortie sortie : listSorties) {
-                courant = sortie.findPointSortieDirect(this, A); // Probleme ici
+                courant = sortie.findPointSortieDirect(this, A, 0); // Probleme ici
                 if (courant != null) {
                     distance = MathsCalcule.distance(A, courant);
 

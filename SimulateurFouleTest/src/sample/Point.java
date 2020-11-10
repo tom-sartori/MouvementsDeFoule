@@ -1,42 +1,52 @@
 package sample;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 public class Point {
     private double x;
     private double y;
 
-    private double distance;
-    private Point precedent;
+    private boolean estSortie;
 
     private Point suivant;
-    private double distanceSortie;
+    private double distance;
+
+    private Point vraiSuivant;
+    private double vraieDistance;
+
+
+    private Point suivanttttttttttttt;
+    private double distanceSortieeeeeeeeeeeeeeeee;
 
 
     public Point(){
         x=0;
         y=0;
+        estSortie = false;
 
-        precedent = null;
+        suivant = null;
+        vraiSuivant = null;
     }
 
     public Point(double x, double y) {
         this.x = x;
         this.y = y;
+        estSortie = false;
 
-        precedent = null;
+        suivant = null;
+        vraiSuivant = null;
     }
 
     public Point(Point p) {
         x = p.getX();
         y = p.getY();
-        precedent = p.getPrecedent();
-        distance = p.getDistance();
+        estSortie = p.estSortie();
         suivant = p.getSuivant();
-        distanceSortie = p.getDistanceSortie();
+        distance = p.getDistance();
+        suivanttttttttttttt = p.getSuivanttttttttttttt();
+        distanceSortieeeeeeeeeeeeeeeee = p.getDistanceSortieeeeeeeeeeeeeeeee();
+        vraiSuivant = p.getVraiSuivant();
+        vraieDistance = p.getVraieDistance();
     }
 
 
@@ -52,8 +62,17 @@ public class Point {
         return "Point{" +
                 "x=" + x +
                 ", y=" + y +
-                ", distanceSortie=" + distanceSortie +
-                ", suivant=" + suivant +
+                ", distanceSortie=" + distanceSortieeeeeeeeeeeeeeeee +
+                ", suivant=" + suivanttttttttttttt +
+                '}';
+    }
+
+    public String toStringV3() {
+        return "Point{" +
+                "x=" + x +
+                ", y=" + y +
+                ", distance=" + distance +
+                ", precedent=" + suivant +
                 '}';
     }
 
@@ -125,14 +144,6 @@ public class Point {
     }
 
 
-    public Point getPrecedent() {
-        return precedent;
-    }
-
-    public void setPrecedent(Point precedent) {
-        this.precedent = precedent;
-    }
-
     public Point getSuivant() {
         return suivant;
     }
@@ -141,16 +152,48 @@ public class Point {
         this.suivant = suivant;
     }
 
-    public double getDistanceSortie() {
-        return distanceSortie;
+    public Point getSuivanttttttttttttt() {
+        return suivanttttttttttttt;
     }
 
-    public void setDistanceSortie(double distanceSortie) {
-        this.distanceSortie = distanceSortie;
+    public void setSuivanttttttttttttt(Point suivanttttttttttttt) {
+        this.suivanttttttttttttt = suivanttttttttttttt;
+    }
+
+    public double getDistanceSortieeeeeeeeeeeeeeeee() {
+        return distanceSortieeeeeeeeeeeeeeeee;
+    }
+
+    public void setDistanceSortieeeeeeeeeeeeeeeee(double distanceSortieeeeeeeeeeeeeeeee) {
+        this.distanceSortieeeeeeeeeeeeeeeee = distanceSortieeeeeeeeeeeeeeeee;
     }
 
     public void setPoint (double x, double y) {
         this.x = x;
         this.y = y;
+    }
+
+    public boolean estSortie() {
+        return estSortie;
+    }
+
+    public void setEstSortie(boolean estSortie) {
+        this.estSortie = estSortie;
+    }
+
+    public Point getVraiSuivant() {
+        return vraiSuivant;
+    }
+
+    public double getVraieDistance() {
+        return vraieDistance;
+    }
+
+    public void setVraiSuivant(Point vraiSuivant) {
+        this.vraiSuivant = vraiSuivant;
+    }
+
+    public void setVraieDistance(double vraieDistance) {
+        this.vraieDistance = vraieDistance;
     }
 }
