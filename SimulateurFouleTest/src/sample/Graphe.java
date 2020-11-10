@@ -19,11 +19,14 @@ public class Graphe {
             for (Point point : obstacle.getListePoints()) {
                 listePoints.add(point);
                 listePointsObstacles.add(point);
-                Point pointSortieDirectProche = salle.findSortiePlusProcheDirecte(point);
+                Point pointSortieDirectProche = salle.findPointSortiePlusProcheDirecte(point);
                 System.out.println("point : " + pointSortieDirectProche);
                 if (pointSortieDirectProche != null) {
-                    listePoints.add(pointSortieDirectProche);
-                    salle.addPersonne(new Personne(pointSortieDirectProche.getX(), pointSortieDirectProche.getY()));
+
+                    if (!listePoints.contains(pointSortieDirectProche)) {
+                        listePoints.add(pointSortieDirectProche);
+                        addChemin(new Chemin(point, pointSortieDirectProche));
+                    }
                 }
             }
         }
@@ -34,6 +37,7 @@ public class Graphe {
         }
 
          */
+        System.out.println("taille " + listePoints.size());
 
     }
 
@@ -63,7 +67,7 @@ public class Graphe {
                             addChemin(new Chemin(point, point1));
                     }
                 }
-                Point pointSortie = salle.findSortiePlusProcheDirecte(point);
+                Point pointSortie = salle.findPointSortiePlusProcheDirecte(point);
                 if (pointSortie != null) {
                     addChemin(new Chemin(point, pointSortie));
                 }
@@ -120,10 +124,10 @@ public class Graphe {
             creerPlusCourtChemin(salle, pointObstacle);
 
             // Affecte à chaque point du plus court chemin vers la sortie, le point suivant ainsi que la distance à la sortie.
-            affecteSuivants(getListePointsCheminPlusCourt(pointObstacle, salle.findSortiePlusProcheIndirecte(pointObstacle)));
+            affecteSuivants(getListePointsCheminPlusCourt(pointObstacle, salle.findPointSortiePlusProcheIndirecte(pointObstacle)));
 
             // Ajoute les chemins pour l'affichage.
-            addChemin(getListePointsCheminPlusCourt(pointObstacle, salle.findSortiePlusProcheIndirecte(pointObstacle)));
+            addChemin(getListePointsCheminPlusCourt(pointObstacle, salle.findPointSortiePlusProcheIndirecte(pointObstacle)));
         }
     }
 
@@ -199,13 +203,13 @@ public class Graphe {
         List<Point> listePointsDirectes = new ArrayList<>();
 
         listePoints.add(A);
-        listePoints.add(salle.findSortiePlusProcheDirecte(A));
+        listePoints.add(salle.findPointSortiePlusProcheDirecte(A));
         for (Point point : listePoints) {
             if (!salle.intersecObstacle(A, point))
                 listePointsDirectes.add(point);
         }
         listePoints.remove(A);
-        listePoints.remove(salle.findSortiePlusProcheDirecte(A));
+        listePoints.remove(salle.findPointSortiePlusProcheDirecte(A));
         return listePointsDirectes;
     }
 

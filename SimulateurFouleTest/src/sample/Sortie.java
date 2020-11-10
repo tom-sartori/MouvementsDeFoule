@@ -86,7 +86,7 @@ public class Sortie {
                         plusPetiteDistance = MathsCalcule.distance(depart, courant);
                         //pointSortie.setPoint(courant.getX(), courant.getY());
                         pointSortie = new Point(courant);
-                        pointSortie.setPrecedent(depart);
+                        //pointSortie.setPrecedent(depart);
                     }
                 }
             }
@@ -102,8 +102,6 @@ public class Sortie {
             }
         }
         System.out.println("pointSortie : " + pointSortie);
-        if (pointSortie == null)
-            return point1;  // Probleme ic
-        return pointSortie;
+        return pointSortie; // Si null, devrait rien retourner
     }
 }

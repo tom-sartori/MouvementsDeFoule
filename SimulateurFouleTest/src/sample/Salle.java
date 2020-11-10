@@ -139,7 +139,7 @@ public class Salle {
 
 
     public void demarrer() {
-        initialisationGrapheSansAffichage();
+        initialisationGrapheBasique();
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
@@ -257,6 +257,11 @@ public class Salle {
         cSalle.afficherGraphe(graphe.afficher());
     }
 
+    public void initialisationGrapheBasique () {
+        graphe = new Graphe(this);
+        cSalle.afficherGraphe(graphe.afficher());
+    }
+
     public void play(Boolean collisionActive){
         if(loop != null && loop.getStatus() == Status.PAUSED){
             loop.play();
@@ -302,7 +307,7 @@ public class Salle {
  */
 
     // Ne prend pas en compte les obstacles
-    public Point findSortiePlusProcheIndirecte(Point A) {
+    public Point findPointSortiePlusProcheIndirecte(Point A) {
         double distance;
 
         Point courant = new Point();
@@ -317,13 +322,13 @@ public class Salle {
                 if (distance < distanceCourte) {
                     distanceCourte = distance;
                     plusProche = new Point(courant);    // A check
-                    plusProche.setPrecedent(A);
+                    //plusProche.setPrecedent(A);
                 }
             }
         }
         else
             System.out.println("Pas de sorties dans la salle");
-        plusProche.setPrecedent(A);
+        //plusProche.setPrecedent(A);
         return plusProche;
     }
 
@@ -357,7 +362,7 @@ public class Salle {
 
      */
 
-    public Point findSortiePlusProcheDirecte(Point A) {
+    public Point findPointSortiePlusProcheDirecte(Point A) {
         double distance;
 
         double distanceCourte = 1000000;
@@ -367,17 +372,19 @@ public class Salle {
         if (!listSorties.isEmpty()) {
             for (Sortie sortie : listSorties) {
                 courant = sortie.findPointSortieDirect(this, A); // Probleme ici
-                distance = MathsCalcule.distance(A, courant);
+                if (courant != null) {
+                    distance = MathsCalcule.distance(A, courant);
 
-                if (distance < distanceCourte) {
-                    distanceCourte = distance;
-                    plusProche = new Point(courant);    // A check
+                    if (distance < distanceCourte) {
+                        distanceCourte = distance;
+                        plusProche = new Point(courant);    // A check
+                    }
                 }
             }
         }
         else
             System.out.println("Pas de sorties dans la salle");
-        plusProche.setPrecedent(new Point());
+        //plusProche.setPrecedent(new Point());
         return plusProche;
     }
 
