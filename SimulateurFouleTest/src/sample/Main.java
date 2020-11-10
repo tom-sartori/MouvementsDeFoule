@@ -28,10 +28,10 @@ public class Main extends Application {
         salle.addObstacle(new ObstacleRectangle(330, 80, 150, 150));
         salle.addObstacle(new ObstacleTriangle(new Point(300, 480), new Point(350, 480), new Point(400, 520)));
 
-        salle.addSortie(1, 40, 60);
-        salle.addSortie(2,60,400);
-        salle.addSortie(3, 20, 80);
-        salle.addSortie(4, 40, 400);
+        salle.addSortie(1, 800, 20);
+        //salle.addSortie(2,400,40);
+        //salle.addSortie(3, 20, 80);
+        //salle.addSortie(4, 180, 100);
 
 
         salle.addRandomPersonnes(100);

@@ -19,12 +19,21 @@ public class Graphe {
             for (Point point : obstacle.getListePoints()) {
                 listePoints.add(point);
                 listePointsObstacles.add(point);
+                Point pointSortieDirectProche = salle.findSortiePlusProcheDirecte(point);
+                System.out.println("point : " + pointSortieDirectProche);
+                if (pointSortieDirectProche != null) {
+                    listePoints.add(pointSortieDirectProche);
+                    salle.addPersonne(new Personne(pointSortieDirectProche.getX(), pointSortieDirectProche.getY()));
+                }
             }
         }
+        /*
         for (Sortie sortie : salle.getListSorties()) {
             for (Point point : sortie.getListePointsSortie())
                 listePoints.add(point);
         }
+
+         */
 
     }
 
@@ -124,15 +133,18 @@ public class Graphe {
     // On utilise le point précédent, de chaque point, de l'arrivé au départ.
     // La liste retournée est dans l'ordre : [depart, ..., arrive]
     public List<Point> getListePointsCheminPlusCourt(Point depart, Point arrive) {
+        System.out.println("depart : " + depart + " arrive : " + arrive);
         List<Point> cheminPlusCourt = new ArrayList<>();
         Point courant = arrive;
 
         while (!courant.equals(depart)) {
+            System.out.println("test");
             cheminPlusCourt.add(0, courant);
             courant = courant.getPrecedent();
         }
         cheminPlusCourt.add(0, depart);
 
+        System.out.println("sortie");
         return cheminPlusCourt;
     }
 
@@ -187,11 +199,13 @@ public class Graphe {
         List<Point> listePointsDirectes = new ArrayList<>();
 
         listePoints.add(A);
+        listePoints.add(salle.findSortiePlusProcheDirecte(A));
         for (Point point : listePoints) {
             if (!salle.intersecObstacle(A, point))
                 listePointsDirectes.add(point);
         }
         listePoints.remove(A);
+        listePoints.remove(salle.findSortiePlusProcheDirecte(A));
         return listePointsDirectes;
     }
 

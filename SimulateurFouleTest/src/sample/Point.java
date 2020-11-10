@@ -34,7 +34,9 @@ public class Point {
         x = p.getX();
         y = p.getY();
         precedent = p.getPrecedent();
+        distance = p.getDistance();
         suivant = p.getSuivant();
+        distanceSortie = p.getDistanceSortie();
     }
 
 
