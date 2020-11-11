@@ -106,6 +106,22 @@ class PersonneTest {
     }
 
     @Test
+    public void test_parallèle_Diagonales_0_2_mais_pas_obstacles(){
+        Personne p =new Personne(20,40);
+        Point sortie = new Point(40,60);
+        Obstacle o = new ObstacleRectangle(60,40,20,20);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+    @Test
+    public void test_parallèle_Diagonales_1_3_mais_pas_obstacles(){
+        Personne p =new Personne(60,40);
+        Point sortie = new Point(40,60);
+        Obstacle o = new ObstacleRectangle(60,40,20,20);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+    @Test
     public void test_Coord_Y_pas_obstacle(){
         Personne p =new Personne(20,20);
         Point sortie = new Point(20,100);
@@ -204,6 +220,7 @@ class PersonneTest {
             assertEquals(listSolution.get(i).getY(),listTrouver.get(i).getY());
         }
     }
+
 
 
 }

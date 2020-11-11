@@ -97,7 +97,7 @@ public class Graphe {
                     //addChemin(new Chemin(voisin, courant)); // Premet d'ajouter tous les chemins possibles pour les afficher.
 
                     voisin.setDistance(nouveau);
-                    voisin.setPrecedent(new Point(courant));
+                    voisin.setPrecedent(courant);
                 }
             }
         }
