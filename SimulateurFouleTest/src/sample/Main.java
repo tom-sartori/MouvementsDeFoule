@@ -35,9 +35,6 @@ public class Main extends Application {
         //salle.addSortie(4, 300, 13);
 
 
-        salle.addRandomPersonnes(100);
-
-      
         Controller controller = new Controller(salle);
         root.getChildren().add(controller);
 

@@ -145,8 +145,11 @@ public class Salle {
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                personne.setObjectif(this);
-                personne.setDxDyNormalise(personne.getObjectif());
+              
+                //personne.setObjectif(this);
+                //personne.setDxDyNormalise(personne.getObjectif());
+                personne.setObjectifAvecRayon(this);
+                personne.setDxDyNormalise(personne.getObjectifRayon());
             }
 
             Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
@@ -161,8 +164,11 @@ public class Salle {
                                 removePersonne(listPersonnes.get(i));
                             else {
                                 if (listPersonnes.get(i).objectifAteint()) {
-                                    listPersonnes.get(i).setObjectif(salle);
-                                    listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
+                                  
+                                    //listPersonnes.get(i).setObjectif(salle);
+                                    //listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
+                                    listPersonnes.get(i).setObjectifAvecRayon(salle);
+                                    listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
                                 }
                                 else {
                                     listPersonnes.get(i).avancer();
@@ -185,8 +191,8 @@ public class Salle {
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                personne.setObjectif(this);
-                personne.setDxDyNormalise(personne.getObjectif());
+                personne.setObjectifAvecRayon(this);
+                personne.setDxDyNormalise(personne.getObjectifRayon());
             }
 
             Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
@@ -205,8 +211,8 @@ public class Salle {
                                 removePersonne(listPersonnes.get(i));
                             else {
                                 if (listPersonnes.get(i).objectifAteint()) {
-                                    listPersonnes.get(i).setObjectif(salle);
-                                    listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
+                                    listPersonnes.get(i).setObjectifAvecRayon(salle);
+                                    listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
                                 }
                                 else {
                                     collision = false;
@@ -216,7 +222,7 @@ public class Salle {
                                         y++;
                                     }
                                     if (!collision) {
-                                        listPersonnes.get(i).avancer();
+                                        listPersonnes.get(i).avancerRayon();
                                         cSalle.deplacerPersonne(listPersonnes.get(i));
                                     }
                                 }
