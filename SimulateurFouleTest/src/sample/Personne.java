@@ -100,10 +100,10 @@ public class Personne {
             objectif = findBonChemin(salle);
 
         } else { // peut etre faire un cas pour la fin, car getSuiv() de l'arrive == null
-            objectif = objectif.getSuivant();
+            objectif = objectif.getVraiSuivant();
         }
-        //System.out.println("courant : " + coordCourant);
-        //System.out.println("objectif : " + objectif);
+        System.out.println("courant : " + coordCourant);
+        System.out.println("objectif : " + objectif);
         objectifRayon.setX(objectif.getX());
         objectifRayon.setY(objectif.getY());
     }
@@ -111,7 +111,7 @@ public class Personne {
     // Prend aussi en compte le rayon de la personne.
     public void setObjectifAvecRayon (Salle salle) {
         setObjectif(salle);
-        if (objectif.getSuivant() != null) {
+        if (objectif.getSuivanttttttttttttt() != null) {
 
             System.out.println("objectif.getSuivant() != null");
             setObjectifRayonObstacle(salle);
@@ -422,7 +422,7 @@ public class Personne {
 
     // Obligé de faire environ égale avec une petite precision car les doubles ne sont pas égaux.
     public boolean objectifAteint () {
-        if (coordCourant.environEgale(objectifRayon,1)) {
+        if (coordCourant.equals(objectifRayon)) {
             System.out.println("objectif ateint. ");
             return true;
         }
@@ -431,19 +431,16 @@ public class Personne {
     }
 
     public Point findBonChemin (Salle salle) {
-        Point premierObjectif;
+        Point premierObjectif = null;
         double distance, distanceCourante;
+        distance = 100000;
 
-        List<Point> listePointsDirectes = salle.getGraphe().getListePointsDirectesPerso(salle, coordCourant);
-        premierObjectif = listePointsDirectes.get(0);
-        distance = 1000000;
-
-        for (Point point : salle.getGraphe().getListePointsDirectesPerso(salle, coordCourant)) { // Fonctionne pas car personne pas dans le graphe
-            if (MathsCalcule.distance(coordCourant, point) != 0) { // Car si 0,c'est lui meme.
-                distanceCourante = MathsCalcule.distance(coordCourant, point) + point.getDistanceSortie();
+        for (Point pointDirect : salle.getListePointsDirectes(coordCourant)) { // Fonctionne pas car personne pas dans le graphe
+            if (MathsCalcule.distance(coordCourant, pointDirect) != 0) { // Car si 0,c'est lui meme.
+                distanceCourante = MathsCalcule.distance(coordCourant, pointDirect) + pointDirect.getVraieDistance();
                 if (distanceCourante < distance) {
                     distance = distanceCourante;
-                    premierObjectif = point;
+                    premierObjectif = pointDirect;
                 }
             }
         }

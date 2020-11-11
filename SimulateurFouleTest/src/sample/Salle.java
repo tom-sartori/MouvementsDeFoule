@@ -72,6 +72,8 @@ public class Salle {
     public void addSortie (int mur, int largeurPorte, int distanceOrigine) {
         Point point1 = new Point();
         Point point2 = new Point();
+        point1.setEstSortie(true);
+        point2.setEstSortie(true);
 
         if (mur == 1) {     // Mur haut
             point1.setPoint(distanceOrigine, 0);
@@ -139,10 +141,13 @@ public class Salle {
 
 
     public void demarrer() {
-        initialisationGrapheSansAffichage();
+        initialisationGrapheBasique();
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
+              
+                //personne.setObjectif(this);
+                //personne.setDxDyNormalise(personne.getObjectif());
                 personne.setObjectifAvecRayon(this);
                 personne.setDxDyNormalise(personne.getObjectifRayon());
             }
@@ -159,11 +164,14 @@ public class Salle {
                                 removePersonne(listPersonnes.get(i));
                             else {
                                 if (listPersonnes.get(i).objectifAteint()) {
+                                  
+                                    //listPersonnes.get(i).setObjectif(salle);
+                                    //listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
                                     listPersonnes.get(i).setObjectifAvecRayon(salle);
                                     listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
                                 }
                                 else {
-                                    listPersonnes.get(i).avancerRayon();
+                                    listPersonnes.get(i).avancer();
                                     cSalle.deplacerPersonne(listPersonnes.get(i));
                                 }
                             }
@@ -198,6 +206,7 @@ public class Salle {
                         int y;
 
                         for (int i = 0; i < listPersonnes.size(); i++) {
+                            System.out.println(listPersonnes.get(i).getObjectif());
                             if (listPersonnes.get(i).estSorti(salle))
                                 removePersonne(listPersonnes.get(i));
                             else {
@@ -245,7 +254,7 @@ public class Salle {
     // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
     public void initialisationGrapheSansAffichage () {
         graphe = new Graphe(this);
-        graphe.creerCheminPlusCourtAvecSortie(this);
+        graphe.creerTousLesPlusCourtsChemins();
     }
 
 
@@ -253,7 +262,17 @@ public class Salle {
     // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
     public void initialisationGrapheAvecAffichage () {
         graphe = new Graphe(this);
-        graphe.creerCheminPlusCourtAvecSortie(this);
+        graphe.creerTousLesPlusCourtsChemins();
+        cSalle.afficherGraphe(graphe.afficher());
+    }
+
+    public void initialisationGrapheBasique () {
+        graphe = new Graphe(this);
+        //graphe.creerPlusCourtChemin(graphe.getListePointsSorties().get(1));
+        //graphe.afficherPrecedentsListPointsObstacles();
+        graphe.creerTousLesPlusCourtsChemins();
+
+
         cSalle.afficherGraphe(graphe.afficher());
     }
 
@@ -268,62 +287,57 @@ public class Salle {
         }
     }
 
-    // Ne prend pas en compte les obstacles
-    public Point findSortiePlusProcheIndirecte(Point A) {
-        double distance1 = -1;
-        double distance2 = -1;
 
+    // Ne prend pas en compte les obstacles
+    public Point findPointSortiePlusProcheIndirecte(Point A) {
+        double distance;
+
+        Point courant = new Point();
         double distanceCourte = 1000000;
         Point plusProche = new Point();
 
         if (!listSorties.isEmpty()) {
-
             for (Sortie sortie : listSorties) {
+                courant = sortie.findPointSortie(A);
+                distance = MathsCalcule.distance(A, courant);
 
-                distance1 = MathsCalcule.distance(A, sortie.getListePointsSortie().get(0));   // Surement à adapter si nb points de sortie > 2
-                distance2 = MathsCalcule.distance(A, sortie.getListePointsSortie().get(1));
+                if (distance < distanceCourte) {
+                    distanceCourte = distance;
+                    plusProche = new Point(courant);    // A check
+                    //plusProche.setPrecedent(A);
+                }
+            }
+        }
+        else
+            System.out.println("Pas de sorties dans la salle");
+        //plusProche.setPrecedent(A);
+        return plusProche;
+    }
 
-                if (Math.min(distance1, distance2) < distanceCourte) {
-                    if (distance1 < distance2) {
-                        distanceCourte = distance1;
-                        plusProche = sortie.getListePointsSortie().get(0);
-                    } else {
-                        distanceCourte = distance2;
-                        plusProche = sortie.getListePointsSortie().get(1);
+    public Point findPointSortiePlusProcheDirect(Point A) {
+        double distance;
+
+        double distanceCourte = 1000000;
+        Point plusProche = null;
+        Point courant;
+
+        if (!listSorties.isEmpty()) {
+            for (Sortie sortie : listSorties) {
+                courant = sortie.findPointSortieDirect(this, A, 0); // Probleme ici
+                if (courant != null) {
+                    distance = MathsCalcule.distance(A, courant);
+
+                    if (distance < distanceCourte) {
+                        distanceCourte = distance;
+                        plusProche = new Point(courant);    // A check
                     }
                 }
             }
         }
         else
             System.out.println("Pas de sorties dans la salle");
+        //plusProche.setPrecedent(new Point());
         return plusProche;
-    }
-
-    public Point findSortiePlusProcheDirecte(Point A) {
-        double distance;
-
-        double distanceCourte = 1000000;
-        Point plusProche = null;
-
-        if (!listSorties.isEmpty()) {
-
-            for (Sortie sortie : listSorties) {
-                for (Point pointSortie : sortie.getListePointsSortie()) {
-                    if (!intersecObstacle(A, pointSortie)) {
-                        distance = MathsCalcule.distance(A, pointSortie);
-                        if (distance < distanceCourte) {
-                            distanceCourte = distance;
-                            plusProche = pointSortie;
-                        }
-                    }
-                }
-            }
-            return plusProche;
-        }
-        else {
-            System.out.println("Pas de sorties dans la salle");
-            return null;
-        }
     }
 
     public boolean intersecObstacle(Point coordA,Point coordB) {
@@ -337,6 +351,26 @@ public class Salle {
 
         return b;
     }
+
+    // Permet de renvoyer tous les points directes au Point A en parametre.
+    // Ce point peut etre un perso car il est ajouté puis retiré de la liste principale.
+    // Attention, le point directe le plus proche du perso est lui meme (donc à distance 0).
+    public List<Point> getListePointsDirectes(Point A) {
+        List<Point> listePointsDirectes = new ArrayList<>();
+
+        Point pointSortieProche = findPointSortiePlusProcheDirect(A);
+        if (pointSortieProche != null)
+            listePointsDirectes.add(pointSortieProche);
+
+        for (Obstacle obstacle : listObstacles) {
+            for (Point point : obstacle.getListePoints()) {
+                if (!intersecObstacle(A, point))
+                    listePointsDirectes.add(point);
+            }
+        }
+        return listePointsDirectes;
+    }
+
 
     public boolean colision2personnes(Personne p, Personne compare){
         if (MathsCalcule.distance(p.getCoordCourant(), compare.getCoordCourant()) == 0){
