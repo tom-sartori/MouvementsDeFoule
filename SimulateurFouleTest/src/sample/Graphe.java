@@ -73,49 +73,6 @@ public class Graphe {
         }
     }
 
-/*
-    // Pour un point de départ, cette fonction calcule tous les plus courts chemins vers ce point (algorithme de Dijkstra).
-    // Cette fonctionne affecte donc pour chaque Point, son précédent ainsi que la distance vers le depart.
-    // Nous avons donc le chemin inverse entre le depart et la sortie grace aux précédents.
-    // Pré-requis : depart est un point obstacle
-    public void creerPlusCourtChemin(Salle salle, Point depart) {
-        List<Point> listeCourante = new ArrayList<>();
-
-        for (Point point : listePoints) {
-            point.setDistance(100000);  // Distance infinie.
-            listeCourante.add(point);
-        }
-        depart.setDistance(0);
-
-        while (!listeCourante.isEmpty()) {
-            double distance = 1000000;  // Distance infinie.
-
-            Point courant = new Point();
-
-            for (Point point : listeCourante) {
-                if (point.getDistance() < distance) {
-                    distance = point.getDistance();
-                    courant = point;
-                }
-            }
-
-            listeCourante.remove(courant);
-            List<Point> listeVoisins = getListePointsDirectes(salle, courant);
-
-            for (Point voisin : listeVoisins) {
-                double nouveau = courant.getDistance() + MathsCalcule.distance(courant, voisin);
-                if (nouveau < voisin.getDistance()) {
-                    //addChemin(new Chemin(voisin, courant)); // Premet d'ajouter tous les chemins possibles pour les afficher.
-
-                    voisin.setDistance(nouveau);
-                    voisin.setPrecedent(new Point(courant));
-                }
-            }
-        }
-    }
-
- */
-
     // Pour un point de départ, cette fonction calcule tous les plus courts chemins vers ce point (algorithme de Dijkstra).
     // Cette fonctionne affecte donc pour chaque Point, son précédent ainsi que la distance vers le depart.
     // Nous avons donc le chemin inverse entre le depart et la sortie grace aux précédents.

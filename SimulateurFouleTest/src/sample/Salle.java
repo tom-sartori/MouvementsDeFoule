@@ -280,39 +280,7 @@ public class Salle {
                 demarrer();
         }
     }
-/*
-    // Ne prend pas en compte les obstacles
-    public Point findSortiePlusProcheIndirecte(Point A) {
-        double distance1 = -1;
-        double distance2 = -1;
 
-        double distanceCourte = 1000000;
-        Point plusProche = new Point();
-
-        if (!listSorties.isEmpty()) {
-
-            for (Sortie sortie : listSorties) {
-
-                distance1 = MathsCalcule.distance(A, sortie.getListePointsSortie().get(0));   // Surement à adapter si nb points de sortie > 2
-                distance2 = MathsCalcule.distance(A, sortie.getListePointsSortie().get(1));
-
-                if (Math.min(distance1, distance2) < distanceCourte) {
-                    if (distance1 < distance2) {
-                        distanceCourte = distance1;
-                        plusProche = sortie.getListePointsSortie().get(0);
-                    } else {
-                        distanceCourte = distance2;
-                        plusProche = sortie.getListePointsSortie().get(1);
-                    }
-                }
-            }
-        }
-        else
-            System.out.println("Pas de sorties dans la salle");
-        return plusProche;
-    }
-
- */
 
     // Ne prend pas en compte les obstacles
     public Point findPointSortiePlusProcheIndirecte(Point A) {
@@ -339,36 +307,6 @@ public class Salle {
         //plusProche.setPrecedent(A);
         return plusProche;
     }
-
-    /*
-    public Point findSortiePlusProcheDirecte(Point A) {
-        double distance;
-
-        double distanceCourte = 1000000;
-        Point plusProche = null;
-
-        if (!listSorties.isEmpty()) {
-
-            for (Sortie sortie : listSorties) {
-                for (Point pointSortie : sortie.getListePointsSortie()) {
-                    if (!intersecObstacle(A, pointSortie)) {
-                        distance = MathsCalcule.distance(A, pointSortie);
-                        if (distance < distanceCourte) {
-                            distanceCourte = distance;
-                            plusProche = pointSortie;
-                        }
-                    }
-                }
-            }
-            return plusProche;
-        }
-        else {
-            System.out.println("Pas de sorties dans la salle");
-            return null;
-        }
-    }
-
-     */
 
     public Point findPointSortiePlusProcheDirect(Point A) {
         double distance;

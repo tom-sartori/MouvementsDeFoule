@@ -17,18 +17,6 @@ public class Main extends Application {
         Scene scene = new Scene(root, 1500, 800, Color.LIGHTGRAY);
 
         Salle salle = new Salle(1000, 600);
-/*
-        salle.addObstacle(new ObstacleRectangle(150, 200, 70, 30));
-        salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
-        salle.addObstacle(new ObstacleRectangle(600, 100, 15, 200));
-        salle.addObstacle(new ObstacleRectangle(400, 430, 200, 50));
-        salle.addObstacle(new ObstacleRectangle(700, 300, 80, 100));
-        salle.addObstacle(new ObstacleTriangle(new Point(300, 480), new Point(350, 480), new Point(400, 520)));
-        salle.addObstacle(new ObstacleRectangle(825, 42, 70, 70));
-        salle.addObstacle(new ObstacleRectangle(351, 85, 150, 150));
-        salle.addObstacle(new ObstacleRectangle(602, 304, 200, 60));
-        salle.addObstacle(new ObstacleRectangle(403, 431, 200, 50));
-*/
 
         salle.addObstacle(new ObstacleRectangle(150, 200, 70, 30));
         salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
