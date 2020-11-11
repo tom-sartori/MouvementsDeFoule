@@ -265,11 +265,11 @@ public class Personne {
                         } else if (objectifRayon.environEgaleY(coordCourant.getY() - rayon)) {
                             System.out.println("objectifRayon.environEgaleY(coordCourant.getY() - r) ligne 255");
                             objectifRayon.setX(objectif.getX() - rayon);
-
+                            objectifRayon.setY(objectif.getY() - rayon);
                             if (!segmentObstacle(objectifRayon, o).isEmpty()) {
                                 System.out.println("objectifRayon était obstalce");
                                 objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
+                                objectifRayon.setY(objectif.getY() - rayon);
                             }
 
                         } else if (objectifRayon.getY() + rayon > coordCourant.getY()) {
@@ -368,7 +368,7 @@ public class Personne {
                             if (!segmentObstacle(objectifRayon, o).isEmpty()) {
                                 System.out.println("objectifRayon était obstalce ");
                                 objectifRayon.setX(objectif.getX() - rayon);
-                                objectifRayon.setY(objectif.getY() - rayon);
+                                objectifRayon.setY(objectif.getY() + rayon);
                             }
 
                         } else if (objectifRayon.getY() - rayon < coordCourant.getY()) {
