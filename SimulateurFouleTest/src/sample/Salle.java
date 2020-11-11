@@ -165,7 +165,7 @@ public class Salle {
                                     listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
                                 }
                                 else {
-                                    listPersonnes.get(i).avancerRayon();
+                                    listPersonnes.get(i).avancer();
                                     cSalle.deplacerPersonne(listPersonnes.get(i));
                                 }
                             }
@@ -200,6 +200,7 @@ public class Salle {
                         int y;
 
                         for (int i = 0; i < listPersonnes.size(); i++) {
+                            System.out.println(listPersonnes.get(i).getObjectif());
                             if (listPersonnes.get(i).estSorti(salle))
                                 removePersonne(listPersonnes.get(i));
                             else {
@@ -265,12 +266,7 @@ public class Salle {
         //graphe.afficherPrecedentsListPointsObstacles();
         graphe.creerTousLesPlusCourtsChemins();
 
-        /*
-        System.out.println(graphe.getListePointsSorties().get(0).toStringV3());
-        System.out.println(listObstacles.get(0).getListePoints().get(3).toStringV3());
-        System.out.println(listObstacles.get(0).getListePoints().get(2).toStringV3());
 
-         */
         cSalle.afficherGraphe(graphe.afficher());
     }
 
@@ -411,6 +407,26 @@ public class Salle {
 
         return b;
     }
+
+    // Permet de renvoyer tous les points directes au Point A en parametre.
+    // Ce point peut etre un perso car il est ajouté puis retiré de la liste principale.
+    // Attention, le point directe le plus proche du perso est lui meme (donc à distance 0).
+    public List<Point> getListePointsDirectes(Point A) {
+        List<Point> listePointsDirectes = new ArrayList<>();
+
+        Point pointSortieProche = findPointSortiePlusProcheDirect(A);
+        if (pointSortieProche != null)
+            listePointsDirectes.add(pointSortieProche);
+
+        for (Obstacle obstacle : listObstacles) {
+            for (Point point : obstacle.getListePoints()) {
+                if (!intersecObstacle(A, point))
+                    listePointsDirectes.add(point);
+            }
+        }
+        return listePointsDirectes;
+    }
+
 
     public boolean colision2personnes(Personne p, Personne compare){
         if (MathsCalcule.distance(p.getCoordCourant(), compare.getCoordCourant()) == 0){

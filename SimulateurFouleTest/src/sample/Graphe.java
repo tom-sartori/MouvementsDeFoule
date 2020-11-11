@@ -284,7 +284,7 @@ public class Graphe {
     // Permet de renvoyer tous les points directes au Point A en parametre.
     // Ce point peut etre un perso car il est ajouté puis retiré de la liste principale.
     // Attention, le point directe le plus proche du perso est lui meme (donc à distance 0).
-    public List<Point> getListePointsDirectesPerso(Salle salle, Point A) {
+    public List<Point> getListePointsDirectesPerso(Point A) {
         List<Point> listePointsDirectes = new ArrayList<>();
 
         listePoints.add(A);
@@ -294,7 +294,7 @@ public class Graphe {
                 listePointsDirectes.add(point);
         }
         listePoints.remove(A);
-        listePoints.remove(salle.findPointSortiePlusProcheDirect(A));
+        //listePoints.remove(salle.findPointSortiePlusProcheDirect(A));
         return listePointsDirectes;
     }
 
