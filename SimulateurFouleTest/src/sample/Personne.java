@@ -111,7 +111,7 @@ public class Personne {
     // Prend aussi en compte le rayon de la personne.
     public void setObjectifAvecRayon (Salle salle) {
         setObjectif(salle);
-        if (objectif.getSuivanttttttttttttt() != null) {
+        if (objectif.getVraiSuivant() != null) {
 
             System.out.println("objectif.getSuivant() != null");
             setObjectifRayonObstacle(salle);
@@ -295,13 +295,13 @@ public class Personne {
 
                         } else if (objectifRayon.getY() + rayon < coordCourant.getY()) {
                             System.out.println("objectifRayon.getY() + r < coordCourant.getY() ligne 286");
-                            objectifRayon.setX(objectif.getX() - rayon);
-                            objectifRayon.setY(objectif.getY() - rayon);
+                            objectifRayon.setX(objectif.getX() + rayon);
+                            objectifRayon.setY(objectif.getY() + rayon);
 
                             if (!segmentObstacle(objectifRayon, o).isEmpty()) {
                                 System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() - rayon);
+                                objectifRayon.setX(objectif.getX() - rayon);
+                                objectifRayon.setY(objectif.getY() + rayon);
                             }
 
                         } else if (objectifRayon.getY() - rayon < coordCourant.getY()) {
@@ -509,5 +509,6 @@ public class Personne {
     public double getRayon() {
         return rayon;
     }
+
 }
 

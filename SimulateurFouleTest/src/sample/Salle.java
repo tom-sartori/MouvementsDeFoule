@@ -142,7 +142,7 @@ public class Salle {
 
     public void demarrer() {
         initialisationGrapheBasique();
-
+        System.out.println(getListObstacles().get(0).getListePoints().get(1).toStringV3());
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
               
@@ -159,6 +159,8 @@ public class Salle {
                 loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent arg) {
 
+                        boolean colision;
+                        int y;
                         for (int i = 0; i < listPersonnes.size(); i++) {
                             if (listPersonnes.get(i).estSorti(salle))
                                 removePersonne(listPersonnes.get(i));
@@ -170,9 +172,11 @@ public class Salle {
                                     listPersonnes.get(i).setObjectifAvecRayon(salle);
                                     listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
                                 }
-                                else {
-                                    listPersonnes.get(i).avancer();
+
+                             else {
+                                    listPersonnes.get(i).avancerRayon();
                                     cSalle.deplacerPersonne(listPersonnes.get(i));
+
                                 }
                             }
                         }
@@ -344,11 +348,10 @@ public class Salle {
         boolean b = false;
         for(Obstacle obstacle: listObstacles) {
             if (MathsCalcule.coordSegments(coordA, coordB, obstacle).isEmpty()) {
-                b = false;
+                b=false;
             } else
                 return true;
         }
-
         return b;
     }
 
@@ -406,6 +409,8 @@ public class Salle {
     public void setVitessePersonnes(double v){
         for(Personne personne : listPersonnes){
             personne.setVitesse(v);
+
         }
     }
 }
+
