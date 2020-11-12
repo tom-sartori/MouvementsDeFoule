@@ -159,6 +159,8 @@ public class Salle {
                 loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent arg) {
 
+                        boolean colision;
+                        int y;
                         for (int i = 0; i < listPersonnes.size(); i++) {
                             if (listPersonnes.get(i).estSorti(salle))
                                 removePersonne(listPersonnes.get(i));
@@ -170,9 +172,11 @@ public class Salle {
                                     listPersonnes.get(i).setObjectifAvecRayon(salle);
                                     listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
                                 }
-                                else {
+
+                             else {
                                     listPersonnes.get(i).avancer();
                                     cSalle.deplacerPersonne(listPersonnes.get(i));
+
                                 }
                             }
                         }
@@ -406,6 +410,8 @@ public class Salle {
     public void setVitessePersonnes(double v){
         for(Personne personne : listPersonnes){
             personne.setVitesse(v);
+
         }
     }
 }
+

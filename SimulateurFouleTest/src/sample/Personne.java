@@ -509,5 +509,13 @@ public class Personne {
     public double getRayon() {
         return rayon;
     }
+
+    public Point getCoordCourant() {
+        return coordCourant;
+    }
+
+    public double getR() {
+        return r;
+    }
 }
 
