@@ -42,14 +42,16 @@ public class MathsCalcule {
         return Math.sqrt(Math.pow(A.getX() - B.getX(), 2) + Math.pow(A.getY() - B.getY(), 2));
     }
 
+    public static boolean estPoint(Point coordA,Point coordB,Point personne){
+        return estSuperpose(coordA,coordB,personne,personne);
+    }
+
+
     // Retourne vrais si AB est colinéaire à CD et qu'ils se chevauchent sur plus d'un point.
     public static boolean estSuperpose(Point coordA, Point coordB, Point coordC, Point coordD) {
         if (MathsCalcule.determinant(coordA, coordB, coordC, coordD) == 0) {
-            if (((coordA.getY() < coordC.getY() && coordB.getY() < coordC.getY()) && (coordA.getY() < coordD.getY() && coordB.getY() < coordD.getY())) || ((coordA.getY() > coordC.getY() && coordB.getY() > coordC.getY()) && (coordA.getY() > coordD.getY() && coordB.getY() > coordD.getY()))) {
-                return false;
-            } else if (((coordA.getX() < coordC.getX() && coordB.getX() < coordC.getX()) && (coordA.getX() < coordD.getX() && coordB.getX() < coordD.getX())) || ((coordA.getX() > coordC.getX() && coordB.getX() > coordC.getX()) && (coordA.getX() > coordD.getX() && coordB.getX() > coordD.getX()))) {
-                return false;
-            } else if (coordA.getX()<=coordC.getX() && coordB.getX()<coordC.getX() && coordA.getX()<coordD.getX() && coordB.getX()<coordD.getX()){
+            boolean b = false;
+             if (coordA.getX()<=coordC.getX() && coordB.getX()<coordC.getX() && coordA.getX()<coordD.getX() && coordB.getX()<coordD.getX()){
                 return false;
             }else if (coordA.getX()<=coordD.getX() && coordB.getX()<coordD.getX() &&coordA.getX()<coordC.getX() && coordB.getX()<coordC.getX()){
                 return false;
@@ -74,14 +76,14 @@ public class MathsCalcule {
             } else if(coordB.getY()<=coordD.getY() && coordA.getY()<coordD.getY() &&coordA.getY()<coordC.getY() && coordB.getY()<coordC.getY()){
                 return false;
             } else if (coordB.getX()>=coordC.getX() && coordA.getX()>coordC.getX() && coordA.getX()>coordD.getX() && coordB.getX()>coordD.getX()){
-                return false;
-            }else if (coordB.getX()>=coordD.getX() && coordA.getX()>coordD.getX() &&coordA.getX()>coordC.getX() && coordB.getX()>coordC.getX()){
-                return false;
-            }else if(coordB.getY()>=coordC.getY() && coordA.getY()>coordC.getY() && coordA.getY()>coordD.getY() && coordB.getY()>coordD.getY()){
-                return false;
-            } else if(coordB.getY()>=coordD.getY() && coordA.getY()>coordD.getY() &&coordA.getY()>coordC.getY() && coordB.getY()>coordC.getY()){
-                return false;
-            } else
+                 return false;
+             }else if (coordB.getX()>=coordD.getX() && coordA.getX()>coordD.getX() &&coordA.getX()>coordC.getX() && coordB.getX()>coordC.getX()){
+                 return false;
+             }else if(coordB.getY()>=coordC.getY() && coordA.getY()>coordC.getY() && coordA.getY()>coordD.getY() && coordB.getY()>coordD.getY()){
+                 return false;
+             } else if(coordB.getY()>=coordD.getY() && coordA.getY()>coordD.getY() &&coordA.getY()>coordC.getY() && coordB.getY()>coordC.getY()){
+                 return false;
+             } else
                 return true;
         }
         return false;
