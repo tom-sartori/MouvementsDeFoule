@@ -1,10 +1,7 @@
 package test;
 
 import org.junit.jupiter.api.Test;
-import sample.Obstacle;
-import sample.ObstacleRectangle;
-import sample.Personne;
-import sample.Point;
+import sample.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,6 +132,31 @@ class PersonneTest {
     }
 
     @Test
+    public void test_3_pas_obstacles(){
+        Personne p =new Personne(100,40);
+        Point sortie = new Point(100,60);
+        Obstacle o = new ObstacleRectangle(80,20,20,20);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+    @Test
+    public void test_4_pas_obstacles(){
+        Personne p =new Personne(100,20);
+        Point sortie = new Point(100,0);
+        Obstacle o = new ObstacleRectangle(80,20,20,20);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+    @Test
+    public void test_5_pas_obstacles(){
+        Personne p =new Personne(100,20);
+        Point sortie = new Point(100,0);
+        Obstacle o = new ObstacleRectangle(80,20,20,20);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+
+    @Test
     public void test_Coord_Y_pas_obstacle(){
         Personne p =new Personne(20,20);
         Point sortie = new Point(20,100);
@@ -234,6 +256,20 @@ class PersonneTest {
         }
     }
 
+    @Test
+    public void test_estPoint(){
+        Point p = new Point(20,20);
+        Point sortie=new Point(40,40);
+        Point coordC=new Point(30,30);
+        assertTrue(MathsCalcule.estPoint(p,sortie,coordC));
+    }
 
+    @Test
+    public void test_estPointpaspoint(){
+        Point p = new Point(20,20);
+        Point sortie=new Point(40,40);
+        Point coordC=new Point(50,50);
+        assertFalse(MathsCalcule.estPoint(p,sortie,coordC));
+    }
 
 }

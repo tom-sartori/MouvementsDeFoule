@@ -142,7 +142,7 @@ public class Salle {
 
     public void demarrer() {
         initialisationGrapheBasique();
-
+        System.out.println(getListObstacles().get(0).getListePoints().get(1).toStringV3());
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
               
@@ -348,11 +348,10 @@ public class Salle {
         boolean b = false;
         for(Obstacle obstacle: listObstacles) {
             if (MathsCalcule.coordSegments(coordA, coordB, obstacle).isEmpty()) {
-                b = false;
+                b=false;
             } else
                 return true;
         }
-
         return b;
     }
 
