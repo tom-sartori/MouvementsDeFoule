@@ -55,7 +55,31 @@ public class MathsCalcule {
                 return false;
             }else if(coordA.getY()<=coordC.getY() && coordB.getY()<coordC.getY() && coordA.getY()<coordD.getY() && coordB.getY()<coordD.getY()){
                 return false;
-            } else if(coordA.getX()<=coordD.getY() && coordB.getY()<coordD.getY() &&coordA.getY()<coordC.getY() && coordB.getY()<coordC.getY()){
+            } else if(coordA.getY()<=coordD.getY() && coordB.getY()<coordD.getY() &&coordA.getY()<coordC.getY() && coordB.getY()<coordC.getY()){
+                return false;
+            } else if (coordA.getX()>=coordC.getX() && coordB.getX()>coordC.getX() && coordA.getX()>coordD.getX() && coordB.getX()>coordD.getX()){
+                return false;
+            }else if (coordA.getX()>=coordD.getX() && coordB.getX()>coordD.getX() &&coordA.getX()>coordC.getX() && coordB.getX()>coordC.getX()){
+                return false;
+            }else if(coordA.getY()>=coordC.getY() && coordB.getY()>coordC.getY() && coordA.getY()>coordD.getY() && coordB.getY()>coordD.getY()){
+                return false;
+            } else if(coordA.getY()>=coordD.getY() && coordB.getY()>coordD.getY() &&coordA.getY()>coordC.getY() && coordB.getY()>coordC.getY()){
+                return false;
+            } else if (coordB.getX()<=coordC.getX() && coordA.getX()<coordC.getX() && coordA.getX()<coordD.getX() && coordB.getX()<coordD.getX()){
+                return false;
+            }else if (coordB.getX()<=coordD.getX() && coordA.getX()<coordD.getX() &&coordA.getX()<coordC.getX() && coordB.getX()<coordC.getX()){
+                return false;
+            }else if(coordB.getY()<=coordC.getY() && coordA.getY()<coordC.getY() && coordA.getY()<coordD.getY() && coordB.getY()<coordD.getY()){
+                return false;
+            } else if(coordB.getY()<=coordD.getY() && coordA.getY()<coordD.getY() &&coordA.getY()<coordC.getY() && coordB.getY()<coordC.getY()){
+                return false;
+            } else if (coordB.getX()>=coordC.getX() && coordA.getX()>coordC.getX() && coordA.getX()>coordD.getX() && coordB.getX()>coordD.getX()){
+                return false;
+            }else if (coordB.getX()>=coordD.getX() && coordA.getX()>coordD.getX() &&coordA.getX()>coordC.getX() && coordB.getX()>coordC.getX()){
+                return false;
+            }else if(coordB.getY()>=coordC.getY() && coordA.getY()>coordC.getY() && coordA.getY()>coordD.getY() && coordB.getY()>coordD.getY()){
+                return false;
+            } else if(coordB.getY()>=coordD.getY() && coordA.getY()>coordD.getY() &&coordA.getY()>coordC.getY() && coordB.getY()>coordC.getY()){
                 return false;
             } else
                 return true;
