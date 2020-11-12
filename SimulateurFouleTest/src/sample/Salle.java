@@ -94,11 +94,7 @@ public class Salle {
         else
             System.out.println("Salle, addSortie, problème de mur. ");
 
-        List<Point> list = new ArrayList<>();
-        list.add(point1);
-        list.add(point2);
-
-        listSorties.add(new Sortie(list));
+        listSorties.add(new Sortie(point1, point2));
     }
 
     public void addPersonne (Personne personne) {
@@ -141,14 +137,14 @@ public class Salle {
 
 
     public void demarrer() {
-        initialisationGrapheBasique();
-        System.out.println(getListObstacles().get(0).getListePoints().get(1).toStringV3());
+        initialisationGrapheSansAffichage();
+
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
               
                 //personne.setObjectif(this);
                 //personne.setDxDyNormalise(personne.getObjectif());
-                personne.setObjectifAvecRayon(this);
+                personne.setObjectifRayon(this);
                 personne.setDxDyNormalise(personne.getObjectifRayon());
             }
 
@@ -169,7 +165,7 @@ public class Salle {
                                   
                                     //listPersonnes.get(i).setObjectif(salle);
                                     //listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
-                                    listPersonnes.get(i).setObjectifAvecRayon(salle);
+                                    listPersonnes.get(i).setObjectifRayon(salle);
                                     listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
                                 }
 
@@ -195,7 +191,7 @@ public class Salle {
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                personne.setObjectifAvecRayon(this);
+                personne.setObjectifRayon(this);
                 personne.setDxDyNormalise(personne.getObjectifRayon());
             }
 
@@ -215,7 +211,7 @@ public class Salle {
                                 removePersonne(listPersonnes.get(i));
                             else {
                                 if (listPersonnes.get(i).objectifAteint()) {
-                                    listPersonnes.get(i).setObjectifAvecRayon(salle);
+                                    listPersonnes.get(i).setObjectifRayon(salle);
                                     listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
                                 }
                                 else {
@@ -270,15 +266,6 @@ public class Salle {
         cSalle.afficherGraphe(graphe.afficher());
     }
 
-    public void initialisationGrapheBasique () {
-        graphe = new Graphe(this);
-        //graphe.creerPlusCourtChemin(graphe.getListePointsSorties().get(1));
-        //graphe.afficherPrecedentsListPointsObstacles();
-        graphe.creerTousLesPlusCourtsChemins();
-
-
-        cSalle.afficherGraphe(graphe.afficher());
-    }
 
     public void play(Boolean collisionActive){
         if(loop != null && loop.getStatus() == Status.PAUSED){
@@ -292,32 +279,6 @@ public class Salle {
     }
 
 
-    // Ne prend pas en compte les obstacles
-    public Point findPointSortiePlusProcheIndirecte(Point A) {
-        double distance;
-
-        Point courant = new Point();
-        double distanceCourte = 1000000;
-        Point plusProche = new Point();
-
-        if (!listSorties.isEmpty()) {
-            for (Sortie sortie : listSorties) {
-                courant = sortie.findPointSortie(A);
-                distance = MathsCalcule.distance(A, courant);
-
-                if (distance < distanceCourte) {
-                    distanceCourte = distance;
-                    plusProche = new Point(courant);    // A check
-                    //plusProche.setPrecedent(A);
-                }
-            }
-        }
-        else
-            System.out.println("Pas de sorties dans la salle");
-        //plusProche.setPrecedent(A);
-        return plusProche;
-    }
-
     public Point findPointSortiePlusProcheDirect(Point A) {
         double distance;
 
@@ -327,7 +288,7 @@ public class Salle {
 
         if (!listSorties.isEmpty()) {
             for (Sortie sortie : listSorties) {
-                courant = sortie.findPointSortieDirect(this, A, 0); // Probleme ici
+                courant = sortie.findPointSortieDirect(this, A, 5); // Mettre le rayon de personne
                 if (courant != null) {
                     distance = MathsCalcule.distance(A, courant);
 
@@ -338,9 +299,7 @@ public class Salle {
                 }
             }
         }
-        else
-            System.out.println("Pas de sorties dans la salle");
-        //plusProche.setPrecedent(new Point());
+        System.out.println("findPointSortiePlusProcheDirect Salle depart : " + A + " arriv " + plusProche);
         return plusProche;
     }
 
@@ -383,15 +342,6 @@ public class Salle {
         } else {
             return false;
         }
-    }
-
-
-    public List<Sortie> getListSorties() {
-        return listSorties;
-    }
-
-    public Graphe getGraphe() {
-        return graphe;
     }
 
     public List<Obstacle> getListObstacles(){

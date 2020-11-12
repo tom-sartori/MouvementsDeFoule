@@ -14,11 +14,6 @@ public class Point {
     private Point vraiSuivant;
     private double vraieDistance;
 
-
-    private Point suivanttttttttttttt;
-    private double distanceSortieeeeeeeeeeeeeeeee;
-
-
     public Point(){
         x=0;
         y=0;
@@ -43,8 +38,6 @@ public class Point {
         estSortie = p.estSortie();
         suivant = p.getSuivant();
         distance = p.getDistance();
-        suivanttttttttttttt = p.getSuivanttttttttttttt();
-        distanceSortieeeeeeeeeeeeeeeee = p.getDistanceSortieeeeeeeeeeeeeeeee();
         vraiSuivant = p.getVraiSuivant();
         vraieDistance = p.getVraieDistance();
     }
@@ -62,17 +55,9 @@ public class Point {
         return "Point{" +
                 "x=" + x +
                 ", y=" + y +
-                ", distanceSortie=" + distanceSortieeeeeeeeeeeeeeeee +
-                ", suivant=" + suivanttttttttttttt +
-                '}';
-    }
-
-    public String toStringV3() {
-        return "Point{" +
-                "x=" + x +
-                ", y=" + y +
                 ", distance=" + distance +
-                ", precedent=" + suivant +
+                ", suivant=" + suivant +
+                ", vrais suiv=" + vraiSuivant +
                 '}';
     }
 
@@ -88,18 +73,12 @@ public class Point {
 
     public boolean environEgaleY (double d) {
         double precision = 1;
-        if ( (this.getY() - precision <= d) && (d <= this.getY() + precision) ) {
-            return true;
-        }
-        return false;
+        return (this.getY() - precision <= d) && (d <= this.getY() + precision);
     }
 
     public boolean environEgaleX (double d) {
         double precision = 1;
-        if ( (this.getX() - precision <= d) && (d <= this.getX() + precision) ) {
-            return true;
-        }
-        return false;
+        return (this.getX() - precision <= d) && (d <= this.getX() + precision);
     }
 
     // Utilisé pour la detection, lorsqu'un perso est arrivé à son objectif (coin d'un obstacle).
@@ -150,22 +129,6 @@ public class Point {
 
     public void setSuivant(Point suivant) {
         this.suivant = suivant;
-    }
-
-    public Point getSuivanttttttttttttt() {
-        return suivanttttttttttttt;
-    }
-
-    public void setSuivanttttttttttttt(Point suivanttttttttttttt) {
-        this.suivanttttttttttttt = suivanttttttttttttt;
-    }
-
-    public double getDistanceSortieeeeeeeeeeeeeeeee() {
-        return distanceSortieeeeeeeeeeeeeeeee;
-    }
-
-    public void setDistanceSortieeeeeeeeeeeeeeeee(double distanceSortieeeeeeeeeeeeeeeee) {
-        this.distanceSortieeeeeeeeeeeeeeeee = distanceSortieeeeeeeeeeeeeeeee;
     }
 
     public void setPoint (double x, double y) {
