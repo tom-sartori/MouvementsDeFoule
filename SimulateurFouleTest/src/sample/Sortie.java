@@ -1,143 +1,109 @@
 package sample;
 
-import javafx.scene.Parent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class Sortie extends Parent {
-    private int mur;
-    private double longueur;
-    private double distance;
-    private static double epaisseur = 15;
-
-    private double x1;  // Ces points vont disparaitre pour garder uniquement point1 et point2
-    private double y1;
-    private double x2;
-    private double y2;
-
-    private Point point1;  // temporaire avant de modifier toute la classe avec juste point1 et point2 sans x1, y1, x2, y2.
-    private Point point2;
+public class Sortie {
     private List<Point> listePointsSortie;
 
 
-    public Sortie(int m, double l, double d) {
-        this.mur = m;
-        this.longueur = l;
-        this.distance = d;
-
-        point1 = new Point();   // Pour le moment, ils sont initialisés addSortie de Salle
-        point2 = new Point();
-
-        listePointsSortie = new ArrayList<>();
-        listePointsSortie.add(point1);
-        listePointsSortie.add(point2);
-
-
-        Rectangle sortie = new Rectangle();
-
-        if(mur==1){
-            sortie.setWidth(longueur);
-            sortie.setHeight(epaisseur);
-        }
-        else if(mur==2){
-            sortie.setHeight(longueur);
-            sortie.setWidth(epaisseur);
-        }
-        else if(mur==3){
-            sortie.setWidth(longueur);
-            sortie.setHeight(epaisseur);
-        }
-        else if(mur==4) {
-            sortie.setWidth(epaisseur);
-            sortie.setHeight(longueur);
-        }
-        else {
-            System.out.println("Erreur dans constructeur Sortie");
-            return;
-        }
-        sortie.setFill(Color.NAVY);
-        this.getChildren().add(sortie);
-
+    public Sortie (List<Point> listePoints) {
+        listePointsSortie = listePoints;
     }
 
-    public double getDistance() {
-        return distance;
-    }
-
-    public static double getEpaisseur() {
-        return epaisseur;
-    }
-
-    public double getLongueur() {
-        return longueur;
-    }
-
-    public int getMur() {
-        return mur;
-    }
-
-    public double getX1() {
-        return x1;
-    }
-
-    public void setX1(double x1) {
-        this.x1 = x1;
-    }
-
-    public double getY1() {
-        return y1;
-    }
-
-    public void setY1(double y1) {
-        this.y1 = y1;
-    }
-
-    public double getX2() {
-        return x2;
-    }
-
-    public void setX2(double x2) {
-        this.x2 = x2;
-    }
-
-    public double getY2() {
-        return y2;
-    }
-
-    public void setY2(double y2) {
-        this.y2 = y2;
-    }
-
-    public Point getPoint1() {
-        return point1;
-    }
-
-    public Point getPoint2() {
-        return point2;
-    }
-
-    public void setPoint1(Point point1) {
-        this.point1 = point1;
-    }
-
-    public void setPoint2(Point point2) {
-        this.point2 = point2;
-    }
-
-    public void setPoint1 (double x, double y) {
-        point1.setX(x);
-        point1.setY(y);
-    }
-
-    public void setPoint2 (double x, double y) {
-        point2.setX(x);
-        point2.setY(y);
+    public ControllerSortie afficher() {
+        return new ControllerSortie(this);
     }
 
     public List<Point> getListePointsSortie() {
         return listePointsSortie;
+    }
+
+    public double getLargeurPorte() {
+        Point point1 = listePointsSortie.get(0);
+        Point point2 = listePointsSortie.get(1);
+
+        if (point1.getY() == point2.getY()) {   // mur==1 || mur==3)
+            return Math.abs(point1.getX() - point2.getX());
+        }
+        else if(point1.getX() == point2.getX()) {  //mur==2 || mur==4
+            return Math.abs(point1.getY() - point2.getY());
+        }
+        else {
+            System.out.println("Sortie, getLongueur, erreur. ");
+            return 0;
+        }
+    }
+
+    public boolean estMur1ou3 () {
+        if (listePointsSortie.get(0).getY() == listePointsSortie.get(1).getY()) {   // mur==1 || mur==3
+            return true;
+        } else return false;
+    }
+
+    public Point findPointSortie (Point depart) {
+        Point point1 = listePointsSortie.get(0);
+        Point point2 = listePointsSortie.get(1);
+        System.out.println("point 1 : " + point1 + " point 2 : " + point2);
+
+        Point courant = new Point(point1);
+        Point pointSortie = new Point(point1);
+        double plusPetiteDistance = 1000000;    // Infinie;
+
+        for (int i = 0; i <= getLargeurPorte(); i++ ) {
+            if (estMur1ou3()) {
+                courant.setX(point1.getX() + i);
+                if (MathsCalcule.distance(depart, courant) < plusPetiteDistance) {
+                    plusPetiteDistance = MathsCalcule.distance(depart, courant);
+                    pointSortie.setX(courant.getX());
+                }
+            }
+            else {
+                courant.setY(point1.getY() + i);
+                if (MathsCalcule.distance(depart, courant) < plusPetiteDistance) {
+                    plusPetiteDistance = MathsCalcule.distance(depart, courant);
+                    pointSortie.setY(courant.getY());
+                }
+            }
+        }
+        System.out.println("PointSortie : " + pointSortie);
+        return pointSortie;
+    }
+
+
+    // Pour un point de départ en paramètre, retourne un point correspondant à l'endroit de la sortie (this)
+    // le plus proche et direct par rapport au départ.
+    // S'il n'y a pas de point direct, alors return null.
+    public Point findPointSortieDirect (Salle salle,  Point depart, double rayon) {
+        Point borne1 = new Point(listePointsSortie.get(0));
+        Point borne2 = new Point(listePointsSortie.get(1));
+
+        Point courant = new Point(borne1);
+        Point pointSortie = null;
+        double plusPetiteDistance = 1000000;    // Infinie;
+
+        for (double i = rayon; i <= getLargeurPorte() - rayon; i++ ) {
+            if (estMur1ou3()) {
+                courant.setX(borne1.getX() + i);
+                if (!salle.intersecObstacle(depart, courant)) {
+                    if (MathsCalcule.distance(depart, courant) < plusPetiteDistance) {
+                        plusPetiteDistance = MathsCalcule.distance(depart, courant);
+                        //pointSortie.setPoint(courant.getX(), courant.getY());
+                        pointSortie = new Point(courant);
+                        //pointSortie.setPrecedent(depart);
+                    }
+                }
+            }
+            else {
+                courant.setY(borne1.getY() + i);
+                if (!salle.intersecObstacle(depart, courant)) {
+                    if (MathsCalcule.distance(depart, courant) < plusPetiteDistance) {
+                        plusPetiteDistance = MathsCalcule.distance(depart, courant);
+                        //pointSortie.setPoint(courant.getX(), courant.getY());
+                        pointSortie = new Point(courant);
+                    }
+                }
+            }
+        }
+        return pointSortie; // Si null, devrait rien retourner
     }
 }

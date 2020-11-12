@@ -1,62 +1,53 @@
 package sample;
 
-import javafx.scene.Parent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObstacleRectangle extends Obstacle {
+public class ObstacleRectangle implements Obstacle {
 
-    private Point point1;
-    private Point point2;
-    private Point point3;
-    private Point point4;
-    private double largeur;
-    private double hauteur;
-    private List<Point> listcoins;
+    private List<Point> listePoints;
     private List<Point> listDiagonales;
 
-    public ObstacleRectangle(double x, double y, double larg, double haut) {
-        largeur = larg;
-        hauteur = haut;
-
-        point1 = new Point(x, y);   // haut gauche
-        point2 = new Point(x + largeur, y);     // haut droit
-        point3 = new Point(x + largeur, y + hauteur);   // bas droit
-        point4 = new Point(x, y + hauteur);     // bas gauche
-
-        listcoins= new ArrayList<>();
-        listcoins.add(point1);  //addAll similaire ?
-        listcoins.add(point2);
-        listcoins.add(point3);
-        listcoins.add(point4);
+    public ObstacleRectangle(double x, double y, double largeur, double hauteur) {
+        listePoints = new ArrayList<>();
+        listePoints.add(new Point(x, y));     // haut gauche
+        listePoints.add(new Point(x + largeur, y));   // haut droit
+        listePoints.add(new Point(x + largeur, y + hauteur));     // bas droit
+        listePoints.add(new Point(x, y + hauteur));   // bas gauche
 
         listDiagonales= new ArrayList<>();
-        listDiagonales.add(point1);
-        listDiagonales.add(point3);
-        listDiagonales.add(point2);
-        listDiagonales.add(point4);
+        listDiagonales.add(listePoints.get(0));
+        listDiagonales.add(listePoints.get(2));
+        listDiagonales.add(listePoints.get(1));
+        listDiagonales.add(listePoints.get(3));
+    }
 
-        Rectangle obstacle = new Rectangle(point1.getX(), point1.getY(), largeur, hauteur);
-        obstacle.setFill(Color.DARKCYAN);
-        getChildren().add(obstacle);
+    @Override
+    public boolean estDansObstacle(Point point) {
+        if (listePoints.get(0).getX() <= point.getX() && point.getX() <= listePoints.get(1).getX() && listePoints.get(0).getY() <= point.getY() && point.getY() <= listePoints.get(2).getY())
+            return true;
+        else
+            return false;
+    }
+
+    public ControllerObstacle afficher () {
+        return new ControllerObstacleRectangle(this);
     }
 
     public double getLargeur() {
-        return largeur;
+        return listePoints.get(1).getX() - listePoints.get(0).getX();
     }
 
     public double getHauteur() {
-        return hauteur;
+        return listePoints.get(2).getY() - listePoints.get(0).getY();
     }
 
-    public List<Point> getCoins() {
-        return listcoins;
+    @Override
+    public List<Point> getListePoints() {
+        return listePoints;
     }
 
+    @Override
     public List<Point> getDiagonales() {
         return listDiagonales;
     }

@@ -45,8 +45,43 @@ Idées :
   - Creation des class **Chemin** et **Graphe**.
   - Les contrôleurs correspondants ont aussi été créée.
   - Le graphe affiche le plus court chemin mais sans prendre en compte les **Sortie** directe. 
+  - Nous arrivons à afficher tous les segments possibles du graphe en tenant compte des obstacles. (27/10)
+  - L’algorithme de plus court chemin est maintenant fonctionnel et est grandement inspiré de l’algorithme de Dijkstra. (28/10) 
+  - Nous arrivons à calculer et afficher le plus court chemin entre deux points. (28/10)
+  - Il est maintenant possible d'avoir le plus court chemin vers la sortie la plus proche pour chaque point du graphe. (28/10)
+- L’algorithme d'intersection entre deux segments est maintenant fonctionnel et testé. (26/10)
 - Séparation de la partie physique et graphique du projet. 
   - implique l'implementation des contrôleurs de toutes les class qu'on veut afficher.
-- Générailisation des codes une class **MathsCalcule** a donc été créée.
+- Générailisation des codes une class **MathsCalcule** a donc été créée. (24/10)
 - Pour faciliter la lecture on a créée la class **Point** qui nous permet de connaître le x et y d'un point. (27/10)
+- Chaque Point possède un Point correspondant au point suivant vers la sortie. (30/10)
+  - Ces points suivants sont initialisés lorsqu'on calcule les plus courts chemins du graphe. 
+  - Les persos se déplacent de points en points en évitant les obstacles. 
+- Gestion totale des obstacles. (31/10)
+<br/> 
+
+### Semaine du 02/11
+- Test de la gestion des obstacles avec n Personne. 
+  - Pour n < 100, tout fonctionne bien. 
+  - Pour n > 1000, des fois des erreurs de null pointer. 
+- La partie graphique est maintenant complètement séparée de la partie physique. (05/11)
+  - Pour chaque classe, on a un controller correspondant qui sert uniquement d'affichage. 
+  - La Scene du main est la fenetre graphique de base (le fond). 
+  - Le Controller est composé d'un ControllerSalle et d'un ControllerPanel. 
+    - Le ControllerSalle est créée grâce à une salle. 
+    - C'est à lui qu'on ajoute les ControllerObstacle, ControllerSortie et ControllerPersonne. 
+    - Il est composé d'une liste de persos qui sont déplacés suivant les coordCourant de la Personne. 
+    - Le ControllerPanel permet l'affichage des boutons play, pause...
+  - La Salle est donc maintenant créée dans le main. 
+  - Dans le main, on ajoute à la Salle des Obstacle et des Sortie. 
+- Le rayon des personnes est pris en compte. 
+- Le controllerPanel a de nouveaux boutons (05/11)
+  - Un Slider qui permet de changer la vitesse des personnes
+  - Une CheckBox pour activer ou désactiver l'affichage du graphe
+  - Une checkBox pour activer ou désactiver les collisions
+- Détection des collisions entre les personnes (classe salle.java)
+- Modification de la fonction avancer de Personne. L'orsqu'une personne peut avancer jusqu'à son objectif, alors ses coordonnées deviennent ceux de l'objectif. Avant ça, la personne pouvait se déplacer plus loin que son objectif si ca vitesse était grande. (08/11)
+  - Du coup, plus besoin de environEgale pour capter si on ateint l'objectif ou pas. (08/11)
+- Ajout fonction addRandomPersonnes(int n), dans Salle, qui permet d'ajouter n Personnes à des positions aléatoires dans la salle. (08/11)
+  - Ajout de la fonction estDansObstacle(Point point) dans ObstacleRectangle pour éviter d'avoir des persos random dans les obstacles. (08/11)
 
