@@ -174,7 +174,7 @@ public class Salle {
                                 }
 
                              else {
-                                    listPersonnes.get(i).avancer();
+                                    listPersonnes.get(i).avancerRayon();
                                     cSalle.deplacerPersonne(listPersonnes.get(i));
 
                                 }

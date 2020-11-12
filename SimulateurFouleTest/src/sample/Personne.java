@@ -295,12 +295,12 @@ public class Personne {
 
                         } else if (objectifRayon.getY() + rayon < coordCourant.getY()) {
                             System.out.println("objectifRayon.getY() + r < coordCourant.getY() ligne 286");
-                            objectifRayon.setX(objectif.getX() - rayon);
+                            objectifRayon.setX(objectif.getX() + rayon);
                             objectifRayon.setY(objectif.getY() + rayon);
 
                             if (!segmentObstacle(objectifRayon, o).isEmpty()) {
                                 System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
+                                objectifRayon.setX(objectif.getX() - rayon);
                                 objectifRayon.setY(objectif.getY() + rayon);
                             }
 
