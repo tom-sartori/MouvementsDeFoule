@@ -5,51 +5,41 @@ import javafx.event.EventHandler;
 import javafx.scene.Parent;
 
 public class Controller extends Parent{
-    private ControllerSalle cSalle;
-    private ControllerPanel cPanel;
+    private ControllerSalle cs;
+    private ControllerPanel cp;
 
-
-    public Controller (Salle salle) {
-        double marge = 30;
-
-        cSalle = salle.afficher();
-        cSalle.setTranslateX(marge);
-        cSalle.setTranslateY(marge);
-
-        cPanel = new ControllerPanel();
-        cPanel.setTranslateY(salle.getHauteur() + (3 * marge));
+    public Controller(double width, double height){
+        cs = new ControllerSalle(width, height-40);
+        cp = new ControllerPanel();
+        cp.setTranslateY(height-40);
+        cp.minWidth(width);
         
+        Salle salle = cs.getSalle();
 
-        cPanel.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
+        cp.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                salle.setVitessePersonnes(cPanel.getVitesseValue());
-                if(cPanel.getCollisionStatus())
-                    salle.play(true);
-                else salle.play(false);
+                salle.demarrerV2();
+                if(salle.isRunning()){
+                    cp.setStatusLabel(true);
+                }
             }
         });
 
-        cPanel.getPauseButton().setOnAction(new EventHandler<ActionEvent>() {
+        cp.getPauseButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.pause();
+                cp.setStatusLabel(false);
             }
         });
 
-        cPanel.getClearButton().setOnAction(new EventHandler<ActionEvent>() {
+        cp.getClearButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.removeAllPersonne();
+                cp.setStatusLabel(false);
             }
         });
 
-        cPanel.getGrapheCB().setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                if(cPanel.getGrapheCB().isSelected())
-                    salle.initialisationGrapheAvecAffichage();
-                else cSalle.cacherGraphe();
-            }
-        });
-
-        getChildren().add(cSalle);
-        getChildren().add(cPanel);
+        this.getChildren().addAll(cs, cp);
     }
+    
 }

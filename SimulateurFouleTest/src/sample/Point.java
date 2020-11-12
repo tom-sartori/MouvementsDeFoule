@@ -1,52 +1,40 @@
 package sample;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 public class Point {
     private double x;
     private double y;
 
-    private boolean estSortie;
+    private double distance;
+    private Point precedent;
 
     private Point suivant;
-    private double distance;
-
-    private Point vraiSuivant;
-    private double vraieDistance;
-
-
-    private Point suivanttttttttttttt;
-    private double distanceSortieeeeeeeeeeeeeeeee;
+    private double distanceSortie;
 
 
     public Point(){
         x=0;
         y=0;
-        estSortie = false;
 
-        suivant = null;
-        vraiSuivant = null;
+        precedent = null;
     }
 
     public Point(double x, double y) {
         this.x = x;
         this.y = y;
-        estSortie = false;
 
-        suivant = null;
-        vraiSuivant = null;
+        precedent = null;
     }
 
     public Point(Point p) {
         x = p.getX();
         y = p.getY();
-        estSortie = p.estSortie();
+        precedent = p.getPrecedent();
         suivant = p.getSuivant();
-        distance = p.getDistance();
-        suivanttttttttttttt = p.getSuivanttttttttttttt();
-        distanceSortieeeeeeeeeeeeeeeee = p.getDistanceSortieeeeeeeeeeeeeeeee();
-        vraiSuivant = p.getVraiSuivant();
-        vraieDistance = p.getVraieDistance();
     }
 
 
@@ -62,17 +50,8 @@ public class Point {
         return "Point{" +
                 "x=" + x +
                 ", y=" + y +
-                ", distanceSortie=" + distanceSortieeeeeeeeeeeeeeeee +
-                ", suivant=" + suivanttttttttttttt +
-                '}';
-    }
-
-    public String toStringV3() {
-        return "Point{" +
-                "x=" + x +
-                ", y=" + y +
-                ", distance=" + distance +
-                ", precedent=" + suivant +
+                ", distanceSortie=" + distanceSortie +
+                ", suivant=" + suivant +
                 '}';
     }
 
@@ -86,25 +65,10 @@ public class Point {
     }
 
 
-    public boolean environEgaleY (double d) {
-        double precision = 1;
-        if ( (this.getY() - precision <= d) && (d <= this.getY() + precision) ) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean environEgaleX (double d) {
-        double precision = 1;
-        if ( (this.getX() - precision <= d) && (d <= this.getX() + precision) ) {
-            return true;
-        }
-        return false;
-    }
-
     // Utilisé pour la detection, lorsqu'un perso est arrivé à son objectif (coin d'un obstacle).
     // Obligé de faire un environ égale car comme les coordonnés sont des doubles, c'était jamais égale.
-    public boolean environEgale (Point p, double precision) {
+    public boolean environEgale (Point p) {
+        double precision = 1;
         if ( (this.getX() - precision <= p.getX()) && (p.getX() <= this.getX() + precision) ) {
             if ( (this.getY() - precision <= p.getY()) && (p.getY() <= this.getY() + precision) ) {
                 //System.out.println("Points environ egaux. ");
@@ -144,6 +108,14 @@ public class Point {
     }
 
 
+    public Point getPrecedent() {
+        return precedent;
+    }
+
+    public void setPrecedent(Point precedent) {
+        this.precedent = precedent;
+    }
+
     public Point getSuivant() {
         return suivant;
     }
@@ -152,48 +124,11 @@ public class Point {
         this.suivant = suivant;
     }
 
-    public Point getSuivanttttttttttttt() {
-        return suivanttttttttttttt;
+    public double getDistanceSortie() {
+        return distanceSortie;
     }
 
-    public void setSuivanttttttttttttt(Point suivanttttttttttttt) {
-        this.suivanttttttttttttt = suivanttttttttttttt;
-    }
-
-    public double getDistanceSortieeeeeeeeeeeeeeeee() {
-        return distanceSortieeeeeeeeeeeeeeeee;
-    }
-
-    public void setDistanceSortieeeeeeeeeeeeeeeee(double distanceSortieeeeeeeeeeeeeeeee) {
-        this.distanceSortieeeeeeeeeeeeeeeee = distanceSortieeeeeeeeeeeeeeeee;
-    }
-
-    public void setPoint (double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public boolean estSortie() {
-        return estSortie;
-    }
-
-    public void setEstSortie(boolean estSortie) {
-        this.estSortie = estSortie;
-    }
-
-    public Point getVraiSuivant() {
-        return vraiSuivant;
-    }
-
-    public double getVraieDistance() {
-        return vraieDistance;
-    }
-
-    public void setVraiSuivant(Point vraiSuivant) {
-        this.vraiSuivant = vraiSuivant;
-    }
-
-    public void setVraieDistance(double vraieDistance) {
-        this.vraieDistance = vraieDistance;
+    public void setDistanceSortie(double distanceSortie) {
+        this.distanceSortie = distanceSortie;
     }
 }
