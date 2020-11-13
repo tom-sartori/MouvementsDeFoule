@@ -12,6 +12,7 @@ public class ControllerPanel extends Parent {
     Slider vitesse;
     CheckBox graphe;
     CheckBox collisions;
+    CheckBox rayon;
 
     public ControllerPanel(){
         this.minHeight(40);
@@ -30,8 +31,11 @@ public class ControllerPanel extends Parent {
         collisions = new CheckBox("Activer les collisions");
         collisions.setTranslateX(350);
         collisions.setTranslateY(20);
+        rayon = new CheckBox("Activer le rayon");
+        rayon.setTranslateX(350);
+        rayon.setTranslateY(40);
 
-        this.getChildren().addAll(collisions, graphe, vitesse, playButton, pauseButton, clearButton);
+        this.getChildren().addAll(rayon, collisions, graphe, vitesse, playButton, pauseButton, clearButton);
     }
 
     public Button createButton(String text, int position){
@@ -64,5 +68,9 @@ public class ControllerPanel extends Parent {
 
     public Boolean getCollisionStatus(){
         return collisions.isSelected();
+    }
+
+    public Boolean getRayonStatus(){
+        return rayon.isSelected();
     }
 }
