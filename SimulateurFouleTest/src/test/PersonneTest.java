@@ -1,13 +1,7 @@
 package test;
 
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import sample.Obstacle;
-import sample.ObstacleRectangle;
-import sample.Personne;
-import sample.Point;
+import sample.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +17,7 @@ class PersonneTest {
         Point sortie = new Point(60,40);
         Point coordC=new Point(20,40);
         Point coordD=new Point(30,20);
-       assertTrue(p.estTouche(sortie,coordC,coordD));
+        assertTrue(p.estTouche(sortie,coordC,coordD));
     }
     @Test
     public void test_Chemin_Sans_Obstacle(){
@@ -106,13 +100,70 @@ class PersonneTest {
     }
 
     @Test
+    public void test_parallèle_Diagonales_0_2_mais_pas_obstacles(){
+        Personne p =new Personne(20,40);
+        Point sortie = new Point(40,60);
+        Obstacle o = new ObstacleRectangle(60,40,20,20);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+    @Test
+    public void test_parallèle_Diagonales_1_3_mais_pas_obstacles(){
+        Personne p =new Personne(60,40);
+        Point sortie = new Point(40,60);
+        Obstacle o = new ObstacleRectangle(60,40,20,20);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+    @Test
+    public void test_1_pas_obstacles(){
+        Personne p =new Personne(780,300);
+        Point sortie = new Point(780,0);
+        Obstacle o = new ObstacleRectangle(820, 30, 70, 70);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+    @Test
+    public void test_2_pas_obstacles(){
+        Personne p =new Personne(20,20);
+        Point sortie = new Point(40,40);
+        Obstacle o = new ObstacleRectangle(40,40,20,20);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+    @Test
+    public void test_3_pas_obstacles(){
+        Personne p =new Personne(100,40);
+        Point sortie = new Point(100,60);
+        Obstacle o = new ObstacleRectangle(80,20,20,20);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+    @Test
+    public void test_4_pas_obstacles(){
+        Personne p =new Personne(100,20);
+        Point sortie = new Point(100,0);
+        Obstacle o = new ObstacleRectangle(80,20,20,20);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+    @Test
+    public void test_5_pas_obstacles(){
+        Personne p =new Personne(100,20);
+        Point sortie = new Point(100,0);
+        Obstacle o = new ObstacleRectangle(80,20,20,20);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+
+    @Test
     public void test_Coord_Y_pas_obstacle(){
         Personne p =new Personne(20,20);
         Point sortie = new Point(20,100);
         Obstacle o = new ObstacleRectangle(40,40,40,20);
         assertTrue(p.segmentObstacle(sortie,o).isEmpty());
     }
-    
+
     @Test
     public void test_Coord_Obstacle(){
         Personne p =new Personne(20,20);
@@ -153,8 +204,6 @@ class PersonneTest {
         assertTrue(p.segmentObstacle(sortie,o).isEmpty());
     }
 
-    /*Problème*/
-
     @Test
     public void test_Coord_Obstacle_Avec_Chemin_Travers_Obstacle_Par_Diagonale_0_2(){
         Personne p =new Personne(20,20);
@@ -181,31 +230,46 @@ class PersonneTest {
         }
     }
 
-    /*problème*/
-
-   @Test
+    @Test
     public void test_Coord_Obstacle_Avec_Chemin_Travers_Obstacle_Par_Diagonale_1_3(){
         Personne p =new Personne(20,80);
         Point sortie = new Point(80,20);
         Obstacle o = new ObstacleRectangle(20,20,20,20);
-       ArrayList<Point> listSolution = new ArrayList<>();
-       Point a = new Point(20,20);
-       Point b=new Point(40,20);
-       Point c=new Point(40,40);
-       Point d=new Point(20,40);
-       listSolution.add(a);
-       listSolution.add(b);
-       listSolution.add(b);
-       listSolution.add(c);
-       listSolution.add(c);
-       listSolution.add(d);
-       listSolution.add(d);
-       listSolution.add(a);
+        ArrayList<Point> listSolution = new ArrayList<>();
+        Point a = new Point(20,20);
+        Point b=new Point(40,20);
+        Point c=new Point(40,40);
+        Point d=new Point(20,40);
+        listSolution.add(a);
+        listSolution.add(b);
+        listSolution.add(b);
+        listSolution.add(c);
+        listSolution.add(c);
+        listSolution.add(d);
+        listSolution.add(d);
+        listSolution.add(a);
         assertFalse(p.segmentObstacle(sortie,o).isEmpty());
-       List<Point> listTrouver = new ArrayList<>(p.segmentObstacle(sortie,o));
+        List<Point> listTrouver = new ArrayList<>(p.segmentObstacle(sortie,o));
         for(int i=0;i<p.segmentObstacle(sortie,o).size();i++){
             assertEquals(listSolution.get(i).getX(),listTrouver.get(i).getX());
             assertEquals(listSolution.get(i).getY(),listTrouver.get(i).getY());
         }
     }
+
+    @Test
+    public void test_estPoint(){
+        Point p = new Point(20,20);
+        Point sortie=new Point(40,40);
+        Point coordC=new Point(30,30);
+        assertTrue(MathsCalcule.estPoint(p,sortie,coordC));
+    }
+
+    @Test
+    public void test_estPointpaspoint(){
+        Point p = new Point(20,20);
+        Point sortie=new Point(40,40);
+        Point coordC=new Point(50,50);
+        assertFalse(MathsCalcule.estPoint(p,sortie,coordC));
+    }
+
 }

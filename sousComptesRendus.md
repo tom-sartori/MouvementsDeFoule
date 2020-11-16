@@ -84,3 +84,4 @@ Idées :
   - Du coup, plus besoin de environEgale pour capter si on ateint l'objectif ou pas. (08/11)
 - Ajout fonction addRandomPersonnes(int n), dans Salle, qui permet d'ajouter n Personnes à des positions aléatoires dans la salle. (08/11)
   - Ajout de la fonction estDansObstacle(Point point) dans ObstacleRectangle pour éviter d'avoir des persos random dans les obstacles. (08/11)
+

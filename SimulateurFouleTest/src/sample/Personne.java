@@ -8,6 +8,7 @@ public class Personne {
     private Point objectif;
     private Point objectifRayon;
 
+
     private double rayon;
     private double dx;
     private double dy;
@@ -82,16 +83,15 @@ public class Personne {
             coordCourant.setPoint(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.
     }
 
-    public void avancerRayon () {/*
-        if (dx > 0 && coordCourant.getX() + dx > objectifRayon.getX())   // Tous les if sont les cas où il ateint son objectif.
-            coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
-        else if (dx < 0 && coordCourant.getX() + dx < objectifRayon.getX())
-            coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
-        else if (dy > 0 && coordCourant.getY() + dy > objectifRayon.getY())
-            coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
-        else if (dy < 0 && coordCourant.getY() + dy < objectifRayon.getY())
-            coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
-        else*/
+    public void avancerRayon () {if (dx >= 0 && dy >= 0 && coordCourant.getX() + dx >= objectifRayon.getX() && coordCourant.getY() + dy >= objectifRayon.getY())
+        coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
+    else if (dx >= 0 && dy <= 0 && coordCourant.getX() + dx >= objectifRayon.getX() && coordCourant.getY() + dy <= objectifRayon.getY())
+        coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
+    else if (dx <= 0 && dy <= 0 && coordCourant.getX() + dx <= objectifRayon.getX() && coordCourant.getY() + dy <= objectifRayon.getY())
+        coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
+    else if (dx <= 0 && dy >= 0 && coordCourant.getX() + dx <= objectifRayon.getX() && coordCourant.getY() + dy >= objectifRayon.getY())
+        coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
+    else
             coordCourant.setPoint(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.
     }
 
@@ -100,10 +100,10 @@ public class Personne {
             objectif = findBonChemin(salle);
 
         } else { // peut etre faire un cas pour la fin, car getSuiv() de l'arrive == null
-            objectif = objectif.getSuivant();
+            objectif = objectif.getVraiSuivant();
         }
-        //System.out.println("courant : " + coordCourant);
-        //System.out.println("objectif : " + objectif);
+        System.out.println("courant : " + coordCourant);
+        System.out.println("objectif : " + objectif);
         objectifRayon.setX(objectif.getX());
         objectifRayon.setY(objectif.getY());
     }
@@ -111,7 +111,7 @@ public class Personne {
     // Prend aussi en compte le rayon de la personne.
     public void setObjectifAvecRayon (Salle salle) {
         setObjectif(salle);
-        if (objectif.getSuivant() != null) {
+        if (objectif.getVraiSuivant() != null) {
 
             System.out.println("objectif.getSuivant() != null");
             setObjectifRayonObstacle(salle);
@@ -121,9 +121,6 @@ public class Personne {
             setObjectifRayonSortie(salle);
         }
     }
-
-
-
 
     public void setObjectifRayonObstacle (Salle salle) {
         for (Obstacle o : salle.getListObstacles()) {
@@ -257,22 +254,22 @@ public class Personne {
 
                         if (objectifRayon.environEgaleY(coordCourant.getY() + rayon)) {
                             System.out.println("objectifRayon.environEgaleY(coordCourant.getY() + r) ligne 245");
-                            objectifRayon.setX(objectif.getX() - rayon);
-
+                            objectifRayon.setX(objectif.getX() + rayon);
+                            objectifRayon.setY(objectif.getY() - rayon);
                             if (!segmentObstacle(objectifRayon, o).isEmpty()) {
                                 System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
+                                objectifRayon.setX(objectif.getX() - rayon);
                                 objectifRayon.setY(objectif.getY() - rayon);
                             }
 
                         } else if (objectifRayon.environEgaleY(coordCourant.getY() - rayon)) {
                             System.out.println("objectifRayon.environEgaleY(coordCourant.getY() - r) ligne 255");
                             objectifRayon.setX(objectif.getX() - rayon);
-
+                            objectifRayon.setY(objectif.getY() - rayon);
                             if (!segmentObstacle(objectifRayon, o).isEmpty()) {
                                 System.out.println("objectifRayon était obstalce");
                                 objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
+                                objectifRayon.setY(objectif.getY() - rayon);
                             }
 
                         } else if (objectifRayon.getY() + rayon > coordCourant.getY()) {
@@ -299,7 +296,7 @@ public class Personne {
                         } else if (objectifRayon.getY() + rayon < coordCourant.getY()) {
                             System.out.println("objectifRayon.getY() + r < coordCourant.getY() ligne 286");
                             objectifRayon.setX(objectif.getX() + rayon);
-                            objectifRayon.setY(objectif.getY() - rayon);
+                            objectifRayon.setY(objectif.getY() + rayon);
 
                             if (!segmentObstacle(objectifRayon, o).isEmpty()) {
                                 System.out.println("objectifRayon était obstalce");
@@ -334,6 +331,7 @@ public class Personne {
                         } else if (objectifRayon.environEgaleY(coordCourant.getY() - rayon)) {
                             System.out.println("objectifRayon.environEgaleY(coordCourant.getY() - r) ligne 320");
                             objectifRayon.setX(objectif.getX() + rayon);
+                            objectifRayon.setY(objectif.getY() + rayon);
 
                             if (!segmentObstacle(objectifRayon, o).isEmpty()) {
                                 System.out.println("objectifRayon était obstalce");
@@ -364,12 +362,13 @@ public class Personne {
 
                         } else if (objectifRayon.getY() + rayon < coordCourant.getY()) {
                             System.out.println("objectifRayon.getY() + r <coordCourant.getY() ligne 351");
-                            objectifRayon.setX(objectif.getX() - rayon);
+                            objectifRayon.setX(objectif.getX() + rayon);
+                            objectifRayon.setY(objectif.getY() - rayon);
 
                             if (!segmentObstacle(objectifRayon, o).isEmpty()) {
                                 System.out.println("objectifRayon était obstalce ");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() - rayon);
+                                objectifRayon.setX(objectif.getX() - rayon);
+                                objectifRayon.setY(objectif.getY() + rayon);
                             }
 
                         } else if (objectifRayon.getY() - rayon < coordCourant.getY()) {
@@ -421,11 +420,9 @@ public class Personne {
         }
     }
 
-
-
     // Obligé de faire environ égale avec une petite precision car les doubles ne sont pas égaux.
     public boolean objectifAteint () {
-        if (coordCourant.environEgale(objectifRayon,1)) {
+        if (coordCourant.equals(objectifRayon)) {
             System.out.println("objectif ateint. ");
             return true;
         }
@@ -434,19 +431,16 @@ public class Personne {
     }
 
     public Point findBonChemin (Salle salle) {
-        Point premierObjectif;
+        Point premierObjectif = null;
         double distance, distanceCourante;
+        distance = 100000;
 
-        List<Point> listePointsDirectes = salle.getGraphe().getListePointsDirectesPerso(salle, coordCourant);
-        premierObjectif = listePointsDirectes.get(0);
-        distance = 1000000;
-
-        for (Point point : salle.getGraphe().getListePointsDirectesPerso(salle, coordCourant)) { // Fonctionne pas car personne pas dans le graphe
-            if (MathsCalcule.distance(coordCourant, point) != 0) { // Car si 0,c'est lui meme.
-                distanceCourante = MathsCalcule.distance(coordCourant, point) + point.getDistanceSortie();
+        for (Point pointDirect : salle.getListePointsDirectes(coordCourant)) { // Fonctionne pas car personne pas dans le graphe
+            if (MathsCalcule.distance(coordCourant, pointDirect) != 0) { // Car si 0,c'est lui meme.
+                distanceCourante = MathsCalcule.distance(coordCourant, pointDirect) + pointDirect.getVraieDistance();
                 if (distanceCourante < distance) {
                     distance = distanceCourante;
-                    premierObjectif = point;
+                    premierObjectif = pointDirect;
                 }
             }
         }
@@ -515,5 +509,6 @@ public class Personne {
     public double getRayon() {
         return rayon;
     }
+
 }
 
