@@ -25,38 +25,16 @@ public class Personne {
         return new ControllerPersonne(this);
     }
 
-    public Point findDxDy (Point arrivee) {
-        System.out.println("findDxDy : courant : " + coordCourant + " objectif : " + arrivee);
+    public Point findDxDy (Point pointObjectif) {
         Point dxdy = new Point();
-
-        double distX = Math.abs(coordCourant.getX() - arrivee.getX());
-        double distY = Math.abs(coordCourant.getY() - arrivee.getY());
-
-        if (distY == 0) {
-            if (coordCourant.getX() < arrivee.getX())
-                dxdy.setX(1);
-            else
-                dxdy.setX(-1);
-        }
-        else if (coordCourant.getX() < arrivee.getX())
-            dxdy.setX(distX / distY);
-        else
-            dxdy.setX(- distX / distY);
-
-        if (distY == 0)
-            dxdy.setY(0);
-        else if (coordCourant.getY() < arrivee.getY())
-            dxdy.setY(1);
-        else
-            dxdy.setY(-1);
-
-        System.out.println("dxdy : " + dxdy);
+        dxdy.setX(pointObjectif.getX() - coordCourant.getX());
+        dxdy.setY(pointObjectif.getY() - coordCourant.getY());
 
         return dxdy;
     }
 
-    public void setDxDyNormalise (Point arrivee) {
-        Point coordDxDy = findDxDy(arrivee);
+    public void setDxDyNormalise (Point pointObjectif) {
+        Point coordDxDy = findDxDy(pointObjectif);
 
         //argument = sqrt(x^2 + y^2)
         double argument = Math.sqrt( (coordDxDy.getX() * coordDxDy.getX()) + (coordDxDy.getY() * coordDxDy.getY()) );
@@ -100,7 +78,7 @@ public class Personne {
             objectif = findBonChemin(salle);
 
         } else { // peut etre faire un cas pour la fin, car getSuiv() de l'arrive == null
-            objectif = objectif.getVraiSuivant();
+            objectif = objectif.getSuivant();
         }
         System.out.println("courant : " + coordCourant);
         System.out.println("objectif : " + objectif);
@@ -381,12 +359,7 @@ public class Personne {
 
     // Obligé de faire environ égale avec une petite precision car les doubles ne sont pas égaux.
     public boolean objectifAteint () {
-        if (coordCourant.equals(objectifRayon)) {
-            System.out.println("objectif ateint. ");
-            return true;
-        }
-        else
-            return false;
+        return coordCourant.equals(objectifRayon);
     }
 
     public Point findBonChemin (Salle salle) {
@@ -396,7 +369,7 @@ public class Personne {
 
         for (Point pointDirect : salle.getListePointsDirectes(coordCourant)) { // Fonctionne pas car personne pas dans le graphe
             if (MathsCalcule.distance(coordCourant, pointDirect) != 0) { // Car si 0,c'est lui meme.
-                distanceCourante = MathsCalcule.distance(coordCourant, pointDirect) + pointDirect.getVraieDistance();
+                distanceCourante = MathsCalcule.distance(coordCourant, pointDirect) + pointDirect.getDistanceASortie();
                 if (distanceCourante < distance) {
                     distance = distanceCourante;
                     premierObjectif = pointDirect;

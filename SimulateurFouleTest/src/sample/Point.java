@@ -8,19 +8,20 @@ public class Point {
 
     private boolean estSortie;
 
-    private Point suivant;
-    private double distance;
+    private Point suivant;  // Représente le point suivant pour aller vers la sortie le plus rapidement.
+    private double distanceASortie; // Représente la distance jusqu'à la sortie la plus proche en passant par des obstacles (ou pas).
 
-    private Point vraiSuivant;
-    private double vraieDistance;
+    private Point suivantCourant;   // Modifiés à chaque tour de boucle suivant les sorties.
+    private double distanceCourante;// Utiliser les variables "suivant" et "distance" pour avoir les vrais suivants.
+
 
     public Point(){
         x=0;
         y=0;
         estSortie = false;
 
+        suivantCourant = null;
         suivant = null;
-        vraiSuivant = null;
     }
 
     public Point(double x, double y) {
@@ -28,18 +29,18 @@ public class Point {
         this.y = y;
         estSortie = false;
 
+        suivantCourant = null;
         suivant = null;
-        vraiSuivant = null;
     }
 
     public Point(Point p) {
         x = p.getX();
         y = p.getY();
         estSortie = p.estSortie();
+        suivantCourant = p.getSuivantCourant();
+        distanceCourante = p.getDistanceCourante();
         suivant = p.getSuivant();
-        distance = p.getDistance();
-        vraiSuivant = p.getVraiSuivant();
-        vraieDistance = p.getVraieDistance();
+        distanceASortie = p.getDistanceASortie();
     }
 
 
@@ -55,9 +56,9 @@ public class Point {
         return "Point{" +
                 "x=" + x +
                 ", y=" + y +
-                ", distance=" + distance +
-                ", suivant=" + suivant +
-                ", vrais suiv=" + vraiSuivant +
+                ", distance=" + distanceCourante +
+                ", suivant=" + suivantCourant +
+                ", vrais suiv=" + suivant +
                 '}';
     }
 
@@ -86,7 +87,6 @@ public class Point {
     public boolean environEgale (Point p, double precision) {
         if ( (this.getX() - precision <= p.getX()) && (p.getX() <= this.getX() + precision) ) {
             if ( (this.getY() - precision <= p.getY()) && (p.getY() <= this.getY() + precision) ) {
-                //System.out.println("Points environ egaux. ");
                 return true;
             }
         }
@@ -114,21 +114,21 @@ public class Point {
         this.y = y;
     }
 
-    public void setDistance(double distance) {
-        this.distance = distance;
+    public void setDistanceCourante(double distanceCourante) {
+        this.distanceCourante = distanceCourante;
     }
 
-    public double getDistance() {
-        return distance;
+    public double getDistanceCourante() {
+        return distanceCourante;
     }
 
 
-    public Point getSuivant() {
-        return suivant;
+    public Point getSuivantCourant() {
+        return suivantCourant;
     }
 
-    public void setSuivant(Point suivant) {
-        this.suivant = suivant;
+    public void setSuivantCourant(Point suivantCourant) {
+        this.suivantCourant = suivantCourant;
     }
 
     public void setPoint (double x, double y) {
@@ -144,19 +144,19 @@ public class Point {
         this.estSortie = estSortie;
     }
 
-    public Point getVraiSuivant() {
-        return vraiSuivant;
+    public Point getSuivant() {
+        return suivant;
     }
 
-    public double getVraieDistance() {
-        return vraieDistance;
+    public double getDistanceASortie() {
+        return distanceASortie;
     }
 
-    public void setVraiSuivant(Point vraiSuivant) {
-        this.vraiSuivant = vraiSuivant;
+    public void setSuivant(Point suivant) {
+        this.suivant = suivant;
     }
 
-    public void setVraieDistance(double vraieDistance) {
-        this.vraieDistance = vraieDistance;
+    public void setDistanceASortie(double distanceASortie) {
+        this.distanceASortie = distanceASortie;
     }
 }

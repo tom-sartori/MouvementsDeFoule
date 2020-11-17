@@ -19,13 +19,13 @@ public class Graphe {
         listePointsSorties = new ArrayList<>();
 
         for (Obstacle obstacle : salle.getListObstacles()) {
-            for (Point point : obstacle.getListePoints()) {
-                listePointsObstacles.add(point);
-                Point pointSortieDirectProche = salle.findPointSortiePlusProcheDirect(point);
-                System.out.println("point : " + point + " sortie proche : " + pointSortieDirectProche);
+            for (Point pointObstacle : obstacle.getListePoints()) {
+                listePointsObstacles.add(pointObstacle);
+                Point pointSortieDirectProche = salle.findPointSortiePlusProcheDirect(pointObstacle);
+                System.out.println("pointObstacle : " + pointObstacle + " sortie proche : " + pointSortieDirectProche);
 
                 if (pointSortieDirectProche != null) {
-                    //addChemin(new Chemin(point, pointSortieDirectProche));
+                    //addChemin(new Chemin(pointObstacle, pointSortieDirectProche));
                     if (!listePointsSorties.contains(pointSortieDirectProche)) {
                         listePointsSorties.add(pointSortieDirectProche);
                         System.out.println("pointSortie : " + pointSortieDirectProche);
@@ -80,19 +80,19 @@ public class Graphe {
         List<Point> listeCourante = new ArrayList<>();
 
         for (Point point : listePointsObstacles) {
-            point.setDistance(100000);  // Distance infinie.
+            point.setDistanceCourante(100000);  // Distance infinie.
             listeCourante.add(point);
         }
         listeCourante.add(pointSortie);
-        pointSortie.setDistance(0);
+        pointSortie.setDistanceCourante(0);
 
         while (!listeCourante.isEmpty()) {
             double distance = 1000000;  // Distance infinie.
             Point courant = null;
 
             for (Point point : listeCourante) {
-                if (point.getDistance() < distance) {
-                    distance = point.getDistance();
+                if (point.getDistanceCourante() < distance) {
+                    distance = point.getDistanceCourante();
                     courant = point;
                 }
             }
@@ -101,10 +101,10 @@ public class Graphe {
             List<Point> listeVoisins = getListePointsDirectes(salle, courant);  // Points sorties non comprits appart celui en param.
 
             for (Point voisin : listeVoisins) {
-                double nouvelleDistance = courant.getDistance() + MathsCalcule.distance(courant, voisin);
-                if (nouvelleDistance < voisin.getDistance()) {
-                    voisin.setDistance(nouvelleDistance);
-                    voisin.setSuivant(courant);
+                double nouvelleDistance = courant.getDistanceCourante() + MathsCalcule.distance(courant, voisin);
+                if (nouvelleDistance < voisin.getDistanceCourante()) {
+                    voisin.setDistanceCourante(nouvelleDistance);
+                    voisin.setSuivantCourant(courant);
                 }
             }
         }
@@ -112,12 +112,12 @@ public class Graphe {
 
     public void afficherPrecedentsPointObstacle(Point pointObstacle) {
         Point courant = new Point(pointObstacle);
-        Point suivant = new Point(courant.getVraiSuivant());
+        Point suivant = new Point(courant.getSuivant());
         do {
             addChemin(new Chemin(courant, suivant));
             System.out.println("Courant : " + courant + " suivant : " + suivant);
             courant = suivant;
-            suivant = courant.getVraiSuivant();
+            suivant = courant.getSuivant();
         }
         while (suivant != null);
         System.out.println("");
@@ -164,7 +164,7 @@ public class Graphe {
         while (!courant.equals(depart)) {
             System.out.println("test");
             cheminPlusCourt.add(0, courant);
-            courant = courant.getSuivant();
+            courant = courant.getSuivantCourant();
         }
         cheminPlusCourt.add(0, depart);
 
@@ -176,14 +176,14 @@ public class Graphe {
         for (Point pointObstacle : listePointsObstacles) {
             System.out.println("");
             System.out.println("affecte suivant : point : " + pointObstacle.toStringV2());
-             if (pointObstacle.getVraiSuivant() == null) {
-                 pointObstacle.setVraiSuivant(pointObstacle.getSuivant());
-                 pointObstacle.setVraieDistance(pointObstacle.getDistance());
+             if (pointObstacle.getSuivant() == null) {
+                 pointObstacle.setSuivant(pointObstacle.getSuivantCourant());
+                 pointObstacle.setDistanceASortie(pointObstacle.getDistanceCourante());
              }
              else {
-                 if (pointObstacle.getDistance() < pointObstacle.getVraieDistance()) {
-                     pointObstacle.setVraiSuivant(pointObstacle.getSuivant());
-                     pointObstacle.setVraieDistance(pointObstacle.getDistance());
+                 if (pointObstacle.getDistanceCourante() < pointObstacle.getDistanceASortie()) {
+                     pointObstacle.setSuivant(pointObstacle.getSuivantCourant());
+                     pointObstacle.setDistanceASortie(pointObstacle.getDistanceCourante());
                  }
              }
             System.out.println("affecte suivant : point : " + pointObstacle.toStringV2());

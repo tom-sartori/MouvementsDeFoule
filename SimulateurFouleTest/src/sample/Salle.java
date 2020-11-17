@@ -29,7 +29,7 @@ public class Salle {
         this.hauteur = hau;
         this.listPersonnes = new ArrayList<>(); // HashList surement apres
         this.listSorties = new ArrayList<>();
-        this.listObstacles = new ArrayList<Obstacle>();
+        this.listObstacles = new ArrayList<>();
 
         graphe = new Graphe(this);
     }
@@ -168,8 +168,7 @@ public class Salle {
                                     listPersonnes.get(i).setObjectifRayon(salle);
                                     listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
                                 }
-
-                             else {
+                                else {
                                     listPersonnes.get(i).avancerRayon();
                                     cSalle.deplacerPersonne(listPersonnes.get(i));
 

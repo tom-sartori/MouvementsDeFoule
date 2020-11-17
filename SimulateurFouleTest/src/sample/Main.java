@@ -25,14 +25,14 @@ public class Main extends Application {
         salle.addObstacle(new ObstacleRectangle(400, 430, 200, 50));
         salle.addObstacle(new ObstacleRectangle(700, 302, 80, 100));
         salle.addObstacle(new ObstacleRectangle(820, 30, 70, 70));
-        salle.addObstacle(new ObstacleRectangle(331, 81, 150, 150));
+        salle.addObstacle(new ObstacleRectangle(330, 81, 150, 150));
 
         salle.addSortie(1, 800, 340);
 
         //salle.addSortie(1, 806, 21);
-        //salle.addSortie(2,404,41);
-        //salle.addSortie(3, 802, 81);
-        //salle.addSortie(4, 300, 13);
+        salle.addSortie(2,404,41);
+        salle.addSortie(3, 802, 81);
+        salle.addSortie(4, 300, 13);
 
         salle.addRandomPersonnes(100);
 
