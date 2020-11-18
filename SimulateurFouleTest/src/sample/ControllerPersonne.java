@@ -4,6 +4,8 @@ import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.Random;
+
 public class ControllerPersonne extends Parent {
 
     private Personne personne;
@@ -13,7 +15,11 @@ public class ControllerPersonne extends Parent {
         personne = p;
 
         personneGraphique = new Circle(personne.getCoordCourant().getX(), personne.getCoordCourant().getY(), personne.getRayon());
-        personneGraphique.setFill(Color.RED);
+
+        //personneGraphique.setFill(Color.RED);
+        Random ran = new Random();
+        personneGraphique.setFill(Color.rgb(ran.nextInt(255), ran.nextInt(255), ran.nextInt(255)));
+
         getChildren().add(personneGraphique);
     }
 

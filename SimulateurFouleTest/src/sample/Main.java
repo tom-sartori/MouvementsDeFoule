@@ -14,7 +14,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Group root = new Group();
-        Scene scene = new Scene(root, 1500, 700, Color.LIGHTGRAY);
+
+        Scene scene = new Scene(root, 1200, 800, Color.LIGHTGRAY);
 
         Salle salle = new Salle(1000, 500);
 
@@ -23,16 +24,19 @@ public class Main extends Application {
         salle.addObstacle(new ObstacleRectangle(600, 100, 15, 200));
         salle.addObstacle(new ObstacleRectangle(30, 500, 200, 60));
         salle.addObstacle(new ObstacleRectangle(400, 430, 200, 50));
-        salle.addObstacle(new ObstacleRectangle(700, 300, 80, 100));
+        salle.addObstacle(new ObstacleRectangle(700, 302, 80, 100));
         salle.addObstacle(new ObstacleRectangle(820, 30, 70, 70));
-        salle.addObstacle(new ObstacleRectangle(333, 81, 150, 150));
 
-        salle.addSortie(1, 400, 60);
+        salle.addObstacle(new ObstacleRectangle(331, 81, 150, 150));
+
+        salle.addSortie(1, 800, 340);
 
         //salle.addSortie(1, 806, 21);
-        //salle.addSortie(2,404,41);
-        //salle.addSortie(3, 802, 81);
-        //salle.addSortie(4, 300, 13);
+        salle.addSortie(2,404,41);
+        salle.addSortie(3, 802, 81);
+        salle.addSortie(4, 300, 13);
+
+        salle.addRandomPersonnes(100);
 
         salle.addRandomPersonnes(60);
 
