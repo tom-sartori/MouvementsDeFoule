@@ -83,6 +83,7 @@ public class Sortie {
 
         for (double i = rayon; i <= getLargeurPorte() - rayon; i++ ) {
             if (estMur1ou3()) {
+                courant.setY(borne1.getY());
                 courant.setX(borne1.getX() + i);
                 if (!salle.intersecObstacle(depart, courant)) {
                     if (MathsCalcule.distance(depart, courant) < plusPetiteDistance) {
@@ -94,8 +95,9 @@ public class Sortie {
                 }
             }
             else {
-                courant.setY(borne1.getY() + i);
                 if (!salle.intersecObstacle(depart, courant)) {
+                    courant.setX(borne1.getX());
+                    courant.setY(borne1.getY()+i);
                     if (MathsCalcule.distance(depart, courant) < plusPetiteDistance) {
                         plusPetiteDistance = MathsCalcule.distance(depart, courant);
                         //pointSortie.setPoint(courant.getX(), courant.getY());

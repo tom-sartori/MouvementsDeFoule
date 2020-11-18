@@ -35,7 +35,7 @@ public class MathsCalcule {
         double k2 = (mat2 * u) + (mat4 * v);
         //System.out.println("La valeur de K est "+k1 +"\n"+ "La valeur de k' est " +k2);
         //System.out.println("Les segments se touchent. ");
-        return (0 < k1 && k1 < 1) && (0 < k2 && k2 < 1);
+        return (0 < k1 && k1 < 0.999999) && (0 < k2 && k2 < 0.999999);
     }
 
     public static double distance(Point A, Point B) {
@@ -50,8 +50,7 @@ public class MathsCalcule {
     // Retourne vrais si AB est colinéaire à CD et qu'ils se chevauchent sur plus d'un point.
     public static boolean estSuperpose(Point coordA, Point coordB, Point coordC, Point coordD) {
         if (MathsCalcule.determinant(coordA, coordB, coordC, coordD) == 0) {
-            boolean b = false;
-             if (coordA.getX()<=coordC.getX() && coordB.getX()<coordC.getX() && coordA.getX()<coordD.getX() && coordB.getX()<coordD.getX()){
+            if (coordA.getX()<=coordC.getX() && coordB.getX()<coordC.getX() && coordA.getX()<coordD.getX() && coordB.getX()<coordD.getX()){
                 return false;
             }else if (coordA.getX()<=coordD.getX() && coordB.getX()<coordD.getX() &&coordA.getX()<coordC.getX() && coordB.getX()<coordC.getX()){
                 return false;
@@ -76,14 +75,14 @@ public class MathsCalcule {
             } else if(coordB.getY()<=coordD.getY() && coordA.getY()<coordD.getY() &&coordA.getY()<coordC.getY() && coordB.getY()<coordC.getY()){
                 return false;
             } else if (coordB.getX()>=coordC.getX() && coordA.getX()>coordC.getX() && coordA.getX()>coordD.getX() && coordB.getX()>coordD.getX()){
-                 return false;
-             }else if (coordB.getX()>=coordD.getX() && coordA.getX()>coordD.getX() &&coordA.getX()>coordC.getX() && coordB.getX()>coordC.getX()){
-                 return false;
-             }else if(coordB.getY()>=coordC.getY() && coordA.getY()>coordC.getY() && coordA.getY()>coordD.getY() && coordB.getY()>coordD.getY()){
-                 return false;
-             } else if(coordB.getY()>=coordD.getY() && coordA.getY()>coordD.getY() &&coordA.getY()>coordC.getY() && coordB.getY()>coordC.getY()){
-                 return false;
-             } else
+                return false;
+            }else if (coordB.getX()>=coordD.getX() && coordA.getX()>coordD.getX() &&coordA.getX()>coordC.getX() && coordB.getX()>coordC.getX()){
+                return false;
+            }else if(coordB.getY()>=coordC.getY() && coordA.getY()>coordC.getY() && coordA.getY()>coordD.getY() && coordB.getY()>coordD.getY()){
+                return false;
+            } else if(coordB.getY()>=coordD.getY() && coordA.getY()>coordD.getY() &&coordA.getY()>coordC.getY() && coordB.getY()>coordC.getY()){
+                return false;
+            } else
                 return true;
         }
         return false;
@@ -166,14 +165,13 @@ public class MathsCalcule {
         }
         for (int i = 0; i < o.getListePoints().size(); i++) {
             if (i != o.getListePoints().size() - 1) {
-
-                if (estCoupe(coordA, coordB, o.getListePoints().get(i), o.getListePoints().get(i + 1))) {
-                    listTableau.add(o.getListePoints().get(i));
-                    listTableau.add(o.getListePoints().get(i + 1));
-                }
+                    if (estCoupe(coordA, coordB, o.getListePoints().get(i), o.getListePoints().get(i + 1))) {
+                        listTableau.add(o.getListePoints().get(i));
+                        listTableau.add(o.getListePoints().get(i + 1));
+                    }
 
             } else {
-                if (estCoupe(coordA, coordB, o.getListePoints().get(i), o.getListePoints().get(0))) {
+                    if (estCoupe(coordA, coordB, o.getListePoints().get(i), o.getListePoints().get(0))) {
                         listTableau.add(o.getListePoints().get(i));
                         listTableau.add(o.getListePoints().get(0));
                 }

@@ -24,7 +24,7 @@ public class Graphe {
             for (Point point : obstacle.getListePoints()) {
                 listePointsObstacles.add(point);
                 Point pointSortieDirectProche = salle.findPointSortiePlusProcheDirect(point);
-
+                System.out.println("point : " + point + " sortie proche : " + pointSortieDirectProche);
                 if (pointSortieDirectProche != null) {
                     //addChemin(new Chemin(point, pointSortieDirectProche));
                     if (!listePointsSorties.contains(pointSortieDirectProche)) {
