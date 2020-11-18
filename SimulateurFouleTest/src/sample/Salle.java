@@ -165,7 +165,7 @@ public class Salle {
         boolean collision, bloque;
         int y;
         for (int i = 0; i < listPersonnes.size(); i++) {
-            if (listPersonnes.get(i).estSorti(salle))
+            if (listPersonnes.get(i).estSorti())
                 removePersonne(listPersonnes.get(i));
             else {
                 if (listPersonnes.get(i).objectifAteint()) {
