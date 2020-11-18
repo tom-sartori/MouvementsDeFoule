@@ -272,4 +272,19 @@ class PersonneTest {
         assertFalse(MathsCalcule.estPoint(p,sortie,coordC));
     }
 
+    @Test
+    public void test_8(){
+       Personne p = new Personne(330,80);
+        Point sortie=new Point(330,0);
+        Obstacle o = new ObstacleRectangle(330, 80, 150, 150);
+        assertTrue(p.segmentObstacle(sortie,o).isEmpty());
+    }
+
+    @Test
+    public void test_9(){
+        Personne p = new Personne(13.49,1.99);
+        Point sortie=new Point(16,7);
+        Obstacle o = new ObstacleRectangle(15, 5, 5, 5);
+        assertTrue(p.estObstacle(sortie,o));
+    }
 }

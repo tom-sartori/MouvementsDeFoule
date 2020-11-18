@@ -391,20 +391,27 @@ public class Personne {
     }
 
     // Retourne vrais si la personne et son point de sortie intersectent le segment CD
-    public boolean estTouche(Point nextPoint,Point coordC,Point coordD){
-        Point coordP = new Point(coordCourant.getX(), coordCourant.getY());
-        return MathsCalcule.estCoupe(coordP,nextPoint,coordC,coordD);
+    public boolean estTouche(Point coordSortie,Point coordC,Point coordD){
+        return MathsCalcule.estCoupe(coordCourant,coordSortie,coordC,coordD);
     }
 
     // Retourne vrais si le segment coordCourant coordSortie est superposé à CD
     public boolean estSuperpose(Point coordSortie,Point coordC,Point coordD){
-        Point coordP = new Point(coordCourant.getX(), coordCourant.getY());
-        return MathsCalcule.estSuperpose(coordP,coordSortie,coordC,coordD);
+        return MathsCalcule.estSuperpose(coordCourant,coordSortie,coordC,coordD);
     }
 
     public List<Point> segmentObstacle(Point coordSortie,Obstacle o){
-        Point coordP = new Point(coordCourant.getX(), coordCourant.getY());
-        return MathsCalcule.coordSegments(coordP,coordSortie,o);
+        return MathsCalcule.coordSegments(coordCourant,coordSortie,o);
+    }
+
+    public boolean estObstacle(Point coordObjectif,Obstacle o){
+        if(coordObjectif.getX()>o.getListePoints().get(0).getX()
+        && coordObjectif.getX()<o.getListePoints().get(1).getX()
+        && coordObjectif.getY()>o.getListePoints().get(0).getY()
+        && coordObjectif.getY()<o.getListePoints().get(3).getY()){
+            return true;
+        }else
+            return !segmentObstacle(coordObjectif,o).isEmpty();
     }
 
     public Point getObjectif() {
