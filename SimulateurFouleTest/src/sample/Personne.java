@@ -46,20 +46,25 @@ public class Personne {
     // Permet de faire avancer Personne suivant ses dx, dy (donc normalement en direction de son Point objectif).
     // Si le perso dépasse en x ou y son objectif, cela signifie qu'il ateint son objectif et donc coordCourant prend les coord de l'objectif.
     // Sinon, il avance simplement de dx et dy
-    public void avancer () {
+    public Point getProchainMouvement () {
         if (dx >= 0 && dy >= 0 && coordCourant.getX() + dx >= objectif.getX() && coordCourant.getY() + dy >= objectif.getY())
-            coordCourant.setPoint(objectif.getX(), objectif.getY());
+            return new Point(objectif.getX(), objectif.getY());
         else if (dx >= 0 && dy <= 0 && coordCourant.getX() + dx >= objectif.getX() && coordCourant.getY() + dy <= objectif.getY())
-            coordCourant.setPoint(objectif.getX(), objectif.getY());
+            return new Point(objectif.getX(), objectif.getY());
         else if (dx <= 0 && dy <= 0 && coordCourant.getX() + dx <= objectif.getX() && coordCourant.getY() + dy <= objectif.getY())
-            coordCourant.setPoint(objectif.getX(), objectif.getY());
+            return new Point(objectif.getX(), objectif.getY());
         else if (dx <= 0 && dy >= 0 && coordCourant.getX() + dx <= objectif.getX() && coordCourant.getY() + dy >= objectif.getY())
-            coordCourant.setPoint(objectif.getX(), objectif.getY());
+            return new Point(objectif.getX(), objectif.getY());
         else
-            coordCourant.setPoint(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.
+            return new Point(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.
     }
 
-    public void avancerRayon () {if (dx >= 0 && dy >= 0 && coordCourant.getX() + dx >= objectifRayon.getX() && coordCourant.getY() + dy >= objectifRayon.getY())
+    public void avancer(){
+        Point p = getProchainMouvement();
+        coordCourant.setPoint(p.getX(), p.getY());
+    }
+
+    public void avancerRayon () { if (dx >= 0 && dy >= 0 && coordCourant.getX() + dx >= objectifRayon.getX() && coordCourant.getY() + dy >= objectifRayon.getY())
         coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
     else if (dx >= 0 && dy <= 0 && coordCourant.getX() + dx >= objectifRayon.getX() && coordCourant.getY() + dy <= objectifRayon.getY())
         coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
@@ -443,6 +448,10 @@ public class Personne {
 
     public double getRayon() {
         return rayon;
+    }
+
+    public Point getNextPos(){
+        return new Point(this.coordCourant.getX() + this.dx, this.coordCourant.getY() + this.dy);
     }
 
 }
