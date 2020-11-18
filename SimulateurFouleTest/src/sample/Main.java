@@ -25,7 +25,7 @@ public class Main extends Application {
         salle.addObstacle(new ObstacleRectangle(400, 430, 200, 50));
         salle.addObstacle(new ObstacleRectangle(700, 302, 80, 100));
         salle.addObstacle(new ObstacleRectangle(820, 30, 70, 70));
-        salle.addObstacle(new ObstacleRectangle(330, 81, 150, 150));
+        salle.addObstacle(new ObstacleRectangle(331, 81, 150, 150));
 
         salle.addSortie(1, 800, 340);
 
