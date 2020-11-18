@@ -12,7 +12,7 @@ public class Personne {
     private double rayon;
     private double dx;
     private double dy;
-    private double vitesse = 20; // Norme du vecteur de déplacement par frame, en unité par frame.
+    private double vitesse = 1.5; // Norme du vecteur de déplacement par frame, en unité par frame.
 
     public Personne(double posX , double posY){
         coordCourant = new Point(posX, posY);
@@ -25,41 +25,46 @@ public class Personne {
         return new ControllerPersonne(this);
     }
 
-    // Retourne le vecteur de coordCourant à arrive
-    public Point findDxDy (Point pointObjectif) {
-      return new Point(pointObjectif.getX() - coordCourant.getX(), pointObjectif.getY() - coordCourant.getY()); 
+    // Retourne le x du vecteur allant du x de coordCourant à pointObjectif.
+    public double getDx(Point pointObjectif) {
+        return pointObjectif.getX() - coordCourant.getX();
+    }
+
+    // Retourne le y du vecteur allant du y de coordCourant à pointObjectif.
+    public double getDy(Point pointObjectif) {
+        return pointObjectif.getY() - coordCourant.getY();
     }
 
     // Normalise dx dy par rapport à la vitesse de la personne.
     public void setDxDyNormalise (Point pointObjectif) {
-        Point coordDxDy = findDxDy(pointObjectif);
+        double dx = getDx(pointObjectif);
+        double dy = getDy(pointObjectif);
 
         //argument = sqrt(x^2 + y^2)
-        double argument = Math.sqrt( (coordDxDy.getX() * coordDxDy.getX()) + (coordDxDy.getY() * coordDxDy.getY()) );
+        double argument = Math.sqrt( (dx * dx) + (dy * dy) );
 
-        this.dx = (vitesse/argument) * coordDxDy.getX();
-        this.dy = (vitesse/argument) * coordDxDy.getY();
-        System.out.println("dx : " + dx);
-        System.out.println("dy : " + dy);
+        this.dx = (vitesse/argument) * dx;
+        this.dy = (vitesse/argument) * dy;
     }
 
-    // Permet de faire avancer Personne suivant ses dx, dy (donc normalement en direction de son Point objectif).
+    // Renvoie le prochain coordCourant suivant les dx, dy de Personne (donc normalement en direction de son Point objectif).
     // Si le perso dépasse en x ou y son objectif, cela signifie qu'il ateint son objectif et donc coordCourant prend les coord de l'objectif.
     // Sinon, il avance simplement de dx et dy
-    public void avancer () {
-        if (dx >= 0 && dy >= 0 && coordCourant.getX() + dx >= objectif.getX() && coordCourant.getY() + dy >= objectif.getY())
-            coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else if (dx >= 0 && dy <= 0 && coordCourant.getX() + dx >= objectif.getX() && coordCourant.getY() + dy <= objectif.getY())
-            coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else if (dx <= 0 && dy <= 0 && coordCourant.getX() + dx <= objectif.getX() && coordCourant.getY() + dy <= objectif.getY())
-            coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else if (dx <= 0 && dy >= 0 && coordCourant.getX() + dx <= objectif.getX() && coordCourant.getY() + dy >= objectif.getY())
-            coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else
-            coordCourant.setPoint(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.
+    public Point getProchainMouvement() {
+        if (Math.abs(dx) > Math.abs(coordCourant.getX() - objectif.getX()))
+            return new Point(objectif.getX(), objectif.getY());
+        if (Math.abs(dy) > Math.abs(coordCourant.getY() - objectif.getY()))
+            return new Point(objectif.getX(), objectif.getY());
+        return new Point(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.
     }
 
-    public void avancerRayon () {if (dx >= 0 && dy >= 0 && coordCourant.getX() + dx >= objectifRayon.getX() && coordCourant.getY() + dy >= objectifRayon.getY())
+    // Fait avancer la personne suivant getProchainMouvement()
+    public void avancer(){
+        Point p = getProchainMouvement();
+        coordCourant.setPoint(p.getX(), p.getY());
+    }
+
+    public void avancerRayon () { if (dx >= 0 && dy >= 0 && coordCourant.getX() + dx >= objectifRayon.getX() && coordCourant.getY() + dy >= objectifRayon.getY())
         coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
     else if (dx >= 0 && dy <= 0 && coordCourant.getX() + dx >= objectifRayon.getX() && coordCourant.getY() + dy <= objectifRayon.getY())
         coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
@@ -357,7 +362,6 @@ public class Personne {
         }
     }
 
-    // Obligé de faire environ égale avec une petite precision car les doubles ne sont pas égaux.
     public boolean objectifAteint () {
         return coordCourant.equals(objectifRayon);
     }
@@ -381,48 +385,33 @@ public class Personne {
         return premierObjectif;
     }
 
-// A mdoif
-    // Permet de savoir si le perso est sorti de la salle avec plus ou moins de précision
-    // La précision est importante car sinon on detecte en premier qu'il est arrivé a son dernier objectif et donc,
-    // son prochain objectif est null.
-    // Du coup, on detecte un peu avant qu'il soit sorti, qu'il est sorti.
-    public boolean estSorti(Salle salle) {
-        double precision = 3;
-
-        if (dx > 0) {
-            if (coordCourant.getX() + precision >= salle.getLargeur())
-                return true;
-        }
-        if (dx < 0) {
-            if (coordCourant.getX() - precision <= 0)
-                return true;
-        }
-        if (dy > 0) {
-            if (coordCourant.getY() + precision >= salle.getHauteur())
-                return true;
-        }
-        if (dy < 0) {
-            if (coordCourant.getY() - precision <= 0)
-                return true;
-        }
-        return false;
+    // Permet de savoir si le perso est sorti de la salle.
+    public boolean estSorti() {
+        return objectif.estSortie() && coordCourant.equals(objectif);
     }
 
     // Retourne vrais si la personne et son point de sortie intersectent le segment CD
-    public boolean estTouche(Point nextPoint,Point coordC,Point coordD){
-        Point coordP = new Point(coordCourant.getX(), coordCourant.getY());
-        return MathsCalcule.estCoupe(coordP,nextPoint,coordC,coordD);
+    public boolean estTouche(Point coordSortie,Point coordC,Point coordD){
+        return MathsCalcule.estCoupe(coordCourant,coordSortie,coordC,coordD);
     }
 
     // Retourne vrais si le segment coordCourant coordSortie est superposé à CD
     public boolean estSuperpose(Point coordSortie,Point coordC,Point coordD){
-        Point coordP = new Point(coordCourant.getX(), coordCourant.getY());
-        return MathsCalcule.estSuperpose(coordP,coordSortie,coordC,coordD);
+        return MathsCalcule.estSuperpose(coordCourant,coordSortie,coordC,coordD);
     }
 
     public List<Point> segmentObstacle(Point coordSortie,Obstacle o){
-        Point coordP = new Point(coordCourant.getX(), coordCourant.getY());
-        return MathsCalcule.coordSegments(coordP,coordSortie,o);
+        return MathsCalcule.coordSegments(coordCourant,coordSortie,o);
+    }
+
+    public boolean estObstacle(Point coordObjectif,Obstacle o){
+        if(coordObjectif.getX()>o.getListePoints().get(0).getX()
+        && coordObjectif.getX()<o.getListePoints().get(1).getX()
+        && coordObjectif.getY()>o.getListePoints().get(0).getY()
+        && coordObjectif.getY()<o.getListePoints().get(3).getY()){
+            return true;
+        }else
+            return !segmentObstacle(coordObjectif,o).isEmpty();
     }
 
     public Point getObjectif() {
@@ -443,6 +432,10 @@ public class Personne {
 
     public double getRayon() {
         return rayon;
+    }
+
+    public Point getNextPos(){
+        return new Point(this.coordCourant.getX() + this.dx, this.coordCourant.getY() + this.dy);
     }
 
 }

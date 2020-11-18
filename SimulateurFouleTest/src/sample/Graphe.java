@@ -22,13 +22,11 @@ public class Graphe {
             for (Point pointObstacle : obstacle.getListePoints()) {
                 listePointsObstacles.add(pointObstacle);
                 Point pointSortieDirectProche = salle.findPointSortiePlusProcheDirect(pointObstacle);
-                System.out.println("pointObstacle : " + pointObstacle + " sortie proche : " + pointSortieDirectProche);
 
                 if (pointSortieDirectProche != null) {
                     //addChemin(new Chemin(pointObstacle, pointSortieDirectProche));
                     if (!listePointsSorties.contains(pointSortieDirectProche)) {
                         listePointsSorties.add(pointSortieDirectProche);
-                        System.out.println("pointSortie : " + pointSortieDirectProche);
                     }
                 }
             }

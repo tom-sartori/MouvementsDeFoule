@@ -4,8 +4,6 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -140,8 +138,9 @@ public class Salle {
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
+
                 if(rayonActive){
-                    personne.setObjectifAvecRayon(this);
+                    personne.setObjectifRayon(this);
                     personne.setDxDyNormalise(personne.getObjectifRayon());
                 } else{
                     personne.setObjectif(this);
@@ -163,32 +162,46 @@ public class Salle {
 
 
     public void runAction(Salle salle, boolean collisionActive, boolean rayonActive){       
-        boolean collision;
+        boolean collision, bloque;
         int y;
         for (int i = 0; i < listPersonnes.size(); i++) {
-            if (listPersonnes.get(i).estSorti(salle))
+            if (listPersonnes.get(i).estSorti())
                 removePersonne(listPersonnes.get(i));
             else {
                 if (listPersonnes.get(i).objectifAteint()) {
                     if(rayonActive){
-                        listPersonnes.get(i).setObjectifAvecRayon(salle);
+                        listPersonnes.get(i).setObjectifRayon(salle);
                         listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
                     }else{
                         listPersonnes.get(i).setObjectif(salle);
                         listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
                     }
                 } else {    
-                    collision = false;
-                    if(collisionActive){
+                    if(collisionActive) {
+                        collision = false;
+                        bloque = false;
                         y = 0;
-                        while (!collision && y < listPersonnes.size()) {
-                            collision = colision2personnes(listPersonnes.get(i), listPersonnes.get(y));
+                        while ((!collision || !bloque) && y < listPersonnes.size()) {
+                            collision = collision2Personnes(listPersonnes.get(i), listPersonnes.get(y), listPersonnes.get(i).getRayon() * 2);
+                            bloque = estBloque(listPersonnes.get(i), listPersonnes.get(y));
                             y++;
                         }
+                        //si pas de collision donc n'est pas bloqué alors, avance normalement
+                        if (!collision) {
+                            listPersonnes.get(i).avancer();
+                            cSalle.deplacerPersonne(listPersonnes.get(i));
+                        }
+                        //si y a une collision et qu'il n'est pas bloqué il peut avancer
+                        else if (!bloque) {
+                            listPersonnes.get(i).avancer();
+                            cSalle.deplacerPersonne(listPersonnes.get(i));
+                        }
                     }
-                    if (!collision) {
-                        if(rayonActive) listPersonnes.get(i).avancerRayon();
-                        else listPersonnes.get(i).avancer();
+                    else { // Sans collisions
+                        if(rayonActive)
+                            listPersonnes.get(i).avancerRayon();
+                        else
+                            listPersonnes.get(i).avancer();
                         cSalle.deplacerPersonne(listPersonnes.get(i));
                     }
                 }
@@ -289,10 +302,20 @@ public class Salle {
     }
 
 
-    public boolean colision2personnes(Personne p, Personne compare){
+    public boolean collision2Personnes(Personne p, Personne compare, double distanciation){
         if (MathsCalcule.distance(p.getCoordCourant(), compare.getCoordCourant()) == 0){
             return false;
-        } else if (MathsCalcule.distance(p.getCoordCourant(), compare.getCoordCourant()) <= p.getRayon()*2){
+        } else if (MathsCalcule.distance(p.getCoordCourant(), compare.getCoordCourant()) <= (p.getRayon()*2 + distanciation)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean estBloque(Personne p, Personne compare){
+        if (MathsCalcule.distance(p.getProchainMouvement(), compare.getCoordCourant()) == 0){
+            return true;
+        } else if (MathsCalcule.distance(p.getProchainMouvement(), compare.getCoordCourant()) <= p.getRayon()*2){
             return true;
         } else {
             return false;
