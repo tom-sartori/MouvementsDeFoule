@@ -10,7 +10,7 @@ public class ControllerSortie extends Parent {
     public ControllerSortie (Sortie sortie) {
         double epaisseurGraphique = 15;
 
-        Point point1Sortie = sortie.getListePointsSortie().get(0);
+        Point point1Sortie = sortie.getPoint1();
         Rectangle sortieGraphique = new Rectangle();
 
         // Placement du rectangle par rapport au ControllerSalle
@@ -28,7 +28,7 @@ public class ControllerSortie extends Parent {
         }
 
         // Forme du rectangle suivant la sortie sur la quelle il est.
-        Point point2Sortie = sortie.getListePointsSortie().get(1);
+        Point point2Sortie = sortie.getPoint2();
         if(point1Sortie.getY() == point2Sortie.getY()){   // mur==1 || mur==3
             sortieGraphique.setWidth(sortie.getLargeurPorte());
             sortieGraphique.setHeight(epaisseurGraphique);

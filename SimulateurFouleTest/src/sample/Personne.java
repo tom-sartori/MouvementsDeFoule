@@ -5,14 +5,14 @@ import java.util.List;
 public class Personne {
 
     private Point coordCourant;
-    private Point objectif;
+    private Point objectif; // Prochain point / direction du perso
     private Point objectifRayon;
 
 
     private double rayon;
     private double dx;
     private double dy;
-    private double vitesse = 20;
+    private double vitesse = 1.5; // Norme du vecteur de déplacement par frame, en unité par frame.
 
     public Personne(double posX , double posY){
         coordCourant = new Point(posX, posY);
@@ -25,65 +25,46 @@ public class Personne {
         return new ControllerPersonne(this);
     }
 
-    public Point findDxDy (Point arrivee) {
-        System.out.println("findDxDy : courant : " + coordCourant + " objectif : " + arrivee);
-        Point dxdy = new Point();
-
-        double distX = Math.abs(coordCourant.getX() - arrivee.getX());
-        double distY = Math.abs(coordCourant.getY() - arrivee.getY());
-
-        if (distY == 0) {
-            if (coordCourant.getX() < arrivee.getX())
-                dxdy.setX(1);
-            else
-                dxdy.setX(-1);
-        }
-        else if (coordCourant.getX() < arrivee.getX())
-            dxdy.setX(distX / distY);
-        else
-            dxdy.setX(- distX / distY);
-
-        if (distY == 0)
-            dxdy.setY(0);
-        else if (coordCourant.getY() < arrivee.getY())
-            dxdy.setY(1);
-        else
-            dxdy.setY(-1);
-
-        System.out.println("dxdy : " + dxdy);
-
-        return dxdy;
+    // Retourne le x du vecteur allant du x de coordCourant à pointObjectif.
+    public double getDx(Point pointObjectif) {
+        return pointObjectif.getX() - coordCourant.getX();
     }
 
-    public void setDxDyNormalise (Point arrivee) {
-        Point coordDxDy = findDxDy(arrivee);
+    // Retourne le y du vecteur allant du y de coordCourant à pointObjectif.
+    public double getDy(Point pointObjectif) {
+        return pointObjectif.getY() - coordCourant.getY();
+    }
+
+    // Normalise dx dy par rapport à la vitesse de la personne.
+    public void setDxDyNormalise (Point pointObjectif) {
+        double dx = getDx(pointObjectif);
+        double dy = getDy(pointObjectif);
 
         //argument = sqrt(x^2 + y^2)
-        double argument = Math.sqrt( (coordDxDy.getX() * coordDxDy.getX()) + (coordDxDy.getY() * coordDxDy.getY()) );
+        double argument = Math.sqrt( (dx * dx) + (dy * dy) );
 
-        this.dx = (vitesse/argument) * coordDxDy.getX();
-        this.dy = (vitesse/argument) * coordDxDy.getY();
-        System.out.println("dx : " + dx);
-        System.out.println("dy : " + dy);
+        this.dx = (vitesse/argument) * dx;
+        this.dy = (vitesse/argument) * dy;
     }
 
-    // Permet de faire avancer Personne suivant ses dx, dy (donc normalement en direction de son Point objectif).
+    // Renvoie le prochain coordCourant suivant les dx, dy de Personne (donc normalement en direction de son Point objectif).
     // Si le perso dépasse en x ou y son objectif, cela signifie qu'il ateint son objectif et donc coordCourant prend les coord de l'objectif.
     // Sinon, il avance simplement de dx et dy
-    public void avancer () {
-        if (dx >= 0 && dy >= 0 && coordCourant.getX() + dx >= objectif.getX() && coordCourant.getY() + dy >= objectif.getY())
-            coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else if (dx >= 0 && dy <= 0 && coordCourant.getX() + dx >= objectif.getX() && coordCourant.getY() + dy <= objectif.getY())
-            coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else if (dx <= 0 && dy <= 0 && coordCourant.getX() + dx <= objectif.getX() && coordCourant.getY() + dy <= objectif.getY())
-            coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else if (dx <= 0 && dy >= 0 && coordCourant.getX() + dx <= objectif.getX() && coordCourant.getY() + dy >= objectif.getY())
-            coordCourant.setPoint(objectif.getX(), objectif.getY());
-        else
-            coordCourant.setPoint(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.
+    public Point getProchainMouvement() {
+        if (Math.abs(dx) > Math.abs(coordCourant.getX() - objectif.getX()))
+            return new Point(objectif.getX(), objectif.getY());
+        if (Math.abs(dy) > Math.abs(coordCourant.getY() - objectif.getY()))
+            return new Point(objectif.getX(), objectif.getY());
+        return new Point(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.
     }
 
-    public void avancerRayon () {if (dx >= 0 && dy >= 0 && coordCourant.getX() + dx >= objectifRayon.getX() && coordCourant.getY() + dy >= objectifRayon.getY())
+    // Fait avancer la personne suivant getProchainMouvement()
+    public void avancer(){
+        Point p = getProchainMouvement();
+        coordCourant.setPoint(p.getX(), p.getY());
+    }
+
+    public void avancerRayon () { if (dx >= 0 && dy >= 0 && coordCourant.getX() + dx >= objectifRayon.getX() && coordCourant.getY() + dy >= objectifRayon.getY())
         coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
     else if (dx >= 0 && dy <= 0 && coordCourant.getX() + dx >= objectifRayon.getX() && coordCourant.getY() + dy <= objectifRayon.getY())
         coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
@@ -95,12 +76,14 @@ public class Personne {
             coordCourant.setPoint(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.
     }
 
+    // Est appelé quand un play la salle eu début, mais aussi à chaque fois qu'il vient d'atteindre son objectif.
+    // Jamais appelé quand getVraisSuivant() == null
     public void setObjectif (Salle salle) {
         if (objectif == null) {
             objectif = findBonChemin(salle);
 
         } else { // peut etre faire un cas pour la fin, car getSuiv() de l'arrive == null
-            objectif = objectif.getVraiSuivant();
+            objectif = objectif.getSuivant();
         }
         System.out.println("courant : " + coordCourant);
         System.out.println("objectif : " + objectif);
@@ -109,20 +92,9 @@ public class Personne {
     }
 
     // Prend aussi en compte le rayon de la personne.
-    public void setObjectifAvecRayon (Salle salle) {
+    public void setObjectifRayon (Salle salle) {
         setObjectif(salle);
-        if (objectif.getVraiSuivant() != null) {
 
-            System.out.println("objectif.getSuivant() != null");
-            setObjectifRayonObstacle(salle);
-
-        } else {
-            System.out.println("objectif.getSuivant() == null");
-            setObjectifRayonSortie(salle);
-        }
-    }
-
-    public void setObjectifRayonObstacle (Salle salle) {
         for (Obstacle o : salle.getListObstacles()) {
             for (Point p : o.getListePoints()) {
                 if (p.environEgale(objectif, 1)) {
@@ -390,54 +362,19 @@ public class Personne {
         }
     }
 
-    public void setObjectifRayonSortie(Salle salle){
-        for (Sortie sortie : salle.getListSorties()) {
-            for (Point pointSortie : sortie.getListePointsSortie()) {
-                if (pointSortie.environEgale(objectif, 1)) {
-                    System.out.println("pointSortie.environEgale(objectif)");
-
-                    if (objectifRayon.environEgaleX(sortie.getListePointsSortie().get(0).getX() + sortie.getLargeurPorte()) && (sortie.estMur1ou3())) {
-                        System.out.println("objectifRayon.environEgaleX(sortie.getCoins().get(0).getX() + sortie.getLongueur()) && (sortie.getMur() == 1 || sortie.getMur()==3)");
-                        System.out.println("X2");
-                        objectifRayon.setX(objectif.getX() - rayon);
-
-                    } else if(objectifRayon.environEgaleX(pointSortie.getX()) && (sortie.estMur1ou3())) {
-                        System.out.println("X1");
-                        objectifRayon.setX(objectif.getX() + rayon);
-
-                    }else if(objectifRayon.environEgaleY(sortie.getListePointsSortie().get(0).getY() + sortie.getLargeurPorte()) && (!sortie.estMur1ou3())){
-                        System.out.println("objectifRayon.environEgaleX(sortie.getCoins().get(0).getX() + sortie.getLongueur()) && (sortie.getMur()==2 || sortie.getMur()==4)");
-                        System.out.println("X2");
-                        objectifRayon.setY(objectif.getY() - rayon);
-
-                    } else {
-                        System.out.println("X1");
-                        objectifRayon.setY(objectif.getY() + rayon);
-                    }
-
-                }
-            }
-        }
-    }
-
-    // Obligé de faire environ égale avec une petite precision car les doubles ne sont pas égaux.
     public boolean objectifAteint () {
-        if (coordCourant.equals(objectifRayon)) {
-            System.out.println("objectif ateint. ");
-            return true;
-        }
-        else
-            return false;
+        return coordCourant.equals(objectifRayon);
     }
 
+    // Appelé par set objectif pour initialiser le premier objectif de la personne
     public Point findBonChemin (Salle salle) {
         Point premierObjectif = null;
         double distance, distanceCourante;
-        distance = 100000;
+        distance = 100000; // distance infinie
 
         for (Point pointDirect : salle.getListePointsDirectes(coordCourant)) { // Fonctionne pas car personne pas dans le graphe
             if (MathsCalcule.distance(coordCourant, pointDirect) != 0) { // Car si 0,c'est lui meme.
-                distanceCourante = MathsCalcule.distance(coordCourant, pointDirect) + pointDirect.getVraieDistance();
+                distanceCourante = MathsCalcule.distance(coordCourant, pointDirect) + pointDirect.getDistanceASortie();
                 if (distanceCourante < distance) {
                     distance = distanceCourante;
                     premierObjectif = pointDirect;
@@ -448,37 +385,17 @@ public class Personne {
         return premierObjectif;
     }
 
-
-    // Permet de savoir si le perso est sorti de la salle avec plus ou moins de précision
-    // La précision est importante car sinon on detecte en premier qu'il est arrivé a son dernier objectif et donc,
-    // son prochain objectif est null.
-    // Du coup, on detecte un peu avant qu'il soit sorti, qu'il est sorti.
-    public boolean estSorti(Salle salle) {
-        double precision = 3;
-
-        if (dx > 0) {
-            if (coordCourant.getX() + precision >= salle.getLargeur())
-                return true;
-        }
-        if (dx < 0) {
-            if (coordCourant.getX() - precision <= 0)
-                return true;
-        }
-        if (dy > 0) {
-            if (coordCourant.getY() + precision >= salle.getHauteur())
-                return true;
-        }
-        if (dy < 0) {
-            if (coordCourant.getY() - precision <= 0)
-                return true;
-        }
-        return false;
+    // Permet de savoir si le perso est sorti de la salle.
+    public boolean estSorti() {
+        return objectif.estSortie() && coordCourant.equals(objectif);
     }
 
+    // Retourne vrais si la personne et son point de sortie intersectent le segment CD
     public boolean estTouche(Point coordSortie,Point coordC,Point coordD){
         return MathsCalcule.estCoupe(coordCourant,coordSortie,coordC,coordD);
     }
 
+    // Retourne vrais si le segment coordCourant coordSortie est superposé à CD
     public boolean estSuperpose(Point coordSortie,Point coordC,Point coordD){
         return MathsCalcule.estSuperpose(coordCourant,coordSortie,coordC,coordD);
     }
@@ -515,6 +432,10 @@ public class Personne {
 
     public double getRayon() {
         return rayon;
+    }
+
+    public Point getNextPos(){
+        return new Point(this.coordCourant.getX() + this.dx, this.coordCourant.getY() + this.dy);
     }
 
 }

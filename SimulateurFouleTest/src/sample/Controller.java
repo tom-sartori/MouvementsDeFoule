@@ -23,9 +23,11 @@ public class Controller extends Parent{
         cPanel.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.setVitessePersonnes(cPanel.getVitesseValue());
-                if(cPanel.getCollisionStatus())
-                    salle.play(true);
-                else salle.play(false);
+                if(cPanel.getCollisionStatus()){
+                    if(cPanel.getRayonStatus()) salle.play(true, true);
+                    else salle.play(true, false);
+                }else if(cPanel.getRayonStatus()) salle.play(false, true);
+                else salle.play(false, false);
             }
         });
 
