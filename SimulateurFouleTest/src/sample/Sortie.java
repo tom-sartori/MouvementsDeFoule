@@ -56,8 +56,6 @@ public class Sortie {
             else {
                 courant.setY(point1.getY() + i);
                 if (!salle.intersecObstacle(depart, courant)) {
-                    courant.setX(borne1.getX());
-                    courant.setY(borne1.getY()+i);
                     if (MathsCalcule.distance(depart, courant) < plusPetiteDistance) {
                         plusPetiteDistance = MathsCalcule.distance(depart, courant);
                         pointSortie = new Point(courant);
