@@ -135,48 +135,24 @@ public class Salle {
             removePersonne(listPersonnes.get(0));
     }
 
-
-    public void demarrer() {
+    public void demarrer(boolean collisionActive, boolean rayonActive) {
         initialisationGrapheSansAffichage();
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-              
-                //personne.setObjectif(this);
-                //personne.setDxDyNormalise(personne.getObjectif());
-                personne.setObjectifRayon(this);
-                personne.setDxDyNormalise(personne.getObjectifRayon());
+                if(rayonActive){
+                    personne.setObjectifAvecRayon(this);
+                    personne.setDxDyNormalise(personne.getObjectifRayon());
+                } else{
+                    personne.setObjectif(this);
+                    personne.setDxDyNormalise(personne.getObjectif());
+                }
             }
 
             Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
 
             if (loop == null || loop.getStatus()==Status.STOPPED) {
-
-                loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent arg) {
-
-                        boolean colision;
-                        int y;
-                        for (int i = 0; i < listPersonnes.size(); i++) {
-                            if (listPersonnes.get(i).estSorti(salle))
-                                removePersonne(listPersonnes.get(i));
-                            else {
-                                if (listPersonnes.get(i).objectifAteint()) {
-                                  
-                                    //listPersonnes.get(i).setObjectif(salle);
-                                    //listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
-                                    listPersonnes.get(i).setObjectifRayon(salle);
-                                    listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
-                                }
-                                else {
-                                    listPersonnes.get(i).avancerRayon();
-                                    cSalle.deplacerPersonne(listPersonnes.get(i));
-
-                                }
-                            }
-                        }
-                    }
-                }));
+                loop = new Timeline(new KeyFrame(Duration.millis(20), e -> runAction(salle, collisionActive, rayonActive)));
                 loop.setCycleCount(Timeline.INDEFINITE);
                 loop.play();
             } else if (loop.getStatus() == Animation.Status.PAUSED) {
@@ -185,54 +161,37 @@ public class Salle {
         }
     }
 
-    public void demarrerAvecCollisions () {
-        initialisationGrapheSansAffichage();
 
-        if (!listPersonnes.isEmpty()) {
-            for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-                personne.setObjectifRayon(this);
-                personne.setDxDyNormalise(personne.getObjectifRayon());
-            }
-
-            Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
-
-            if (loop == null || loop.getStatus()==Status.STOPPED) {
-
-                loop = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent arg) {
-
-                        boolean collision;
-                        int y;
-
-                        for (int i = 0; i < listPersonnes.size(); i++) {
-                            System.out.println(listPersonnes.get(i).getObjectif());
-                            if (listPersonnes.get(i).estSorti(salle))
-                                removePersonne(listPersonnes.get(i));
-                            else {
-                                if (listPersonnes.get(i).objectifAteint()) {
-                                    listPersonnes.get(i).setObjectifRayon(salle);
-                                    listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
-                                }
-                                else {
-                                    collision = false;
-                                    y = 0;
-                                    while (!collision && y < listPersonnes.size()) {
-                                        collision = colision2personnes(listPersonnes.get(i), listPersonnes.get(y));
-                                        y++;
-                                    }
-                                    if (!collision) {
-                                        listPersonnes.get(i).avancerRayon();
-                                        cSalle.deplacerPersonne(listPersonnes.get(i));
-                                    }
-                                }
-                            }
+    public void runAction(Salle salle, boolean collisionActive, boolean rayonActive){       
+        boolean collision;
+        int y;
+        for (int i = 0; i < listPersonnes.size(); i++) {
+            if (listPersonnes.get(i).estSorti(salle))
+                removePersonne(listPersonnes.get(i));
+            else {
+                if (listPersonnes.get(i).objectifAteint()) {
+                    if(rayonActive){
+                        listPersonnes.get(i).setObjectifAvecRayon(salle);
+                        listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
+                    }else{
+                        listPersonnes.get(i).setObjectif(salle);
+                        listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
+                    }
+                } else {    
+                    collision = false;
+                    if(collisionActive){
+                        y = 0;
+                        while (!collision && y < listPersonnes.size()) {
+                            collision = colision2personnes(listPersonnes.get(i), listPersonnes.get(y));
+                            y++;
                         }
                     }
-                }));
-                loop.setCycleCount(Timeline.INDEFINITE);
-                loop.play();
-            } else if (loop.getStatus() == Animation.Status.PAUSED) {
-                loop.play();
+                    if (!collision) {
+                        if(rayonActive) listPersonnes.get(i).avancerRayon();
+                        else listPersonnes.get(i).avancer();
+                        cSalle.deplacerPersonne(listPersonnes.get(i));
+                    }
+                }
             }
         }
     }
@@ -266,14 +225,11 @@ public class Salle {
     }
 
 
-    public void play(Boolean collisionActive){
+    public void play(Boolean collisionActive, boolean rayonActive){
         if(loop != null && loop.getStatus() == Status.PAUSED){
             loop.play();
         } else if(loop == null || loop.getStatus() == Status.STOPPED){
-            if(collisionActive)
-                demarrerAvecCollisions();
-            else
-                demarrer();
+            demarrer(collisionActive, rayonActive);
         }
     }
 

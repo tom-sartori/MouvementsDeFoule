@@ -5,14 +5,14 @@ import java.util.List;
 public class Personne {
 
     private Point coordCourant;
-    private Point objectif;
+    private Point objectif; // Prochain point / direction du perso
     private Point objectifRayon;
 
 
     private double rayon;
     private double dx;
     private double dy;
-    private double vitesse = 20;
+    private double vitesse = 20; // Norme du vecteur de déplacement par frame, en unité par frame.
 
     public Personne(double posX , double posY){
         coordCourant = new Point(posX, posY);
@@ -25,14 +25,12 @@ public class Personne {
         return new ControllerPersonne(this);
     }
 
+    // Retourne le vecteur de coordCourant à arrive
     public Point findDxDy (Point pointObjectif) {
-        Point dxdy = new Point();
-        dxdy.setX(pointObjectif.getX() - coordCourant.getX());
-        dxdy.setY(pointObjectif.getY() - coordCourant.getY());
-
-        return dxdy;
+      return new Point(pointObjectif.getX() - coordCourant.getX(), pointObjectif.getY() - coordCourant.getY()); 
     }
 
+    // Normalise dx dy par rapport à la vitesse de la personne.
     public void setDxDyNormalise (Point pointObjectif) {
         Point coordDxDy = findDxDy(pointObjectif);
 
@@ -73,6 +71,8 @@ public class Personne {
             coordCourant.setPoint(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.
     }
 
+    // Est appelé quand un play la salle eu début, mais aussi à chaque fois qu'il vient d'atteindre son objectif.
+    // Jamais appelé quand getVraisSuivant() == null
     public void setObjectif (Salle salle) {
         if (objectif == null) {
             objectif = findBonChemin(salle);
@@ -362,10 +362,11 @@ public class Personne {
         return coordCourant.equals(objectifRayon);
     }
 
+    // Appelé par set objectif pour initialiser le premier objectif de la personne
     public Point findBonChemin (Salle salle) {
         Point premierObjectif = null;
         double distance, distanceCourante;
-        distance = 100000;
+        distance = 100000; // distance infinie
 
         for (Point pointDirect : salle.getListePointsDirectes(coordCourant)) { // Fonctionne pas car personne pas dans le graphe
             if (MathsCalcule.distance(coordCourant, pointDirect) != 0) { // Car si 0,c'est lui meme.
@@ -380,7 +381,7 @@ public class Personne {
         return premierObjectif;
     }
 
-
+// A mdoif
     // Permet de savoir si le perso est sorti de la salle avec plus ou moins de précision
     // La précision est importante car sinon on detecte en premier qu'il est arrivé a son dernier objectif et donc,
     // son prochain objectif est null.
@@ -407,11 +408,13 @@ public class Personne {
         return false;
     }
 
-    public boolean estTouche(Point coordSortie,Point coordC,Point coordD){
+    // Retourne vrais si la personne et son point de sortie intersectent le segment CD
+    public boolean estTouche(Point nextPoint,Point coordC,Point coordD){
         Point coordP = new Point(coordCourant.getX(), coordCourant.getY());
-        return MathsCalcule.estCoupe(coordP,coordSortie,coordC,coordD);
+        return MathsCalcule.estCoupe(coordP,nextPoint,coordC,coordD);
     }
 
+    // Retourne vrais si le segment coordCourant coordSortie est superposé à CD
     public boolean estSuperpose(Point coordSortie,Point coordC,Point coordD){
         Point coordP = new Point(coordCourant.getX(), coordCourant.getY());
         return MathsCalcule.estSuperpose(coordP,coordSortie,coordC,coordD);
