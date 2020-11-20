@@ -30,9 +30,29 @@ public class Personne {
         return pointObjectif.getX() - coordCourant.getX();
     }
 
+    // Retourne le x du vecteur allant du x de coordCourant à pointObjectif, normalisé par rapport à la vitesse.
+    public double getDxNormalise(Point pointObjectif) {
+        double dx = getDx(objectif);
+        double dy = getDy(objectif);
+
+        //argument = sqrt(x^2 + y^2)
+        double argument = Math.sqrt( (dx * dx) + (dy * dy) );
+        return (vitesse/argument) * dx;
+    }
+
     // Retourne le y du vecteur allant du y de coordCourant à pointObjectif.
     public double getDy(Point pointObjectif) {
         return pointObjectif.getY() - coordCourant.getY();
+    }
+
+    // Retourne le y du vecteur allant du x de coordCourant à pointObjectif, normalisé par rapport à la vitesse.
+    public double getDyNormalise(Point pointObjectif) {
+        double dx = getDx(objectif);
+        double dy = getDy(objectif);
+
+        //argument = sqrt(x^2 + y^2)
+        double argument = Math.sqrt( (dx * dx) + (dy * dy) );
+        return (vitesse/argument) * dy;
     }
 
     // Normalise dx dy par rapport à la vitesse de la personne.
@@ -51,11 +71,11 @@ public class Personne {
     // Si le perso dépasse en x ou y son objectif, cela signifie qu'il ateint son objectif et donc coordCourant prend les coord de l'objectif.
     // Sinon, il avance simplement de dx et dy
     public Point getProchainMouvement() {
-        if (Math.abs(dx) > Math.abs(coordCourant.getX() - objectif.getX()))
+        if (Math.abs(getDxNormalise(objectif)) > Math.abs(coordCourant.getX() - objectif.getX()))
             return new Point(objectif.getX(), objectif.getY());
-        if (Math.abs(dy) > Math.abs(coordCourant.getY() - objectif.getY()))
+        if (Math.abs(getDyNormalise(objectif)) > Math.abs(coordCourant.getY() - objectif.getY()))
             return new Point(objectif.getX(), objectif.getY());
-        return new Point(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.
+        return new Point(coordCourant.getX() + getDxNormalise(objectif), coordCourant.getY() + getDyNormalise(objectif)); // Cas normal.
     }
 
     // Fait avancer la personne suivant getProchainMouvement()
@@ -85,8 +105,8 @@ public class Personne {
         } else { // peut etre faire un cas pour la fin, car getSuiv() de l'arrive == null
             objectif = objectif.getSuivant();
         }
-        System.out.println("courant : " + coordCourant);
-        System.out.println("objectif : " + objectif);
+        //System.out.println("courant : " + coordCourant);
+        //System.out.println("objectif : " + objectif);
         objectifRayon.setX(objectif.getX());
         objectifRayon.setY(objectif.getY());
     }
@@ -370,7 +390,7 @@ public class Personne {
     public Point findBonChemin (Salle salle) {
         Point premierObjectif = null;
         double distance, distanceCourante;
-        distance = 100000; // distance infinie
+        distance = Double.POSITIVE_INFINITY;
 
         for (Point pointDirect : salle.getListePointsDirectes(coordCourant)) { // Fonctionne pas car personne pas dans le graphe
             if (MathsCalcule.distance(coordCourant, pointDirect) != 0) { // Car si 0,c'est lui meme.
@@ -381,7 +401,6 @@ public class Personne {
                 }
             }
         }
-        //System.out.println("Premier objectif : " + premierObjectif);
         return premierObjectif;
     }
 
@@ -433,10 +452,5 @@ public class Personne {
     public double getRayon() {
         return rayon;
     }
-
-    public Point getNextPos(){
-        return new Point(this.coordCourant.getX() + this.dx, this.coordCourant.getY() + this.dy);
-    }
-
 }
 

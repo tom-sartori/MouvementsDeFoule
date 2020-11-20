@@ -78,14 +78,14 @@ public class Graphe {
         List<Point> listeCourante = new ArrayList<>();
 
         for (Point point : listePointsObstacles) {
-            point.setDistanceCourante(100000);  // Distance infinie.
+            point.setDistanceCourante(Double.POSITIVE_INFINITY);
             listeCourante.add(point);
         }
         listeCourante.add(pointSortie);
         pointSortie.setDistanceCourante(0);
 
         while (!listeCourante.isEmpty()) {
-            double distance = 1000000;  // Distance infinie.
+            double distance = Double.POSITIVE_INFINITY;
             Point courant = null;
 
             for (Point point : listeCourante) {
@@ -108,99 +108,45 @@ public class Graphe {
         }
     }
 
-    public void afficherPrecedentsPointObstacle(Point pointObstacle) {
-        Point courant = new Point(pointObstacle);
-        Point suivant = new Point(courant.getSuivant());
-        do {
-            addChemin(new Chemin(courant, suivant));
-            System.out.println("Courant : " + courant + " suivant : " + suivant);
-            courant = suivant;
-            suivant = courant.getSuivant();
-        }
-        while (suivant != null);
-        System.out.println("");
-    }
-
-    public void afficherPrecedentsListPointsObstacles() {
-        for (Point point : listePointsObstacles) {
-            afficherPrecedentsPointObstacle(point);
-            System.out.println("Changement point obstacle. ");
-            System.out.println("");
-        }
-    }
-
-
-    // Premet, pour chaque coin d'obstacle, de créer le plus court chemin entre ce point et la sortie la plus proche de ce point.
-    // Créée et ajoute aussi les Chemins correspondants dans le graphe afin de permettre l'affichage des plus courts chemins dans le graphe.
-    public void creerTousLesPlusCourtsChemins() {
-        for (Point pointSortie : listePointsSorties) {
-            affecteVraisSuivants();
-
-            creerPlusCourtChemin(pointSortie);
-            affecteVraisSuivants();
-
-            // Affecte à chaque point du plus court chemin vers la sortie, le point suivant ainsi que la distance à la sortie.
-            //affecteSuivants(getListePointsCheminPlusCourt(pointSortie, salle.findPointSortiePlusProcheIndirecte(pointSortie)));
-
-            // Ajoute les chemins pour l'affichage.
-            //addChemin(getListePointsCheminPlusCourt(pointSortie, salle.findPointSortiePlusProcheIndirecte(pointSortie)));
-        }
-        affecteVraisSuivants();
-        afficherPrecedentsListPointsObstacles();
-    }
-
-
-    // Apres que tous les plus courts chemins ont été calculés pour un point,
-    // cette fonction permet de retourner une liste, composée des points du plus court chemin, du départ à l'arrivé en paramètre.
-    // On utilise le point précédent, de chaque point, de l'arrivé au départ.
-    // La liste retournée est dans l'ordre : [depart, ..., arrive]
-    public List<Point> getListePointsCheminPlusCourt(Point depart, Point arrive) {
-        System.out.println("depart : " + depart + " arrive : " + arrive);
-        List<Point> cheminPlusCourt = new ArrayList<>();
-        Point courant = arrive;
-
-        while (!courant.equals(depart)) {
-            System.out.println("test");
-            cheminPlusCourt.add(0, courant);
-            courant = courant.getSuivantCourant();
-        }
-        cheminPlusCourt.add(0, depart);
-
-        System.out.println("sortie");
-        return cheminPlusCourt;
-    }
-
+    // Pour chaque point obstacle, regarde si sa distance à la sortie courant, est inférieure à sa distance à la sortie actuelle.
+    // Si la courante est inférieure, alors l'actuelle devient la courante et le point suivant devient le suivant courant.
     public void affecteVraisSuivants () {
         for (Point pointObstacle : listePointsObstacles) {
-            System.out.println("");
-            System.out.println("affecte suivant : point : " + pointObstacle.toStringV2());
-             if (pointObstacle.getSuivant() == null) {
-                 pointObstacle.setSuivant(pointObstacle.getSuivantCourant());
-                 pointObstacle.setDistanceASortie(pointObstacle.getDistanceCourante());
-             }
-             else {
-                 if (pointObstacle.getDistanceCourante() < pointObstacle.getDistanceASortie()) {
-                     pointObstacle.setSuivant(pointObstacle.getSuivantCourant());
-                     pointObstacle.setDistanceASortie(pointObstacle.getDistanceCourante());
-                 }
-             }
-            System.out.println("affecte suivant : point : " + pointObstacle.toStringV2());
-            System.out.println("");
+            if (pointObstacle.getSuivant() == null) {
+                pointObstacle.setSuivant(pointObstacle.getSuivantCourant());
+                pointObstacle.setDistanceASortie(pointObstacle.getDistanceCourante());
+            }
+            else {
+                if (pointObstacle.getDistanceCourante() < pointObstacle.getDistanceASortie()) {
+                    pointObstacle.setSuivant(pointObstacle.getSuivantCourant());
+                    pointObstacle.setDistanceASortie(pointObstacle.getDistanceCourante());
+                }
+            }
         }
     }
 
+    // Affecte à chaque point obstacle le point suivant et la distance, pour aller à la sortie ayant le chemin le plus court.
+    public void creerTousLesPlusCourtsChemins() {
+        for (Point pointSortie : listePointsSorties) {
+            creerPlusCourtChemin(pointSortie);
+            affecteVraisSuivants();
+        }
+        afficherSuivants();
+    }
+
+    // Permet l'afficher, pour tous les point obstacles, de leur suivant à chacun.
+    // Donc, affiche le graphe de plus court chemin.
+    public void afficherSuivants() {
+        for (Point point : listePointsObstacles) {
+            addChemin(new Chemin(point, point.getSuivant()));
+        }
+    }
 
     // Renvoie la partie graphique du graphe.
     // Attention, la partie graphique n'affiche que des Chemin et non pas des Point.
     public ControllerGraphe afficher () {
         return new ControllerGraphe(this);
     }
-
-
-    public List<Chemin> getListeChemins() {
-        return listeChemins;
-    }
-
 
     // Permet de renvoyer tous les points directs au Point A en parametre.
     // Attention, ne fonctionne pas si le Point est un Personnage car les personnages ne font pas partie du Graphe.
@@ -220,5 +166,9 @@ public class Graphe {
         }
 
         return listePointsDirectes;
+    }
+
+    public List<Chemin> getListeChemins() {
+        return listeChemins;
     }
 }

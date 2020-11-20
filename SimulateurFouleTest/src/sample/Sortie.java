@@ -38,10 +38,9 @@ public class Sortie {
     // le plus proche et direct par rapport au départ.
     // S'il n'y a pas de point direct, alors return null.
     public Point findPointSortieDirect (Salle salle,  Point depart, double rayon) {
-        rayon = 0;
         Point courant = new Point(point1);
         Point pointSortie = null;
-        double plusPetiteDistance = 100000000;    // Infinie;
+        double plusPetiteDistance = Double.POSITIVE_INFINITY;
 
         for (double i = rayon; i <= getLargeurPorte() - rayon; i++ ) {
             if (estMur1ou3()) {
@@ -63,7 +62,6 @@ public class Sortie {
                 }
             }
         }
-        System.out.println("depart + " + depart + " sortie + " + pointSortie);
         return pointSortie; // Retourne null si pas de point direct.
     }
 
