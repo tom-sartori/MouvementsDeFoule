@@ -117,6 +117,8 @@ public class Salle {
             }
             while (dansObstacle);
             //System.out.println(x + " " + y);
+            Personne personne = new Personne(x,y);
+            cSalle.afficherPersonne(personne.afficher());
             addPersonne(new Personne(x,y));
         }
     }
