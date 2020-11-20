@@ -116,10 +116,10 @@ public class Salle {
                 }
             }
             while (dansObstacle);
-            System.out.println(x + " " + y);
+            //System.out.println(x + " " + y);
             Personne personne = new Personne(x,y);
             cSalle.afficherPersonne(personne.afficher());
-            addPersonne(personne);
+            addPersonne(new Personne(x,y));
         }
     }
 
@@ -269,7 +269,6 @@ public class Salle {
                 }
             }
         }
-        System.out.println("findPointSortiePlusProcheDirect Salle depart : " + A + " arriv " + plusProche);
         return plusProche;
     }
 
