@@ -85,8 +85,8 @@ public class Personne {
         } else { // peut etre faire un cas pour la fin, car getSuiv() de l'arrive == null
             objectif = objectif.getSuivant();
         }
-        System.out.println("courant : " + coordCourant);
-        System.out.println("objectif : " + objectif);
+        //System.out.println("courant : " + coordCourant);
+        //System.out.println("objectif : " + objectif);
         objectifRayon.setX(objectif.getX());
         objectifRayon.setY(objectif.getY());
     }
@@ -370,7 +370,7 @@ public class Personne {
     public Point findBonChemin (Salle salle) {
         Point premierObjectif = null;
         double distance, distanceCourante;
-        distance = 100000; // distance infinie
+        distance = Double.POSITIVE_INFINITY;
 
         for (Point pointDirect : salle.getListePointsDirectes(coordCourant)) { // Fonctionne pas car personne pas dans le graphe
             if (MathsCalcule.distance(coordCourant, pointDirect) != 0) { // Car si 0,c'est lui meme.
@@ -381,7 +381,6 @@ public class Personne {
                 }
             }
         }
-        //System.out.println("Premier objectif : " + premierObjectif);
         return premierObjectif;
     }
 
