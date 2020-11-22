@@ -103,20 +103,20 @@
   - Salle ; essayer de séparer la fonction Handle de la fonction démarrer pour simplifier au maximum la classe salle.
   <br/>
   
-  #### Réunion du 09/11/2020
-  - Cette réunion s'est déroulée un lundi car nous voulions continuer de présenter le code, comme dans la réunions précédente. 
-  - Nous avons vu les classes suivantes : 
-    - MathCalcule
-      - Manque de la vérification, de la prise en compte, du cas où une personne est sur le coin d'un obstacle et que son objectif est dans l'obstacle. Ce cas ne devrait pas arriver, mais il est necessaire de prendre en compte ce cas pour le bon fonctionnement du programme. 
-      - Il faut annoncer que nous avons fait le choix que lorsque deux segments sont supperposés en un seul point, alors on dit qu'ils ne sont pas supperposés. 
-      - Simplification de certaines fonctions. Enlever les répétitions. 
-    - Graphe 
-      - Eviter les répétitions dans les attributs. 
-      - Il est necessaire de prendre en compte tous les points d'une sortie et pas uniquement les deux extrémités. 
-      - Possibilité d'utiliser l’algorithme de Bellmann. 
-      - M. Bougeret à proposé un pseudo code montrant une manière de résoudre nos chemins dans les graphes. 
-    - Autres classes 
-      - Vue rapide de certaines répétitions 
+#### Réunion du 09/11/2020
+- Cette réunion s'est déroulée un lundi car nous voulions continuer de présenter le code, comme dans la réunions précédente. 
+- Nous avons vu les classes suivantes : 
+  - MathCalcule
+    - Manque de la vérification, de la prise en compte, du cas où une personne est sur le coin d'un obstacle et que son objectif est dans l'obstacle. Ce cas ne devrait pas arriver, mais il est necessaire de prendre en compte ce cas pour le bon fonctionnement du programme. 
+    - Il faut annoncer que nous avons fait le choix que lorsque deux segments sont supperposés en un seul point, alors on dit qu'ils ne sont pas supperposés. 
+    - Simplification de certaines fonctions. Enlever les répétitions. 
+  - Graphe 
+    - Eviter les répétitions dans les attributs. 
+    - Il est necessaire de prendre en compte tous les points d'une sortie et pas uniquement les deux extrémités. 
+    - Possibilité d'utiliser l’algorithme de Bellmann. 
+    - M. Bougeret à proposé un pseudo code montrant une manière de résoudre nos chemins dans les graphes. 
+  - Autres classes 
+    - Vue rapide de certaines répétitions 
 <br/>
 
 #### Réunion du 13/11/2020
