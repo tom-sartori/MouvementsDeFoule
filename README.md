@@ -128,14 +128,14 @@
 <br/>
 
 #### Réunion du 20/11/2020
-- Nous avons principalement parlé au sujet des collisions. 
+- Nous avons principalement parlé de la gestion des collisions. 
   - Explication de la V2. 
   - Bon fonctionnement. 
   - Difficultés sur l'explication de la "distanciation physique". 
   - V3 pour la semaine prochaine. 
-- Conseils pour al gestion de collisions : 
-  - Si les persos vont entre en collisions, alors un des deux ne bouge pas du tout. 
-  - Ou sinon, il est possible d'un faire avancer un, d'une distance inférieure à la normale, afin qu'il colle celui devant lui. 
+- Conseils pour la gestion de collisions : 
+  - Si les persos entrent en collisions, alors un des deux ne bouge pas du tout. 
+  - Ou sinon, il est possible d'en faire avancer un, d'une distance inférieure à la normale, afin qu'il colle celui devant lui. 
 - Pour les obstacles, on partira du principe qu'on les diminuent graphiquement et non pas, qu'on les augmentent. 
 - Il faudra faire plus de specification et de schémas pour expliquer notre code. 
 
