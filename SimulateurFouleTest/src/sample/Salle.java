@@ -164,7 +164,7 @@ public class Salle {
 
 
     public void runAction(Salle salle, boolean collisionActive, boolean rayonActive){       
-        boolean collision, bloque;
+        boolean bloque;
         int y;
         for (int i = 0; i < listPersonnes.size(); i++) {
             if (listPersonnes.get(i).estSorti())
@@ -180,23 +180,18 @@ public class Salle {
                     }
                 } else {    
                     if(collisionActive) {
-                        collision = false;
                         bloque = false;
                         y = 0;
-                        while ((!collision || !bloque) && y < listPersonnes.size()) {
-                            collision = collision2Personnes(listPersonnes.get(i), listPersonnes.get(y), listPersonnes.get(i).getRayon() * 2);
+                        while ((!bloque) && y < listPersonnes.size()) {
                             bloque = estBloque(listPersonnes.get(i), listPersonnes.get(y));
                             y++;
                         }
-                        //si pas de collision donc n'est pas bloqué alors, avance normalement
-                        if (!collision) {
+                        //si n'est pas bloqué alors, avance normalement
+                        if (!bloque) {
                             listPersonnes.get(i).avancer();
                             cSalle.deplacerPersonne(listPersonnes.get(i));
-                        }
-                        //si y a une collision et qu'il n'est pas bloqué il peut avancer
-                        else if (!bloque) {
-                            listPersonnes.get(i).avancer();
-                            cSalle.deplacerPersonne(listPersonnes.get(i));
+                        } else{
+                            listPersonnes.get(i).setDecalage(listPersonnes.get(i).getCoordCourant());
                         }
                     }
                     else { // Sans collisions
@@ -302,21 +297,8 @@ public class Salle {
         return listePointsDirectes;
     }
 
-
-    public boolean collision2Personnes(Personne p, Personne compare, double distanciation){
-        if (MathsCalcule.distance(p.getCoordCourant(), compare.getCoordCourant()) == 0){
-            return false;
-        } else if (MathsCalcule.distance(p.getCoordCourant(), compare.getCoordCourant()) <= (p.getRayon()*2 + distanciation)){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public boolean estBloque(Personne p, Personne compare){
-        if (MathsCalcule.distance(p.getProchainMouvement(), compare.getCoordCourant()) == 0){
-            return true;
-        } else if (MathsCalcule.distance(p.getProchainMouvement(), compare.getCoordCourant()) <= p.getRayon()*2){
+        if (!p.equals(compare) && MathsCalcule.distance(p.getProchainMouvement(), compare.getCoordCourant()) <= p.getRayon()*2){
             return true;
         } else {
             return false;
