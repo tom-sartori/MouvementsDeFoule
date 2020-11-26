@@ -78,6 +78,10 @@ public class Personne {
         return new Point(coordCourant.getX() + getDxNormalise(objectif), coordCourant.getY() + getDyNormalise(objectif)); // Cas normal.
     }
 
+    public void setDecalage(Point p){
+        coordCourant.setPoint(p.getX(), p.getY());
+    }
+
     // Fait avancer la personne suivant getProchainMouvement()
     public void avancer(){
         Point p = getProchainMouvement();
