@@ -17,7 +17,7 @@ public class Personne {
     public Personne(double posX , double posY){
         coordCourant = new Point(posX, posY);
         objectif = null;
-        rayon = 5;
+        rayon = 10;
         objectifRayon = new Point();
     }
 

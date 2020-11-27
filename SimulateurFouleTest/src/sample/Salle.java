@@ -163,6 +163,8 @@ public class Salle {
     }
 
 
+    // Appelé à chaque frame.
+    // A pour but de faire évoluer la personne au sein du système.
     public void runAction(Salle salle, boolean collisionActive, boolean rayonActive){       
         boolean bloque;
         int y;
