@@ -221,4 +221,24 @@ public class Graphe {
 
         return listePointsDirectes;
     }
+
+    public List<Point> creerPointIntermédiare(Point coordA, Point coordB) {
+       List<Point> listPoint= new ArrayList<>();
+       listPoint.add(coordA);
+        for (Point point : listePointsObstacles) {
+            if(MathsCalcule.estPoint(coordA,coordB,point)){
+                if(listPoint.size()!=1) {
+                    for (int i = 1; i < listPoint.size(); i++) {
+                        if (MathsCalcule.distance(coordA, point) < MathsCalcule.distance(coordA, listPoint.get(i))) {
+                            listPoint.add(i, point);
+                        } else
+                            listPoint.add(listPoint.size() + 1, point);
+                    }
+                } else
+                    listPoint.add(1,point);
+            }
+        }
+        listPoint.add(coordB);
+        return listPoint;
+    }
 }

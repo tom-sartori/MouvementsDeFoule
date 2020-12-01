@@ -276,8 +276,7 @@ public class Salle {
         for(Obstacle obstacle: listObstacles) {
             if (MathsCalcule.coordSegments(coordA, coordB, obstacle).isEmpty()) {
                 b=false;
-            } else
-                return true;
+            }  else return true;
         }
         return b;
     }

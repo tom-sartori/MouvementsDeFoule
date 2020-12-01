@@ -1,6 +1,7 @@
 package sample;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MathsCalcule {
 
@@ -20,6 +21,13 @@ public class MathsCalcule {
     // A commenter
     // Renvoie vrais si les segements AB et CD coupent en un point intérieur strictement à AB et CD.
     public static boolean estCoupe(Point coordA, Point coordB, Point coordC, Point coordD) {
+        double k1 = valeurDeK(coordA,coordB,coordC,coordD).get(0);
+        double k2 = valeurDeK(coordA,coordB,coordC,coordD).get(1);
+        return (0 < k1  && k1 < 0.999999) && (0 < k2 && k2 < 0.999999);
+    }
+
+    public static List<Double> valeurDeK(Point coordA, Point coordB, Point coordC, Point coordD){
+        List<Double> listK =new ArrayList<>();
         double a = coordB.getX() - coordA.getX();
         double b = coordB.getY() - coordA.getY();
         double c = coordC.getX() - coordD.getX();
@@ -33,9 +41,9 @@ public class MathsCalcule {
         double mat4 = (1 / determinant) * a;
         double k1 = (mat1 * u) + (mat3 * v);
         double k2 = (mat2 * u) + (mat4 * v);
-        //System.out.println("La valeur de K est "+k1 +"\n"+ "La valeur de k' est " +k2);
-        //System.out.println("Les segments se touchent. ");
-        return (0 < k1 && k1 < 0.999999) && (0 < k2 && k2 < 0.999999);
+        listK.add(k1);
+        listK.add(k2);
+        return listK;
     }
 
     public static double distance(Point A, Point B) {
@@ -43,7 +51,7 @@ public class MathsCalcule {
     }
 
     public static boolean estPoint(Point coordA,Point coordB,Point personne){
-        return estSuperpose(coordA,coordB,personne,personne);
+        return estSuperpose(coordA,coordB,coordA,personne);
     }
 
 
