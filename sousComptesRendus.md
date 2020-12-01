@@ -84,4 +84,21 @@ Idées :
   - Du coup, plus besoin de environEgale pour capter si on ateint l'objectif ou pas. (08/11)
 - Ajout fonction addRandomPersonnes(int n), dans Salle, qui permet d'ajouter n Personnes à des positions aléatoires dans la salle. (08/11)
   - Ajout de la fonction estDansObstacle(Point point) dans ObstacleRectangle pour éviter d'avoir des persos random dans les obstacles. (08/11)
+<br/>
+
+### Semaine du 09/11
+- Prise en compte de tous les points d'une sortie (et non plus les deux cotés). 
+- Refonte totale de système de plus courts chemins par rapport aux points de sorties. 
+- Plus de redondance dans les attributs du graphe. 
+- Gestion d'obstacles triangles. 
+- D'autres petits ajustements ont été faits par rapport aux remarques des professeurs, mais pas notée. 
+
+<br/>
+### Semaine du 16/11 
+- Gestion des collisions entre personnes V2 fonctionnel. 
+- Ajout de controllers permettant les choix de collisions et de gestion de rayons. 
+- Réglage de bugs de segments supperposés. 
+- Simplifications de la classe Personne. Moins d'attributs et calcul de dx plus simple. 
+- La gestion des obstacles est fonctionnelle à 100% et ne présente plus de bugs. 
+- Clarification générale du code. 
 

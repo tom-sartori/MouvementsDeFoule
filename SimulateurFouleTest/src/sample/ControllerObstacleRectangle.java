@@ -8,11 +8,12 @@ import java.util.Random;
 public class ControllerObstacleRectangle extends ControllerObstacle{
 
     public ControllerObstacleRectangle(ObstacleRectangle obstacleRectangle) {
+        double rayon = new Personne(0,0).getRayon();
         Rectangle obstacleGraphique = new Rectangle();
-        obstacleGraphique.setX(obstacleRectangle.getListePoints().get(0).getX());
-        obstacleGraphique.setY(obstacleRectangle.getListePoints().get(0).getY());
-        obstacleGraphique.setWidth(obstacleRectangle.getListePoints().get(1).getX() - obstacleRectangle.getListePoints().get(0).getX());
-        obstacleGraphique.setHeight(obstacleRectangle.getListePoints().get(2).getY() - obstacleRectangle.getListePoints().get(0).getY());
+        obstacleGraphique.setX(obstacleRectangle.getListePoints().get(0).getX()+rayon);
+        obstacleGraphique.setY(obstacleRectangle.getListePoints().get(0).getY()+rayon);
+        obstacleGraphique.setWidth(obstacleRectangle.getListePoints().get(1).getX() - obstacleRectangle.getListePoints().get(0).getX() - 2 * rayon);
+        obstacleGraphique.setHeight(obstacleRectangle.getListePoints().get(2).getY() - obstacleRectangle.getListePoints().get(0).getY() - 2 * rayon);
 
         //Random ran = new Random();
         //obstacleGraphique.setFill(Color.rgb(ran.nextInt(255), ran.nextInt(255), ran.nextInt(255)));

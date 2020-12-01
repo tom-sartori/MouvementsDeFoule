@@ -9,6 +9,7 @@ public class ControllerPanel extends Parent {
     Button playButton;
     Button pauseButton;
     Button clearButton;
+    Button addPersonButton;
     Slider vitesse;
     CheckBox graphe;
     CheckBox collisions;
@@ -19,23 +20,25 @@ public class ControllerPanel extends Parent {
         playButton = createButton("Play", 20);
         pauseButton = createButton("Pause", 70);
         clearButton = createButton("Clear", 130);
+        addPersonButton = createButton("Ajouter Personne", 500);
         vitesse = new Slider(0,5,0.1);
         vitesse.setValue(1.5);
         vitesse.setShowTickMarks(true);
         vitesse.setShowTickLabels(true);
         vitesse.setMajorTickUnit(0.25f);
         vitesse.setBlockIncrement(0.1f);
-        vitesse.setTranslateX(200);
+        vitesse.setTranslateX(20);
+        vitesse.setTranslateY(50);
         graphe = new CheckBox("Afficher graphe");
-        graphe.setTranslateX(350);
+        graphe.setTranslateX(200);
         collisions = new CheckBox("Activer les collisions");
-        collisions.setTranslateX(350);
+        collisions.setTranslateX(200);
         collisions.setTranslateY(20);
         rayon = new CheckBox("Activer le rayon");
-        rayon.setTranslateX(350);
+        rayon.setTranslateX(200);
         rayon.setTranslateY(40);
 
-        this.getChildren().addAll(rayon, collisions, graphe, vitesse, playButton, pauseButton, clearButton);
+        this.getChildren().addAll(addPersonButton, rayon, collisions, graphe, vitesse, playButton, pauseButton, clearButton);
     }
 
     public Button createButton(String text, int position){
@@ -72,5 +75,9 @@ public class ControllerPanel extends Parent {
 
     public Boolean getRayonStatus(){
         return rayon.isSelected();
+    }
+
+    public Button getAddPersonButton(){
+        return addPersonButton;
     }
 }
