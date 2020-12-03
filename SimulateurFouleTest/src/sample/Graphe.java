@@ -173,4 +173,12 @@ public class Graphe {
     public List<Chemin> getListeChemins() {
         return listeChemins;
     }
+
+    public void afficherDiagonalesObstacle() {
+        for (Obstacle obstacle : salle.getListObstacles()) {
+            for (int i = 0; i < obstacle.getDiagonales().size() - 1; i = i + 2) {
+                addChemin(new Chemin(obstacle.getDiagonales().get(i), obstacle.getDiagonales().get(i + 1)));
+            }
+        }
+    }
 }

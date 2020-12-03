@@ -233,6 +233,7 @@ public class Salle {
     // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
     public void initialisationGrapheAvecAffichage () {
         graphe = new Graphe(this);
+        graphe.afficherDiagonalesObstacle();
         graphe.creerTousLesPlusCourtsChemins();
         cSalle.afficherGraphe(graphe.afficher());
     }
