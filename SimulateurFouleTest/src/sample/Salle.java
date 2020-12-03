@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
 import javafx.util.Duration;
+import sample.controller.ControllerSalle;
 
 import java.util.ArrayList;
 import java.util.List;

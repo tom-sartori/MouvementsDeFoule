@@ -1,6 +1,8 @@
 package sample;
 
 
+import sample.controller.ControllerSortie;
+
 public class Sortie {
     private Point point1;
     private Point point2;

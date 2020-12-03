@@ -1,5 +1,7 @@
 package sample;
 
+import sample.controller.ControllerPersonne;
+
 import java.util.List;
 
 public class Personne {

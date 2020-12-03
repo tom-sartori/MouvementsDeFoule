@@ -1,5 +1,7 @@
 package sample;
 
+import sample.controller.ControllerGraphe;
+
 import java.util.ArrayList;
 import java.util.List;
 
