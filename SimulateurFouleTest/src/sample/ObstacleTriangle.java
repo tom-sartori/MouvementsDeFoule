@@ -1,5 +1,8 @@
 package sample;
 
+import sample.controller.ControllerObstacle;
+import sample.controller.ControllerObstacleTriangle;
+
 import java.util.ArrayList;
 import java.util.List;
 
