@@ -1,5 +1,8 @@
 package sample.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -7,13 +10,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import sample.ObstaclePolygone;
+import sample.Point;
 import sample.Salle;
 
 public class Controller extends Parent{
     private ControllerSalle cSalle;
     private ControllerPanel cPanel;
+    private List<Point> creerObstacle;
+    private boolean creationObstacle;
     private Salle salle;
 
 
@@ -27,7 +35,20 @@ public class Controller extends Parent{
 
         cPanel = new ControllerPanel();
         cPanel.setTranslateY(salle.getHauteur() + (3 * marge));
+
+        creerObstacle = new ArrayList<>();
         
+        // Event utilisé pour ajouter des Personne en cliquant.
+        cSalle.getSalleGraphique().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(!salle.isRunning() && !creationObstacle){
+                    cSalle.afficherPersonne(cSalle.createPersonne(event.getX(),event.getY()));
+                } else if(!salle.isRunning() && creationObstacle){
+                    creerObstacle.add(new Point(event.getX(), event.getY()));
+                }
+            }
+        });
 
         cPanel.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
@@ -63,6 +84,33 @@ public class Controller extends Parent{
         cPanel.getAddPersonButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 createPopup("Personne");
+            }
+        });
+
+        cPanel.getAddObstacleButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                creationObstacle = true;
+                cPanel.getPlayButton().setVisible(false);
+                cPanel.getPauseButton().setVisible(false);
+                cPanel.getClearButton().setVisible(false);
+                cPanel.getValiderObstacleButton().setVisible(true);
+                cPanel.getAddObstacleButton().setVisible(false);
+            }
+        });
+
+        cPanel.getValiderObstacleButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                creationObstacle = false;
+                cPanel.getPlayButton().setVisible(true);
+                cPanel.getPauseButton().setVisible(true);
+                cPanel.getClearButton().setVisible(true);
+                cPanel.getValiderObstacleButton().setVisible(false);
+                cPanel.getAddObstacleButton().setVisible(true);
+                if(!creerObstacle.isEmpty()){
+                    salle.addObstacle(new ObstaclePolygone(creerObstacle));
+                }
+                creerObstacle.clear();
+                salle.refreshAffichage();
             }
         });
 
