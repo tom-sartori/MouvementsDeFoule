@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
 import javafx.util.Duration;
+import sample.controller.ControllerSalle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -232,6 +233,7 @@ public class Salle {
     // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
     public void initialisationGrapheAvecAffichage () {
         graphe = new Graphe(this);
+        //graphe.afficherDiagonalesObstacle();
         graphe.creerTousLesPlusCourtsChemins();
         cSalle.afficherGraphe(graphe.afficher());
     }
@@ -274,8 +276,7 @@ public class Salle {
         for(Obstacle obstacle: listObstacles) {
             if (MathsCalcule.coordSegments(coordA, coordB, obstacle).isEmpty()) {
                 b=false;
-            } else
-                return true;
+            }  else return true;
         }
         return b;
     }

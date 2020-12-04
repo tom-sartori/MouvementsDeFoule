@@ -1,10 +1,12 @@
-package sample;
+package sample.controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import sample.Personne;
+import sample.Salle;
 
 import java.util.ArrayList;
 import java.util.List;

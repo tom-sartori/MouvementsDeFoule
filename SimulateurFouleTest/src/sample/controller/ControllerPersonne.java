@@ -1,8 +1,9 @@
-package sample;
+package sample.controller;
 
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import sample.Personne;
 
 import java.util.Random;
 

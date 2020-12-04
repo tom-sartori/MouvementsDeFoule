@@ -1,5 +1,7 @@
 package sample;
 
+import sample.controller.ControllerObstacle;
+
 import java.util.List;
 
 public interface Obstacle {

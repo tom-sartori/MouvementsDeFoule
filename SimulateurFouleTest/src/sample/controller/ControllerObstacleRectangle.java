@@ -1,7 +1,9 @@
-package sample;
+package sample.controller;
 
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import sample.ObstacleRectangle;
+import sample.Personne;
 
 import java.util.Random;
 

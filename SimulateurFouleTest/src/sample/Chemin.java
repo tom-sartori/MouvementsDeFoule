@@ -1,5 +1,7 @@
 package sample;
 
+import sample.controller.ControllerChemin;
+
 public class Chemin {
 
     private Point A;

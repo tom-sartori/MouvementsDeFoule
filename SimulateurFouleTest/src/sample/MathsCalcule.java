@@ -1,6 +1,7 @@
 package sample;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MathsCalcule {
 
@@ -20,6 +21,13 @@ public class MathsCalcule {
     // A commenter
     // Renvoie vrais si les segements AB et CD coupent en un point intérieur strictement à AB et CD.
     public static boolean estCoupe(Point coordA, Point coordB, Point coordC, Point coordD) {
+        double k1 = valeurDeK(coordA,coordB,coordC,coordD).get(0);
+        double k2 = valeurDeK(coordA,coordB,coordC,coordD).get(1);
+        return (0 < k1  && k1 < 0.999999) && (0 < k2 && k2 < 0.999999);
+    }
+
+    public static List<Double> valeurDeK(Point coordA, Point coordB, Point coordC, Point coordD){
+        List<Double> listK =new ArrayList<>();
         double a = coordB.getX() - coordA.getX();
         double b = coordB.getY() - coordA.getY();
         double c = coordC.getX() - coordD.getX();
@@ -33,19 +41,14 @@ public class MathsCalcule {
         double mat4 = (1 / determinant) * a;
         double k1 = (mat1 * u) + (mat3 * v);
         double k2 = (mat2 * u) + (mat4 * v);
-        //System.out.println("La valeur de K est "+k1 +"\n"+ "La valeur de k' est " +k2);
-        //System.out.println("Les segments se touchent. ");
-        return (0 < k1 && k1 < 0.999999) && (0 < k2 && k2 < 0.999999);
+        listK.add(k1);
+        listK.add(k2);
+        return listK;
     }
 
     public static double distance(Point A, Point B) {
         return Math.sqrt(Math.pow(A.getX() - B.getX(), 2) + Math.pow(A.getY() - B.getY(), 2));
     }
-
-    public static boolean estPoint(Point coordA,Point coordB,Point personne){
-        return estSuperpose(coordA,coordB,personne,personne);
-    }
-
 
     // Retourne vrais si AB est colinéaire à CD et qu'ils se chevauchent sur plus d'un point.
     public static boolean estSuperpose(Point coordA, Point coordB, Point coordC, Point coordD) {
@@ -95,12 +98,12 @@ public class MathsCalcule {
         ArrayList<Point> listTableau = new ArrayList<>();
         int j = 0;
         int w = 0;
+
         for (int i = 0; i < o.getDiagonales().size() / 2; i++) {
             w = i + j;
-            if (w < o.getDiagonales().size() && w + 1 < o.getDiagonales().size()) {
-
-                if (estSuperpose(coordA, coordB, o.getDiagonales().get(w), o.getDiagonales().get(w + 1)) && (!estCoupe(coordA, coordB, o.getListePoints().get(i), o.getListePoints().get(i+1)))) {
-                    for (int k = 0; k < o.getListePoints().size(); k++) {
+            if (w + 1 < o.getDiagonales().size()) {
+                for (int k = 0; k < o.getListePoints().size() - 1;k++) {
+                    if (estSuperpose(coordA, coordB, o.getDiagonales().get(w), o.getDiagonales().get(w + 1)) && (!estCoupe(coordA, coordB, o.getListePoints().get(k), o.getListePoints().get(k + 1)))) {
                         if (o.getListePoints().get(k).getX() == o.getDiagonales().get(w).getX() && o.getListePoints().get(k).getY() == o.getDiagonales().get(w).getY()) {
 
                             if (k - 1 >= 0 && k + 1 < o.getListePoints().size()) {

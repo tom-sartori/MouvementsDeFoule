@@ -1,6 +1,8 @@
-package sample;
+package sample.controller;
 
 import javafx.scene.Parent;
+import sample.Chemin;
+import sample.Graphe;
 
 public class ControllerGraphe extends Parent {
 
