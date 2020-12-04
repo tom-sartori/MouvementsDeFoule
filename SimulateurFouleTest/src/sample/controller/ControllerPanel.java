@@ -10,6 +10,8 @@ public class ControllerPanel extends Parent {
     Button pauseButton;
     Button clearButton;
     Button addPersonButton;
+    Button addObstacleButton;
+    Button validerObstacleButton;
     Slider vitesse;
     CheckBox graphe;
     CheckBox collisions;
@@ -21,6 +23,9 @@ public class ControllerPanel extends Parent {
         pauseButton = createButton("Pause", 70);
         clearButton = createButton("Clear", 130);
         addPersonButton = createButton("Ajouter Personne", 500);
+        addObstacleButton = createButton("Ajouter Obstacle", 700);
+        validerObstacleButton = createButton("Valider", 700);
+        validerObstacleButton.setVisible(false);
         vitesse = new Slider(0,5,0.1);
         vitesse.setValue(1.5);
         vitesse.setShowTickMarks(true);
@@ -38,7 +43,7 @@ public class ControllerPanel extends Parent {
         rayon.setTranslateX(200);
         rayon.setTranslateY(40);
 
-        this.getChildren().addAll(addPersonButton, rayon, collisions, graphe, vitesse, playButton, pauseButton, clearButton);
+        this.getChildren().addAll(validerObstacleButton, addObstacleButton, addPersonButton, rayon, collisions, graphe, vitesse, playButton, pauseButton, clearButton);
     }
 
     public Button createButton(String text, int position){
@@ -47,6 +52,10 @@ public class ControllerPanel extends Parent {
         b.setTranslateX(position);
         b.setStyle("-fx-border-color: white; -fx-border-width: 5px;");
         return b;
+    }
+
+    public Button getAddObstacleButton(){
+        return addObstacleButton;
     }
 
     public Button getPlayButton(){
@@ -79,5 +88,9 @@ public class ControllerPanel extends Parent {
 
     public Button getAddPersonButton(){
         return addPersonButton;
+    }
+
+    public Button getValiderObstacleButton(){
+        return validerObstacleButton;
     }
 }

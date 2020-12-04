@@ -26,17 +26,6 @@ public class ControllerSalle extends Parent{
         salleGraphique.setFill(Color.LIGHTCYAN);
         //listeControllerPersonne = new ArrayList<>();
 
-
-        // Event utilisé pour ajouter des Personne en cliquant.
-        salleGraphique.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(!salle.isRunning()){
-                    afficherPersonne(createPersonne(event.getX(),event.getY()));
-                }
-            }
-        });
-
         this.getChildren().add(salleGraphique);
     }
 
@@ -89,5 +78,9 @@ public class ControllerSalle extends Parent{
     public void cacherGraphe(){
         if(controllerGraphe != null)
             getChildren().remove(controllerGraphe);
+    }
+
+    public Rectangle getSalleGraphique(){
+        return salleGraphique;
     }
 }
