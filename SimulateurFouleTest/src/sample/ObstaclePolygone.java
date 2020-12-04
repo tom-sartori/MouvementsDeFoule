@@ -25,17 +25,14 @@ public class ObstaclePolygone implements Obstacle {
                     if (i == 0 && j != listePoints.size() -1 && j != 1) {
                         listDiagonales.add(new Point(listePoints.get(i)));
                         listDiagonales.add(new Point(listePoints.get(j)));
-                        System.out.println("Diag : " + i + " - " + j);
                     }
                     else if (i == listePoints.size() - 1 && j != listePoints.size() - 1) {
                         listDiagonales.add(new Point(listePoints.get(i)));
                         listDiagonales.add(new Point(listePoints.get(j)));
-                        System.out.println("Diag : " + i + " - " + j);
                     }
                     else if (i != 0 && j != i + 1) {
                         listDiagonales.add(new Point(listePoints.get(i)));
                         listDiagonales.add(new Point(listePoints.get(j)));
-                        System.out.println("Diag : " + i + " - " + j);
                     }
                 }
             }
