@@ -50,11 +50,6 @@ public class MathsCalcule {
         return Math.sqrt(Math.pow(A.getX() - B.getX(), 2) + Math.pow(A.getY() - B.getY(), 2));
     }
 
-    public static boolean estPoint(Point coordA,Point coordB,Point personne){
-        return estSuperpose(coordA,coordB,coordA,personne);
-    }
-
-
     // Retourne vrais si AB est colinéaire à CD et qu'ils se chevauchent sur plus d'un point.
     public static boolean estSuperpose(Point coordA, Point coordB, Point coordC, Point coordD) {
         if (MathsCalcule.determinant(coordA, coordB, coordC, coordD) == 0) {
@@ -103,12 +98,12 @@ public class MathsCalcule {
         ArrayList<Point> listTableau = new ArrayList<>();
         int j = 0;
         int w = 0;
+
         for (int i = 0; i < o.getDiagonales().size() / 2; i++) {
             w = i + j;
-            if (w < o.getDiagonales().size() && w + 1 < o.getDiagonales().size()) {
-
-                if (estSuperpose(coordA, coordB, o.getDiagonales().get(w), o.getDiagonales().get(w + 1)) && (!estCoupe(coordA, coordB, o.getListePoints().get(i), o.getListePoints().get(i+1)))) {
-                    for (int k = 0; k < o.getListePoints().size(); k++) {
+            if (w + 1 < o.getDiagonales().size()) {
+                for (int k = 0; k < o.getListePoints().size() - 1;k++) {
+                    if (estSuperpose(coordA, coordB, o.getDiagonales().get(w), o.getDiagonales().get(w + 1)) && (!estCoupe(coordA, coordB, o.getListePoints().get(k), o.getListePoints().get(k + 1)))) {
                         if (o.getListePoints().get(k).getX() == o.getDiagonales().get(w).getX() && o.getListePoints().get(k).getY() == o.getDiagonales().get(w).getY()) {
 
                             if (k - 1 >= 0 && k + 1 < o.getListePoints().size()) {
