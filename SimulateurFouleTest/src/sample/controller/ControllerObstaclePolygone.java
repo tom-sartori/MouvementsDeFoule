@@ -16,8 +16,6 @@ public class ControllerObstaclePolygone extends ControllerObstacle {
             polygoneGraphique.getPoints().addAll(point.getX(), point.getY());
         }
 
-        System.out.println(polygoneGraphique.contains(100, 100));
-
         //Random ran = new Random();
         //polygoneGraphique.setFill(Color.rgb(ran.nextInt(255), ran.nextInt(255), ran.nextInt(255)));
         polygoneGraphique.setFill(Color.DARKCYAN);

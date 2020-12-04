@@ -115,6 +115,10 @@ public class Salle {
                     if (obstacle.estDansObstacle(new Point(x, y)))
                         dansObstacle = true;
                 }
+                for (Personne personne : listPersonnes) {
+                    if (personne.getCoordCourant().environEgale(new Point(x, y), personne.getRayon() * 2))
+                        dansObstacle = true;
+                }
             }
             while (dansObstacle);
             //System.out.println(x + " " + y);
@@ -250,20 +254,20 @@ public class Salle {
 
     public Point findPointSortiePlusProcheDirect(Point A) {
         double distance;
-
-        double distanceCourte = 1000000;
+        double distanceCourte = Double.POSITIVE_INFINITY;
         Point plusProche = null;
         Point courant;
+        double rayon = listPersonnes.get(0).getRayon();     // Car toutes les personnes ont le même rayon.
 
         if (!listSorties.isEmpty()) {
             for (Sortie sortie : listSorties) {
-                courant = sortie.findPointSortieDirect(this, A, 5); // Mettre le rayon de personne
+                courant = sortie.findPointSortieDirect(this, A, rayon);
                 if (courant != null) {
                     distance = MathsCalcule.distance(A, courant);
 
                     if (distance < distanceCourte) {
                         distanceCourte = distance;
-                        plusProche = new Point(courant);    // A check
+                        plusProche = new Point(courant);
                     }
                 }
             }
