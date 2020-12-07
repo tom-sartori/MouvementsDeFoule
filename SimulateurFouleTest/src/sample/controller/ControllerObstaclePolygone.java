@@ -15,7 +15,7 @@ public class ControllerObstaclePolygone extends ControllerObstacle {
         double rayon = new Personne(-1, -1).getRayon();
 
         for (Point point : obstaclePolygone.getListePoints()) {
-            polygoneGraphique.getPoints().addAll(point.getY(), -point.getX());
+            polygoneGraphique.getPoints().addAll(point.getX(), point.getY());
         }
 
         //Random ran = new Random();

@@ -458,5 +458,10 @@ public class Personne {
     public double getRayon() {
         return rayon;
     }
+
+    // Renvoie la distance que la personne a encore à parcourir pour aller à la sortie.
+    public double getDistance() {
+        return MathsCalcule.distance(coordCourant, objectif) + objectif.getDistanceASortie();
+    }
 }
 
