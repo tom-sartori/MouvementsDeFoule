@@ -46,6 +46,7 @@ public class Controller extends Parent{
                     cSalle.afficherPersonne(cSalle.createPersonne(event.getX(),event.getY()));
                 } else if(!salle.isRunning() && creationObstacle){
                     creerObstacle.add(new Point(event.getX(), event.getY()));
+                    cSalle.afficherPersonne(cSalle.createPersonne(event.getX(),event.getY()));
                 }
             }
         });

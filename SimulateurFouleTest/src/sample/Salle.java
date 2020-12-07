@@ -237,7 +237,7 @@ public class Salle {
     // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
     public void initialisationGrapheAvecAffichage () {
         graphe = new Graphe(this);
-        //graphe.afficherDiagonalesObstacle();
+        graphe.afficherDiagonalesObstacle();
         graphe.creerTousLesPlusCourtsChemins();
         cSalle.afficherGraphe(graphe.afficher());
     }
@@ -257,7 +257,7 @@ public class Salle {
         double distanceCourte = Double.POSITIVE_INFINITY;
         Point plusProche = null;
         Point courant;
-        double rayon = listPersonnes.get(0).getRayon();     // Car toutes les personnes ont le même rayon.
+        double rayon = new Personne(-1, -1).getRayon();     // Car toutes les personnes ont le même rayon.
 
         if (!listSorties.isEmpty()) {
             for (Sortie sortie : listSorties) {
