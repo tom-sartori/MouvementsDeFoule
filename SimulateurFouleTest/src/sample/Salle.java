@@ -101,14 +101,15 @@ public class Salle {
     }
 
     public void addRandomPersonnes (int n) {
+        double rayon = new Personne(-1, -1).getRayon();
         for (int i = 0; i < n; i++) {
             boolean dansObstacle;
             double x, y;
             do {
                 dansObstacle = false;
                 Random ran = new Random();
-                x = ran.nextInt(1000);
-                y = ran.nextInt(600);
+                x = ran.nextInt(1000 - (2*(int)rayon)) + rayon;
+                y = ran.nextInt(600 - (2*(int)rayon)) + rayon;
 
 
                 for (Obstacle obstacle : listObstacles) {
@@ -116,7 +117,7 @@ public class Salle {
                         dansObstacle = true;
                 }
                 for (Personne personne : listPersonnes) {
-                    if (personne.getCoordCourant().environEgale(new Point(x, y), personne.getRayon() * 2))
+                    if (personne.getCoordCourant().environEgale(new Point(x, y), personne.getRayon() * 3))
                         dansObstacle = true;
                 }
             }
@@ -173,8 +174,31 @@ public class Salle {
     public void runAction(Salle salle, boolean collisionActive, boolean rayonActive){
         boolean bloque;
         int y;
+        double rayon = new Personne(-1, -1).getRayon();
         for (int i = 0; i < listPersonnes.size(); i++) {
-            deplacePersonne(listPersonnes.get(i), collisionActive, rayonActive);
+            System.out.println("je suis perso : " + i);
+            System.out.println(listPersonnes.get(i).getCoordCourant());
+
+            List<Personne> intersecAvecSocial = new ArrayList<>();
+            intersecAvecSocial = getPersonnesIntersec(listPersonnes.get(i), rayon);
+            System.out.println("test 1 : " + intersecAvecSocial.size());
+
+            List<Personne> intersecSansSocial = new ArrayList<>();
+            intersecSansSocial = getPersonnesIntersec(listPersonnes.get(i), 0);
+            System.out.println("test 2 : " + intersecSansSocial.size());
+
+            boolean estPlusProche = estPremier(listPersonnes.get(i), intersecAvecSocial);
+            System.out.println("test 3 : " + estPlusProche);
+            System.out.println("");
+
+
+            if (intersecAvecSocial.isEmpty() || (estPlusProche && intersecSansSocial.isEmpty()))
+                deplacePersonne(listPersonnes.get(i), collisionActive, rayonActive);
+
+
+
+
+            //deplacePersonne(listPersonnes.get(i), collisionActive, rayonActive);
             /*
             if (listPersonnes.get(i).estSorti())
                 removePersonne(listPersonnes.get(i));
@@ -228,10 +252,13 @@ public class Salle {
 
              */
         }
-        int indicePlusProcheBloque = getIndiceProcheBloque();
-        if (indicePlusProcheBloque != -1) {
-            deplacePersonneForce(listPersonnes.get(indicePlusProcheBloque), collisionActive, rayonActive);
-        }
+        /*
+        int indice = getIndiceProcheBloque();
+        if (indice != -1)
+            deplacePersonne(listPersonnes.get(indice), collisionActive, rayonActive);
+
+         */
+
     }
 
     public void deplacePersonne(Personne personne, boolean collisionActive, boolean rayonActive) {
@@ -249,10 +276,10 @@ public class Salle {
             } else {
                 if(collisionActive) {
                     //si n'est pas bloqué alors, avance normalement
-                    if (!estBloque(personne)) {
+                    //if (!estBloqueAvecSoc(personne, 0)) {
                         personne.avancer();
                         cSalle.deplacerPersonne(personne);
-                    }
+                    //}
                 }
                 else { // Sans collisions
                     if(rayonActive)
@@ -265,24 +292,6 @@ public class Salle {
         }
     }
 
-    public void deplacePersonneForce(Personne personne, boolean collisionActive, boolean rayonActive) {
-        if (personne.estSorti())
-            removePersonne(personne);
-        else {
-            if (personne.objectifAteint()) {
-                if(rayonActive){
-                    personne.setObjectifRayon(this);
-                    personne.setDxDyNormalise(personne.getObjectifRayon());
-                }else{
-                    personne.setObjectif(this);
-                    personne.setDxDyNormalise(personne.getObjectif());
-                }
-            }
-
-            personne.avancer();
-            cSalle.deplacerPersonne(personne);
-        }
-    }
 
     public void pause(){
         if(loop != null && loop.getStatus() == Status.RUNNING){
@@ -375,31 +384,53 @@ public class Salle {
         return listePointsDirectes;
     }
 
-    public boolean estEnCollision(Personne p, Personne compare){
-        return !p.getCoordCourant().equals(compare.getCoordCourant()) && MathsCalcule.distance(p.getProchainMouvement(), compare.getCoordCourant()) <= (p.getRayon() * 2) + 1;
+    public boolean estEnCollision(Personne p, Personne compare, double distSoc){
+        return MathsCalcule.distance(p.getProchainMouvement(), compare.getCoordCourant()) <= (p.getRayon() * 2) + distSoc;
     }
 
-    public boolean estBloque (Personne p) {
+    public List<Personne> getPersonnesIntersec(Personne personne, double distSoc) {
+        List<Personne> liste = new ArrayList<>();
+
+        for (Personne compare : listPersonnes) {
+            if (personne != compare && estEnCollision(personne, compare, distSoc))
+                liste.add(compare);
+        }
+        return liste;
+    }
+
+    public boolean estPremier(Personne p, List<Personne> peloton) {
+        double distance = p.getDistance();
+        for (Personne personne : peloton) {
+            if (distance > personne.getDistance())
+                return false;
+        }
+        return true;
+    }
+
+
+    public boolean estBloqueAvecSoc (Personne p, double distSoc) {
         for (Personne personne : listPersonnes) {
             if (p != personne) {
-                if (estEnCollision(p, personne))
+                if (estEnCollision(p, personne, distSoc))
                     return true;
             }
         }
         return false;
     }
-
+/*
     public int getIndiceProcheBloque() {
         double distance = Double.POSITIVE_INFINITY;
         int memoire = -1;
         for (int i = 0; i < listPersonnes.size(); i++) {
-            if (listPersonnes.get(i).getDistance() <= distance && estBloque(listPersonnes.get(i))) {
+            if (listPersonnes.get(i).getDistance() <= distance && estBloqueAvecSoc(listPersonnes.get(i))) {
                 distance = listPersonnes.get(i).getDistance();
                 memoire = i;
             }
         }
         return memoire;
     }
+
+ */
 
     public List<Obstacle> getListObstacles(){
         return listObstacles;
