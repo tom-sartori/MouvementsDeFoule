@@ -23,12 +23,13 @@ import sample.Salle;
 public class Controller extends Parent{
     private ControllerSalle cSalle;
     private ControllerPanel cPanel;
-    private List<Point> creerObstacle;
-    private List<Circle> pointObstacle;
-    private List<Line> ligneObstacle;
-    private boolean creationObstacle;
-    private boolean suppressionObstacle;
     private Salle salle;
+    private List<Point> creerObstacle; //Liste des points placés par l'utilisateur lors de la création d'un obstacle
+    private List<Circle> pointObstacle; //Affichage des points (creerObstacle) en cercle
+    private List<Line> ligneObstacle; //Affichage des lignes entre les points (creerObstacle) pour avoir un aperçu de la forme avant de valider
+    private boolean creationObstacle; //Permet de savoir si l'utilisateur utilise l'option de creation d'obstacle
+    private boolean suppressionObstacle; //Permet de savoir si l'utilisateur utilise l'option de suppression d'obstacle
+    
 
 
     public Controller (Salle salle) {
@@ -47,7 +48,8 @@ public class Controller extends Parent{
         ligneObstacle = new ArrayList<>();
         suppressionObstacle = false;
         
-        // Event utilisé pour ajouter des Personnes, Obstacles en cliquant.
+        // Event utilisé pour ajouter des Personnes, Obstacles en lors d'un clique.
+        // Seulement lorsque la simulation n'est pas lancée
         cSalle.getSalleGraphique().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -74,8 +76,9 @@ public class Controller extends Parent{
             }
         });
 
-    // Event utilisé pour supprimer un obstacle en cliquant.
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        // Event utilisé pour supprimer un obstacle en cliquant.
+        // Seulement lorsque la simulation n'est pas lancée
+        cSalle.getSalleGraphique().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if(!salle.isRunning() && suppressionObstacle){
@@ -90,6 +93,8 @@ public class Controller extends Parent{
             }
         });
 
+        // Event qui lance la simulation lorsque l'utilisateur appuie sur le bouton play.
+        // Prends en compte les différents paramètres (checkbox) de gestion de rayon, collisions.
         cPanel.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.setVitessePersonnes(cPanel.getVitesseValue());
@@ -101,18 +106,21 @@ public class Controller extends Parent{
             }
         });
 
+        // Event qui met en pause la simulation lorsque l'utilisateur clique sur le bouton pause.
         cPanel.getPauseButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.pause();
             }
         });
 
+        // Event qui supprime toutes les personnes de la salle et stoppe la simulation lorsque l'utilisateur clique sur clear.
         cPanel.getClearButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.removeAllPersonne();
             }
         });
 
+        // Event qui affiche ou cache le graphe des chemins les plus courts lorsque l'utilisateur active ou désactive la checkbox correspondante.
         cPanel.getGrapheCB().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 if(cPanel.getGrapheCB().isSelected())
@@ -121,12 +129,14 @@ public class Controller extends Parent{
             }
         });
 
+        // Event qui ouvre un popup pour ajouter un nombre de personnes définis lorsque l'utilisateur clique sur le bouton correspondant.
         cPanel.getAddPersonButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 createPopup("Personne");
             }
         });
 
+        // Event qui permet d'activer l'option de creation d'obstacle lorsque l'utilisateur clique sur le bouton correspondant.
         cPanel.getAddObstacleButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 creationObstacle = true;
@@ -134,6 +144,7 @@ public class Controller extends Parent{
             }
         });
 
+        // Event qui permet de valider la creation d'un obstacle lorsque l'utilisateur clique sur le bouton valider.
         cPanel.getValiderObstacleButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 creationObstacle = false;
@@ -151,6 +162,7 @@ public class Controller extends Parent{
             }
         });
 
+        // Event qui permet d'activer l'option pour supprimer un obstacle lorsque l'utilisateur clique sur le bouton correspondant.
         cPanel.getSupprimerObstacleButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 suppressionObstacle = true;
@@ -159,10 +171,10 @@ public class Controller extends Parent{
             }
         });
 
-        getChildren().add(cSalle);
-        getChildren().add(cPanel);
+        getChildren().addAll(cSalle, cPanel);
     }
 
+    // Ouvre un popup permettant d'ajouter des personnes aléatoirement dans la salle.
     public void createPopup(String objet){
         Group root = new Group();
         Stage popup = new Stage(); 
@@ -170,8 +182,11 @@ public class Controller extends Parent{
         if(objet.equalsIgnoreCase("Personne")){
             popup.setTitle("Ajouter personne");
             TextField value = new TextField("0");
-            value.setMinWidth(80);
-            Button confirm = cPanel.createButton("Ajouter", 110);
+            value.setPrefWidth(80);
+            value.setTranslateX(160);
+            Button confirm = cPanel.createButton("Ajouter", 150);
+            confirm.setPrefWidth(100);
+            confirm.setTranslateY(100);
 
             confirm.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {

@@ -6,17 +6,17 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 
 public class ControllerPanel extends Parent {
-    Button playButton;
-    Button pauseButton;
-    Button clearButton;
-    Button addPersonButton;
-    Button addObstacleButton;
-    Button validerObstacleButton;
-    Button supprimerObstacleButton;
-    Slider vitesse;
-    CheckBox graphe;
-    CheckBox collisions;
-    CheckBox rayon;
+    Button playButton; //lance la simulation
+    Button pauseButton; //pause la simulation
+    Button clearButton; //stop la simulation et vide la salle
+    Button addPersonButton; //ajoute des personnes
+    Button addObstacleButton; //ajoute des obstacles
+    Button validerObstacleButton; //valide la création d'un obstacle
+    Button supprimerObstacleButton; //supprime un obstacle
+    Slider vitesse; //change la vitesse des personnes
+    CheckBox graphe; //active/desactive affichage graphe
+    CheckBox collisions; //active/desactive collisions
+    CheckBox rayon; //active/desactive rayon
 
     public ControllerPanel(){
         this.minHeight(40);
@@ -49,6 +49,7 @@ public class ControllerPanel extends Parent {
         this.getChildren().addAll(supprimerObstacleButton, validerObstacleButton, addObstacleButton, addPersonButton, rayon, collisions, graphe, vitesse, playButton, pauseButton, clearButton);
     }
 
+    //Design des boutons prédéfinis
     public Button createButton(String text, int position){
         Button b = new Button(text);
         b.setMinHeight(30);
@@ -57,6 +58,7 @@ public class ControllerPanel extends Parent {
         return b;
     }
 
+    // Permet de changer la visibilité de certains boutons pour certaines options tels que la creation d'obstacle.
     public void visibility(boolean isVisible){
         playButton.setVisible(isVisible);
         pauseButton.setVisible(isVisible);

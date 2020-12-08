@@ -1,8 +1,6 @@
 package sample.controller;
 
-import javafx.event.EventHandler;
 import javafx.scene.Parent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import sample.Obstacle;
@@ -32,6 +30,7 @@ public class ControllerSalle extends Parent{
         this.getChildren().add(salleGraphique);
     }
 
+    // Créer et affiche une personne en position x et y (Utilisé lorsque l'utilisateur ajoute des personnes manuellement)
     public ControllerPersonne createPersonne(double x, double y){
         Personne personne = new Personne(x, y);
         salle.addPersonne(personne);
