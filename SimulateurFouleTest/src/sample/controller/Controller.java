@@ -78,7 +78,7 @@ public class Controller extends Parent{
 
         // Event utilisé pour supprimer un obstacle en cliquant.
         // Seulement lorsque la simulation n'est pas lancée
-        cSalle.getSalleGraphique().setOnMouseClicked(new EventHandler<MouseEvent>() {
+        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if(!salle.isRunning() && suppressionObstacle){
@@ -132,7 +132,8 @@ public class Controller extends Parent{
         // Event qui ouvre un popup pour ajouter un nombre de personnes définis lorsque l'utilisateur clique sur le bouton correspondant.
         cPanel.getAddPersonButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                createPopup("Personne");
+                if(!salle.isRunning())
+                    createPopup("Personne");
             }
         });
 
@@ -186,7 +187,7 @@ public class Controller extends Parent{
             value.setTranslateX(160);
             Button confirm = cPanel.createButton("Ajouter", 150);
             confirm.setPrefWidth(100);
-            confirm.setTranslateY(100);
+            confirm.setTranslateY(50);
 
             confirm.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
