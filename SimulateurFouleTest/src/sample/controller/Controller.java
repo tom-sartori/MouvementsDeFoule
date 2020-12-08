@@ -138,15 +138,16 @@ public class Controller extends Parent{
             @Override public void handle(ActionEvent e) {
                 creationObstacle = false;
                 cPanel.visibility(true);
-                if(!creerObstacle.isEmpty()){
-                    salle.addObstacle(new ObstaclePolygone(creerObstacle));
+                if(!creerObstacle.isEmpty() && creerObstacle.size()>2){
+                    Obstacle obstacle = new ObstaclePolygone(creerObstacle);
+                    salle.addObstacle(obstacle);
+                    cSalle.afficherControllerObstacle(obstacle.afficher());
                 }
                 creerObstacle.clear();
                 for(Circle c : pointObstacle) getChildren().remove(c);
                 for(Line l : ligneObstacle) getChildren().remove(l);
                 pointObstacle.clear();
                 ligneObstacle.clear();
-                salle.refreshAffichage();
             }
         });
 

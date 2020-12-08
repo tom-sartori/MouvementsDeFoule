@@ -90,6 +90,7 @@ public class ControllerSalle extends Parent{
 
     public boolean retirerObstacle(Obstacle obstacle){
         for (ControllerObstacle controllerObstacle : listeControllerObstacle) {
+            System.out.println(listeControllerObstacle.size());
             if (controllerObstacle.getObstacle().equals(obstacle)) {
                 getChildren().remove(controllerObstacle);
                 return true;
