@@ -183,4 +183,12 @@ public class MathsCalcule {
         return listTableau;
     }
 
+    // Renvoie le point du milieu du segment [AB].
+    public static Point getMilieu(Point A, Point B) {
+        Point milieu = new Point();
+        milieu.setX((A.getX() + B.getX()) / 2);
+        milieu.setY((A.getY() + B.getY()) / 2);
+        return milieu;
+    }
+
 }

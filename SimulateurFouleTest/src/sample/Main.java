@@ -41,10 +41,12 @@ public class Main extends Application {
         points.add(new Point(30, 100));
         salle.addObstacle(new ObstaclePolygone(points));
 
+
         salle.addSortie(1, 150, 250);
         //salle.addSortie(2,404,41);
-        //salle.addSortie(3, 802, 81);
+        salle.addSortie(3, 270, 200);
         //salle.addSortie(4, 300, 13);
+
 
         Controller controller = new Controller(salle);
         root.getChildren().add(controller);

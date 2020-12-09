@@ -136,6 +136,11 @@ public class Point {
         this.y = y;
     }
 
+    public void setPoint(Point p) {
+        this.x = p.getX();
+        this.y = p.getY();
+    }
+
     public boolean estSortie() {
         return estSortie;
     }

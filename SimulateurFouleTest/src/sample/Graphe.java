@@ -23,19 +23,20 @@ public class Graphe {
         for (Obstacle obstacle : salle.getListObstacles()) {
             for (Point pointObstacle : obstacle.getListePoints()) {
                 listePointsObstacles.add(pointObstacle);
+                pointObstacle.setDistanceASortie(Double.POSITIVE_INFINITY);
                 Point pointSortieDirectProche = salle.findPointSortiePlusProcheDirect(pointObstacle);
 
                 if (pointSortieDirectProche != null) {
                     //addChemin(new Chemin(pointObstacle, pointSortieDirectProche));
                     if (!listePointsSorties.contains(pointSortieDirectProche)) {
                         listePointsSorties.add(pointSortieDirectProche);
+                        pointSortieDirectProche.setDistanceASortie(Double.POSITIVE_INFINITY);
                     }
                 }
             }
         }
-
-        System.out.println("Nombre de points obstacles : " + listePointsObstacles.size());
-        System.out.println("Nombre de points sorties : " + listePointsSorties.size());
+        //System.out.println("Nombre de points obstacles : " + listePointsObstacles.size());
+        //System.out.println("Nombre de points sorties : " + listePointsSorties.size());
     }
 
     public void addChemin (Chemin chemin) {

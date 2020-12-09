@@ -20,25 +20,30 @@ public class ObstaclePolygone implements Obstacle {
             listePoints.add(new Point(point));
         }
 
-        for (int i = 0; i < (listePoints.size() / 2) + 1; i++) {
+        ControllerObstaclePolygone obstacleFX = new ControllerObstaclePolygone(this);
+        Point milieu = new Point();
+
+        for (int i = 0; i < listePoints.size(); i++) {
             for (int j = 0; j < listePoints.size(); j++) {
                 if (i < j) {
-                    if (i == 0 && j != listePoints.size() -1 && j != 1) {
-                        listDiagonales.add(new Point(listePoints.get(i)));
-                        listDiagonales.add(new Point(listePoints.get(j)));
-                    }
-                    else if (i == listePoints.size() - 1 && j != listePoints.size() - 1) {
-                        listDiagonales.add(new Point(listePoints.get(i)));
-                        listDiagonales.add(new Point(listePoints.get(j)));
-                    }
-                    else if (i != 0 && j != i + 1) {
-                        listDiagonales.add(new Point(listePoints.get(i)));
-                        listDiagonales.add(new Point(listePoints.get(j)));
+                    milieu.setPoint(MathsCalcule.getMilieu(listePoints.get(i), listePoints.get(j)));
+                    if (obstacleFX.contains(milieu.getX(), milieu.getY())) {
+                        if (i == 0 && j != listePoints.size() - 1 && j != 1) {
+                            listDiagonales.add(new Point(listePoints.get(i)));
+                            listDiagonales.add(new Point(listePoints.get(j)));
+                        } else if (i == listePoints.size() - 1 && j != listePoints.size() - 1) {
+                            listDiagonales.add(new Point(listePoints.get(i)));
+                            listDiagonales.add(new Point(listePoints.get(j)));
+                        } else if (i != 0 && j != i + 1) {
+                            listDiagonales.add(new Point(listePoints.get(i)));
+                            listDiagonales.add(new Point(listePoints.get(j)));
+                        }
                     }
                 }
             }
         }
-        //System.out.println("Nb diag : " + listDiagonales.size());
+        //System.out.println("Nb diag : " + listDiagonales.size() / 2);
+        //System.out.println("Nb diag attendues : " + (listePoints.size() * (listePoints.size() - 3)) / 2);
     }
 
     @Override
