@@ -72,7 +72,6 @@ public class Controller extends Parent{
                     }
                     
                     creerObstacle.add(new Point(event.getX(), event.getY()));
-                    cSalle.afficherPersonne(cSalle.createPersonne(event.getX(),event.getY()));
                 }
             }
         });
@@ -84,7 +83,7 @@ public class Controller extends Parent{
             public void handle(MouseEvent event) {
                 if(!salle.isRunning() && suppressionObstacle){
                     for(ControllerObstacle o : cSalle.getListObstacles()){
-                        if(o.contains(event.getX(), event.getY())){
+                        if(o.contains(event.getX()-marge, event.getY()-marge)){
                             salle.removeObstacle(o.getObstacle());  
                             suppressionObstacle = false;
                             cPanel.visibility(true);

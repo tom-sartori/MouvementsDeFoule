@@ -2,14 +2,18 @@ package sample.controller;
 
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import sample.Obstacle;
 import sample.ObstacleRectangle;
 import sample.Personne;
 
 import java.util.Random;
 
 public class ControllerObstacleRectangle extends ControllerObstacle{
-
+    private Obstacle obstacle;
+    
     public ControllerObstacleRectangle(ObstacleRectangle obstacleRectangle) {
+        obstacle = obstacleRectangle;
+
         double rayon = new Personne(0,0).getRayon();
         Rectangle obstacleGraphique = new Rectangle();
         obstacleGraphique.setX(obstacleRectangle.getListePoints().get(0).getX()+rayon);
@@ -21,5 +25,10 @@ public class ControllerObstacleRectangle extends ControllerObstacle{
         //obstacleGraphique.setFill(Color.rgb(ran.nextInt(255), ran.nextInt(255), ran.nextInt(255)));
         obstacleGraphique.setFill(Color.DARKCYAN);
         this.getChildren().add(obstacleGraphique);
+    }
+
+    @Override
+    public Obstacle getObstacle(){
+        return obstacle;
     }
 }
