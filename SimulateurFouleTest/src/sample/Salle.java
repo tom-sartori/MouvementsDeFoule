@@ -140,6 +140,11 @@ public class Salle {
             removePersonne(listPersonnes.get(0));
     }
 
+    public void removeObstacle(Obstacle obstacle){
+        listObstacles.remove(obstacle);
+        cSalle.retirerObstacle(obstacle);
+    }
+
     public void demarrer(boolean collisionActive, boolean rayonActive) {
         initialisationGrapheSansAffichage();
 

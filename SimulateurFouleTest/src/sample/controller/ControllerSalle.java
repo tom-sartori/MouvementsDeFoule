@@ -1,10 +1,9 @@
 package sample.controller;
 
-import javafx.event.EventHandler;
 import javafx.scene.Parent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import sample.Obstacle;
 import sample.Personne;
 import sample.Salle;
 
@@ -15,12 +14,14 @@ public class ControllerSalle extends Parent{
     private Salle salle;
     private Rectangle salleGraphique;
     private List<ControllerPersonne> listeControllerPersonne;
+    private List<ControllerObstacle> listeControllerObstacle;
     private ControllerGraphe controllerGraphe;
 
 
     public ControllerSalle (Salle s) {
         this.salle = s;
         listeControllerPersonne = new ArrayList<>();
+        listeControllerObstacle = new ArrayList<>();
 
         salleGraphique = new Rectangle(salle.getLargeur(), salle.getHauteur());
         salleGraphique.setFill(Color.LIGHTCYAN);
@@ -29,6 +30,7 @@ public class ControllerSalle extends Parent{
         this.getChildren().add(salleGraphique);
     }
 
+    // Créer et affiche une personne en position x et y (Utilisé lorsque l'utilisateur ajoute des personnes manuellement)
     public ControllerPersonne createPersonne(double x, double y){
         Personne personne = new Personne(x, y);
         salle.addPersonne(personne);
@@ -36,6 +38,7 @@ public class ControllerSalle extends Parent{
     }
 
     public void afficherControllerObstacle(ControllerObstacle controllerObstacle) {
+        listeControllerObstacle.add(controllerObstacle);
         getChildren().add(controllerObstacle);
     }
 
@@ -83,4 +86,19 @@ public class ControllerSalle extends Parent{
     public Rectangle getSalleGraphique(){
         return salleGraphique;
     }
+
+    public boolean retirerObstacle(Obstacle obstacle){
+        for (ControllerObstacle controllerObstacle : listeControllerObstacle) {
+            System.out.println(listeControllerObstacle.size());
+            if (controllerObstacle.getObstacle().equals(obstacle)) {
+                getChildren().remove(controllerObstacle);
+                return true;
+            }
+        }
+        return false;
+    }
+
+	public List<ControllerObstacle> getListObstacles() {
+		return listeControllerObstacle;
+	}
 }

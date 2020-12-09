@@ -5,6 +5,7 @@ import sample.controller.ControllerObstaclePolygone;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ObstaclePolygone implements Obstacle {
 
@@ -60,4 +61,19 @@ public class ObstaclePolygone implements Obstacle {
         ControllerObstaclePolygone obstaclePolygone = new ControllerObstaclePolygone(this);
         return obstaclePolygone.contains(point.getX(), point.getY());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ObstaclePolygone that = (ObstaclePolygone) o;
+        return Objects.equals(listePoints, that.listePoints);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(listePoints);
+    }
+
+    
 }
