@@ -140,8 +140,10 @@ public class Controller extends Parent{
         // Event qui permet d'activer l'option de creation d'obstacle lorsque l'utilisateur clique sur le bouton correspondant.
         cPanel.getAddObstacleButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                creationObstacle = true;
-                cPanel.visibility(false);
+                if(!salle.isRunning()){
+                    creationObstacle = true;
+                    cPanel.visibility(false);
+                }
             }
         });
 
@@ -166,9 +168,11 @@ public class Controller extends Parent{
         // Event qui permet d'activer l'option pour supprimer un obstacle lorsque l'utilisateur clique sur le bouton correspondant.
         cPanel.getSupprimerObstacleButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                suppressionObstacle = true;
-                cPanel.visibility(false);
-                cPanel.getValiderObstacleButton().setVisible(false);
+                if(!salle.isRunning() && !salle.getListObstacles().isEmpty()){
+                    suppressionObstacle = true;
+                    cPanel.visibility(false);
+                    cPanel.getValiderObstacleButton().setVisible(false);
+                }
             }
         });
 
