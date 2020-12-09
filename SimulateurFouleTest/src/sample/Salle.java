@@ -176,89 +176,16 @@ public class Salle {
         int y;
         double rayon = new Personne(-1, -1).getRayon();
         for (int i = 0; i < listPersonnes.size(); i++) {
-            System.out.println("je suis perso : " + i);
-            System.out.println(listPersonnes.get(i).getCoordCourant());
 
-            List<Personne> intersecAvecSocial = new ArrayList<>();
-            intersecAvecSocial = getPersonnesIntersec(listPersonnes.get(i), rayon);
-            System.out.println("test 1 : " + intersecAvecSocial.size());
+            List<Personne> intersecAvecSocial = getPersonnesIntersec(listPersonnes.get(i), rayon);
 
-            List<Personne> intersecSansSocial = new ArrayList<>();
-            intersecSansSocial = getPersonnesIntersec(listPersonnes.get(i), 0);
-            System.out.println("test 2 : " + intersecSansSocial.size());
+            List<Personne> intersecSansSocial = getPersonnesIntersec(listPersonnes.get(i), 0);
 
             boolean estPlusProche = estPremier(listPersonnes.get(i), intersecAvecSocial);
-            System.out.println("test 3 : " + estPlusProche);
-            System.out.println("");
-
 
             if (intersecAvecSocial.isEmpty() || (estPlusProche && intersecSansSocial.isEmpty()))
                 deplacePersonne(listPersonnes.get(i), collisionActive, rayonActive);
-
-
-
-
-            //deplacePersonne(listPersonnes.get(i), collisionActive, rayonActive);
-            /*
-            if (listPersonnes.get(i).estSorti())
-                removePersonne(listPersonnes.get(i));
-            else {
-                if (listPersonnes.get(i).objectifAteint()) {
-                    if(rayonActive){
-                        listPersonnes.get(i).setObjectifRayon(salle);
-                        listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectifRayon());
-                    }else{
-                        listPersonnes.get(i).setObjectif(salle);
-                        listPersonnes.get(i).setDxDyNormalise(listPersonnes.get(i).getObjectif());
-                    }
-                } else {    
-                    if(collisionActive) {
-                        //si n'est pas bloqué alors, avance normalement
-                        if (!estBloque(listPersonnes.get(i))) {
-                            listPersonnes.get(i).avancer();
-                            cSalle.deplacerPersonne(listPersonnes.get(i));
-                        }
-                        /*
-                        else {
-                            double minDist = Double.POSITIVE_INFINITY;
-                            int memoire = -1;
-                            for (int j = 0; j < listPersonnes.size(); j++) {
-                                if (!listPersonnes.get(i).getCoordCourant().environEgale(listPersonnes.get(j).getCoordCourant(), 19) && listPersonnes.get(i).getCoordCourant().environEgale(listPersonnes.get(j).getCoordCourant(), 21) && estEnCollision(listPersonnes.get(i), listPersonnes.get(j))) {
-                                    if (MathsCalcule.distance(listPersonnes.get(j).getCoordCourant(), listPersonnes.get(j).getObjectif()) <= minDist) {
-                                        minDist = MathsCalcule.distance(listPersonnes.get(j).getCoordCourant(), listPersonnes.get(j).getObjectif());
-                                        memoire = j;
-                                    }
-                                }
-                            }
-                            if (memoire != -1) {
-                                listPersonnes.get(memoire).avancer();
-                                listPersonnes.get(memoire).avancer();
-                                cSalle.deplacerPersonne(listPersonnes.get(memoire));
-                            }
-                            System.out.println("test" + listPersonnes.size());
-                        }
-
-                    }
-                    else { // Sans collisions
-                        if(rayonActive)
-                            listPersonnes.get(i).avancerRayon();
-                        else
-                            listPersonnes.get(i).avancer();
-                        cSalle.deplacerPersonne(listPersonnes.get(i));
-                    }
-                }
-
-            }
-
-             */
         }
-        /*
-        int indice = getIndiceProcheBloque();
-        if (indice != -1)
-            deplacePersonne(listPersonnes.get(indice), collisionActive, rayonActive);
-
-         */
-
     }
 
     public void deplacePersonne(Personne personne, boolean collisionActive, boolean rayonActive) {
@@ -276,10 +203,8 @@ public class Salle {
             } else {
                 if(collisionActive) {
                     //si n'est pas bloqué alors, avance normalement
-                    //if (!estBloqueAvecSoc(personne, 0)) {
-                        personne.avancer();
-                        cSalle.deplacerPersonne(personne);
-                    //}
+                    personne.avancer();
+                    cSalle.deplacerPersonne(personne);
                 }
                 else { // Sans collisions
                     if(rayonActive)
