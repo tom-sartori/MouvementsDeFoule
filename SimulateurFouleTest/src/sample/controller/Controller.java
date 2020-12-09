@@ -39,6 +39,7 @@ public class Controller extends Parent{
         cSalle = salle.afficher();
         cSalle.setTranslateX(marge);
         cSalle.setTranslateY(marge);
+        cSalle.setController(this);
 
         cPanel = new ControllerPanel();
         cPanel.setTranslateY(salle.getHauteur() + (3 * marge));
@@ -103,6 +104,7 @@ public class Controller extends Parent{
                     else salle.play(true, false);
                 }else if(cPanel.getRayonStatus()) salle.play(false, true);
                 else salle.play(false, false);
+                if(salle.isRunning()) cPanel.setLoopTimer(0);
             }
         });
 
@@ -110,6 +112,7 @@ public class Controller extends Parent{
         cPanel.getPauseButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.pause();
+                cPanel.setLoopTimer(1);
             }
         });
 
@@ -117,6 +120,7 @@ public class Controller extends Parent{
         cPanel.getClearButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.removeAllPersonne();
+                cPanel.setLoopTimer(2);
             }
         });
 
@@ -205,5 +209,9 @@ public class Controller extends Parent{
         }
         popup.setScene(scene);
         popup.show();
+    }
+
+    public ControllerPanel getControllerPanel(){
+        return cPanel;
     }
 }
