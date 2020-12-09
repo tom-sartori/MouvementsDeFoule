@@ -131,8 +131,10 @@ public class Salle {
 
     public void removePersonne (Personne personne) {
         listPersonnes.remove(personne);
-        if (listPersonnes.isEmpty() && loop != null)
+        if (listPersonnes.isEmpty() && loop != null){
             loop.stop();
+            cSalle.getController().getControllerPanel().setLoopTimer(1);
+        }
         cSalle.retirerPersonne(personne);
     }
 

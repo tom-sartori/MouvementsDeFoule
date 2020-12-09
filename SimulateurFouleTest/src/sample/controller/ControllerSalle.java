@@ -16,6 +16,7 @@ public class ControllerSalle extends Parent{
     private List<ControllerPersonne> listeControllerPersonne;
     private List<ControllerObstacle> listeControllerObstacle;
     private ControllerGraphe controllerGraphe;
+    private Controller controller;
 
 
     public ControllerSalle (Salle s) {
@@ -100,5 +101,13 @@ public class ControllerSalle extends Parent{
 
 	public List<ControllerObstacle> getListObstacles() {
 		return listeControllerObstacle;
-	}
+    }
+    
+    public void setController(Controller controller){
+        this.controller = controller;
+    }
+
+    public Controller getController(){
+        return controller;
+    }
 }

@@ -1,12 +1,18 @@
 package sample.controller;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class ControllerPanel extends Parent {
     Button playButton; //lance la simulation
@@ -21,6 +27,9 @@ public class ControllerPanel extends Parent {
     CheckBox collisions; //active/desactive collisions
     CheckBox rayon; //active/desactive rayon
     Text titre1, titre2, titre3;
+    Label timerDisplay; 
+    int timer=0;
+    Timeline loopTimer; //compteur pour le timer
 
     public ControllerPanel(){
         this.minHeight(40);
@@ -45,6 +54,25 @@ public class ControllerPanel extends Parent {
         viewClear.setFitHeight(20);
         viewClear.setPreserveRatio(true);
         clearButton.setGraphic(viewClear);
+        timerDisplay = new Label("00:00");
+        loopTimer = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent arg) {			                	
+                timer++;
+                int minutes, seconds;
+                String minText, secText;
+                minutes = timer/60;
+                minText = ""+minutes;
+                if(minutes<10) minText="0"+minText;
+                seconds = timer%60;
+                secText = ""+seconds;
+                if(seconds<10) secText="0"+secText;
+                timerDisplay.setText(minText+":"+secText);
+            }
+          }));
+        loopTimer.setCycleCount(Timeline.INDEFINITE);
+        timerDisplay.setTranslateX(120);
+        timerDisplay.setTranslateY(-23);
+
         titre3 = new Text("OBJETS");
         titre3.setTranslateX(500);
         titre3.setTranslateY(-10);
@@ -78,6 +106,7 @@ public class ControllerPanel extends Parent {
         vitesse.setBlockIncrement(0.1f);
         vitesse.setTranslateX(20);
         vitesse.setTranslateY(50);
+
         titre2 = new Text("PARAMETRES");
         titre2.setTranslateX(250);
         titre2.setTranslateY(-10);
@@ -90,7 +119,7 @@ public class ControllerPanel extends Parent {
         rayon.setTranslateX(250);
         rayon.setTranslateY(40);
 
-        this.getChildren().addAll(titre1, titre2, titre3, supprimerObstacleButton, validerObstacleButton, addObstacleButton, addPersonButton, rayon, collisions, graphe, vitesse, playButton, pauseButton, clearButton);
+        this.getChildren().addAll(timerDisplay, titre1, titre2, titre3, supprimerObstacleButton, validerObstacleButton, addObstacleButton, addPersonButton, rayon, collisions, graphe, vitesse, playButton, pauseButton, clearButton);
     }
 
     //Design des boutons prédéfinis
@@ -107,6 +136,7 @@ public class ControllerPanel extends Parent {
         titre1.setVisible(isVisible);
         titre2.setVisible(isVisible);
         titre3.setVisible(isVisible);
+        timerDisplay.setVisible(isVisible);
         playButton.setVisible(isVisible);
         pauseButton.setVisible(isVisible);
         clearButton.setVisible(isVisible);
@@ -161,5 +191,15 @@ public class ControllerPanel extends Parent {
     }
     public Button getSupprimerObstacleButton(){
         return supprimerObstacleButton;
+    }
+
+    public void setLoopTimer(int status){
+        if(status==0) loopTimer.play();
+        else if(status==1) loopTimer.pause();
+        else{
+            loopTimer.pause();
+            timer = 0;
+            timerDisplay.setText("00:00");
+        }
     }
 }
