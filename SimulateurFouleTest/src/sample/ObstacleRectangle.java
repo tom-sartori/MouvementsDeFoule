@@ -46,7 +46,7 @@ public class ObstacleRectangle implements Obstacle {
     }
 
     @Override
-    public List<Point> getListePoints() {
+    public List<Point> getListePointsPhysique() {
         return listePoints;
     }
 

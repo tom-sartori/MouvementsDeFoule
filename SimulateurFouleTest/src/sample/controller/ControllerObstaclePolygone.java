@@ -2,10 +2,8 @@ package sample.controller;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
 import sample.Obstacle;
 import sample.ObstaclePolygone;
-import sample.ObstacleRectangle;
 import sample.Personne;
 import sample.Point;
 
@@ -18,7 +16,7 @@ public class ControllerObstaclePolygone extends ControllerObstacle {
         Polygon polygoneGraphique = new Polygon();
         double rayon = new Personne(-1, -1).getRayon();
 
-        for (Point point : obstaclePolygone.getListePoints()) {
+        for (Point point : obstaclePolygone.getListePointsGraphiques()) {
             polygoneGraphique.getPoints().addAll(point.getX(), point.getY());
         }
 

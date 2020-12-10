@@ -101,7 +101,7 @@ public class Salle {
     }
 
     public void addRandomPersonnes (int n) {
-        double rayon = new Personne(-1, -1).getRayon();
+        double rayon = new Personne().getRayon();
         for (int i = 0; i < n; i++) {
             boolean dansObstacle;
             double x, y;
@@ -148,28 +148,22 @@ public class Salle {
         cSalle.retirerObstacle(obstacle);
     }
 
-    public void demarrer(boolean collisionActive, boolean rayonActive) {
+    public void demarrer(boolean collisionActive) {
         initialisationGrapheSansAffichage();
 
         if (!listPersonnes.isEmpty()) {
             for (Personne personne : listPersonnes) {   // Pour chaque personne de la salle
-
-                if(rayonActive){
-                    personne.setObjectifRayon(this);
-                    personne.setDxDyNormalise(personne.getObjectifRayon());
-                } else{
-                    personne.setObjectif(this);
-                    personne.setDxDyNormalise(personne.getObjectif());
-                }
+                personne.setObjectif(this);
+                personne.setDxDyNormalise(personne.getObjectif());
             }
 
             Salle salle = this; // Pas sur de la propreté de cette ligne mais ne fonctionnait pas dans la timeline sans
 
-            if (loop == null || loop.getStatus()==Status.STOPPED) {
-                loop = new Timeline(new KeyFrame(Duration.millis(20), e -> runAction(salle, collisionActive, rayonActive)));
+            if (loop == null || loop.getStatus() == Status.STOPPED) {
+                loop = new Timeline(new KeyFrame(Duration.millis(20), e -> runAction(salle, collisionActive)));
                 loop.setCycleCount(Timeline.INDEFINITE);
                 loop.play();
-            } else if (loop.getStatus() == Animation.Status.PAUSED) {
+            } else if (loop.getStatus() == Status.PAUSED) {
                 loop.play();
             }
         }
@@ -178,49 +172,36 @@ public class Salle {
 
     // Appelé à chaque frame.
     // A pour but de faire évoluer la personne au sein du système.
-    public void runAction(Salle salle, boolean collisionActive, boolean rayonActive){
+    public void runAction(Salle salle, boolean collisionActive){
         boolean bloque;
         int y;
-        double rayon = new Personne(-1, -1).getRayon();
+        double rayon = new Personne().getRayon();
         for (int i = 0; i < listPersonnes.size(); i++) {
+            if (collisionActive) {
+                List<Personne> intersecAvecSocial = getPersonnesIntersec(listPersonnes.get(i), rayon);
 
-            List<Personne> intersecAvecSocial = getPersonnesIntersec(listPersonnes.get(i), rayon);
+                List<Personne> intersecSansSocial = getPersonnesIntersec(listPersonnes.get(i), 0);
 
-            List<Personne> intersecSansSocial = getPersonnesIntersec(listPersonnes.get(i), 0);
+                boolean estPlusProche = estPremier(listPersonnes.get(i), intersecAvecSocial);
 
-            boolean estPlusProche = estPremier(listPersonnes.get(i), intersecAvecSocial);
-
-            if (intersecAvecSocial.isEmpty() || (estPlusProche && intersecSansSocial.isEmpty()))
-                deplacePersonne(listPersonnes.get(i), collisionActive, rayonActive);
+                if (intersecAvecSocial.isEmpty() || (estPlusProche && intersecSansSocial.isEmpty()))
+                    deplacePersonne(listPersonnes.get(i));
+            }
+            else
+                deplacePersonne(listPersonnes.get(i));
         }
     }
 
-    public void deplacePersonne(Personne personne, boolean collisionActive, boolean rayonActive) {
+    public void deplacePersonne(Personne personne) {
         if (personne.estSorti())
             removePersonne(personne);
+        else if (personne.objectifAteint()) {
+            personne.setObjectif(this);
+            personne.setDxDyNormalise(personne.getObjectif());
+        }
         else {
-            if (personne.objectifAteint()) {
-                if(rayonActive){
-                    personne.setObjectifRayon(this);
-                    personne.setDxDyNormalise(personne.getObjectifRayon());
-                }else{
-                    personne.setObjectif(this);
-                    personne.setDxDyNormalise(personne.getObjectif());
-                }
-            } else {
-                if(collisionActive) {
-                    //si n'est pas bloqué alors, avance normalement
-                    personne.avancer();
-                    cSalle.deplacerPersonne(personne);
-                }
-                else { // Sans collisions
-                    if(rayonActive)
-                        personne.avancerRayon();
-                    else
-                        personne.avancer();
-                    cSalle.deplacerPersonne(personne);
-                }
-            }
+            personne.avancer();
+            cSalle.deplacerPersonne(personne);
         }
     }
 
@@ -232,8 +213,7 @@ public class Salle {
     }
 
     public boolean isRunning(){
-        if(loop!=null && loop.getStatus()!= Animation.Status.STOPPED) return true;
-        else return false;
+        return loop != null && loop.getStatus() != Status.STOPPED;
     }
 
 
@@ -249,17 +229,18 @@ public class Salle {
     // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
     public void initialisationGrapheAvecAffichage () {
         graphe = new Graphe(this);
-        graphe.afficherDiagonalesObstacle();
+        //graphe.afficherDiagonalesObstacle();
+        graphe.afficherObstaclePhysique();
         graphe.creerTousLesPlusCourtsChemins();
         cSalle.afficherGraphe(graphe.afficher());
     }
 
 
-    public void play(Boolean collisionActive, boolean rayonActive){
+    public void play(Boolean collisionActive){
         if(loop != null && loop.getStatus() == Status.PAUSED){
             loop.play();
         } else if(loop == null || loop.getStatus() == Status.STOPPED){
-            demarrer(collisionActive, rayonActive);
+            demarrer(collisionActive);
         }
     }
 
@@ -269,7 +250,7 @@ public class Salle {
         double distanceCourte = Double.POSITIVE_INFINITY;
         Point plusProche = null;
         Point courant;
-        double rayon = new Personne(-1, -1).getRayon();     // Car toutes les personnes ont le même rayon.
+        double rayon = new Personne().getRayon();     // Car toutes les personnes ont le même rayon.
 
         if (!listSorties.isEmpty()) {
             for (Sortie sortie : listSorties) {
@@ -308,7 +289,7 @@ public class Salle {
             listePointsDirectes.add(pointSortieProche);
 
         for (Obstacle obstacle : listObstacles) {
-            for (Point point : obstacle.getListePoints()) {
+            for (Point point : obstacle.getListePointsPhysique()) {
                 if (!intersecObstacle(A, point))
                     listePointsDirectes.add(point);
             }

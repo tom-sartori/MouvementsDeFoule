@@ -21,7 +21,7 @@ public class Graphe {
         listePointsSorties = new ArrayList<>();
 
         for (Obstacle obstacle : salle.getListObstacles()) {
-            for (Point pointObstacle : obstacle.getListePoints()) {
+            for (Point pointObstacle : obstacle.getListePointsPhysique()) {
                 listePointsObstacles.add(pointObstacle);
                 pointObstacle.setDistanceASortie(Double.POSITIVE_INFINITY);
                 Point pointSortieDirectProche = salle.findPointSortiePlusProcheDirect(pointObstacle);
@@ -58,9 +58,9 @@ public class Graphe {
     // Pas très utile car trace des chemins sur un meme point et compare des memes diagoles.
     public void creerTousLesChemins(Salle salle) {
         for (Obstacle obstacle : salle.getListObstacles()) {
-            for (Point point : obstacle.getListePoints()) {
+            for (Point point : obstacle.getListePointsPhysique()) {
                 for (Obstacle obstacle1 : salle.getListObstacles()) {
-                    for (Point point1 : obstacle1.getListePoints()) {
+                    for (Point point1 : obstacle1.getListePointsPhysique()) {
                         if (!salle.intersecObstacle(point, point1))
                             addChemin(new Chemin(point, point1));
                     }
@@ -181,5 +181,15 @@ public class Graphe {
                 addChemin(new Chemin(obstacle.getDiagonales().get(i), obstacle.getDiagonales().get(i + 1)));
             }
         }
+    }
+
+    public void afficherObstaclePhysique() {
+        for (Obstacle obstacle : salle.getListObstacles()) {
+            for (int i = 0; i < obstacle.getListePointsPhysique().size() - 1; i++) {
+                addChemin(new Chemin(obstacle.getListePointsPhysique().get(i), obstacle.getListePointsPhysique().get(i + 1)));
+            }
+            addChemin(new Chemin(obstacle.getListePointsPhysique().get(obstacle.getListePointsPhysique().size() - 1), obstacle.getListePointsPhysique().get(0)));
+        }
+
     }
 }

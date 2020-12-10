@@ -19,7 +19,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, 1060, 800, Color.LIGHTGRAY);
 
         Salle salle = new Salle(1000, 600);
-
+/*
         salle.addObstacle(new ObstacleRectangle(150, 200, 70, 30));
         salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
         salle.addObstacle(new ObstacleRectangle(600, 100, 45, 200));
@@ -30,6 +30,8 @@ public class Main extends Application {
         salle.addObstacle(new ObstacleRectangle(300, 80, 150, 150));
         //salle.addObstacle(new ObstacleTriangle(new Point(260,70),new Point(134,90),new Point(324,80)));
 
+ */
+
 
         List<Point> points = new ArrayList<>();
         points.add(new Point(100, 60));
@@ -37,14 +39,14 @@ public class Main extends Application {
         points.add(new Point(160, 140));
         points.add(new Point(140, 180));
         points.add(new Point(70, 160));
-        points.add(new Point(20, 140));
+        //points.add(new Point(20, 140));
         points.add(new Point(30, 100));
         salle.addObstacle(new ObstaclePolygone(points));
 
 
         salle.addSortie(1, 150, 250);
         //salle.addSortie(2,404,41);
-        salle.addSortie(3, 270, 200);
+        //salle.addSortie(3, 270, 200);
         //salle.addSortie(4, 300, 13);
 
 

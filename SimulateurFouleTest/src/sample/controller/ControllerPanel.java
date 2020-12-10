@@ -25,7 +25,6 @@ public class ControllerPanel extends Parent {
     Slider vitesse; //change la vitesse des personnes
     CheckBox graphe; //active/desactive affichage graphe
     CheckBox collisions; //active/desactive collisions
-    CheckBox rayon; //active/desactive rayon
     Text titre1, titre2, titre3;
     Label timerDisplay; 
     int timer=0;
@@ -115,11 +114,8 @@ public class ControllerPanel extends Parent {
         collisions = new CheckBox("Activer les collisions");
         collisions.setTranslateX(250);
         collisions.setTranslateY(20);
-        rayon = new CheckBox("Activer le rayon");
-        rayon.setTranslateX(250);
-        rayon.setTranslateY(40);
 
-        this.getChildren().addAll(timerDisplay, titre1, titre2, titre3, supprimerObstacleButton, validerObstacleButton, addObstacleButton, addPersonButton, rayon, collisions, graphe, vitesse, playButton, pauseButton, clearButton);
+        this.getChildren().addAll(timerDisplay, titre1, titre2, titre3, supprimerObstacleButton, validerObstacleButton, addObstacleButton, addPersonButton, collisions, graphe, vitesse, playButton, pauseButton, clearButton);
     }
 
     //Design des boutons prédéfinis
@@ -141,7 +137,6 @@ public class ControllerPanel extends Parent {
         pauseButton.setVisible(isVisible);
         clearButton.setVisible(isVisible);
         vitesse.setVisible(isVisible);
-        rayon.setVisible(isVisible);
         collisions.setVisible(isVisible);
         graphe.setVisible(isVisible);
         addPersonButton.setVisible(isVisible);
@@ -176,10 +171,6 @@ public class ControllerPanel extends Parent {
 
     public Boolean getCollisionStatus(){
         return collisions.isSelected();
-    }
-
-    public Boolean getRayonStatus(){
-        return rayon.isSelected();
     }
 
     public Button getAddPersonButton(){

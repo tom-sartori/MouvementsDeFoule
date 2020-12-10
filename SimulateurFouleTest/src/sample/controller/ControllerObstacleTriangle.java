@@ -13,9 +13,9 @@ public class ControllerObstacleTriangle extends ControllerObstacle {
         
         Polygon triangleGraphique = new Polygon();
         triangleGraphique.getPoints().addAll(
-                obstacleTriangle.getListePoints().get(0).getX(), obstacleTriangle.getListePoints().get(0).getY(),
-                obstacleTriangle.getListePoints().get(1).getX(), obstacleTriangle.getListePoints().get(1).getY(),
-                obstacleTriangle.getListePoints().get(2).getX(), obstacleTriangle.getListePoints().get(2).getY());
+                obstacleTriangle.getListePointsPhysique().get(0).getX(), obstacleTriangle.getListePointsPhysique().get(0).getY(),
+                obstacleTriangle.getListePointsPhysique().get(1).getX(), obstacleTriangle.getListePointsPhysique().get(1).getY(),
+                obstacleTriangle.getListePointsPhysique().get(2).getX(), obstacleTriangle.getListePointsPhysique().get(2).getY());
 
         triangleGraphique.setFill(Color.DARKCYAN);
         getChildren().add(triangleGraphique);

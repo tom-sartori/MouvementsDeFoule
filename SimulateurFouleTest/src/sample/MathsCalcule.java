@@ -102,56 +102,56 @@ public class MathsCalcule {
         for (int i = 0; i < o.getDiagonales().size() / 2; i++) {
             w = i + j;
             if (w + 1 < o.getDiagonales().size()) {
-                for (int k = 0; k < o.getListePoints().size() - 1;k++) {
-                    if (estSuperpose(coordA, coordB, o.getDiagonales().get(w), o.getDiagonales().get(w + 1)) && (!estCoupe(coordA, coordB, o.getListePoints().get(k), o.getListePoints().get(k + 1)))) {
-                        if (o.getListePoints().get(k).getX() == o.getDiagonales().get(w).getX() && o.getListePoints().get(k).getY() == o.getDiagonales().get(w).getY()) {
+                for (int k = 0; k < o.getListePointsPhysique().size() - 1; k++) {
+                    if (estSuperpose(coordA, coordB, o.getDiagonales().get(w), o.getDiagonales().get(w + 1)) && (!estCoupe(coordA, coordB, o.getListePointsPhysique().get(k), o.getListePointsPhysique().get(k + 1)))) {
+                        if (o.getListePointsPhysique().get(k).getX() == o.getDiagonales().get(w).getX() && o.getListePointsPhysique().get(k).getY() == o.getDiagonales().get(w).getY()) {
 
-                            if (k - 1 >= 0 && k + 1 < o.getListePoints().size()) {
-                                listTableau.add(o.getListePoints().get(k - 1));
-                                listTableau.add(o.getListePoints().get(k));
-                                listTableau.add(o.getListePoints().get(k));
-                                listTableau.add(o.getListePoints().get(k + 1));
+                            if (k - 1 >= 0 && k + 1 < o.getListePointsPhysique().size()) {
+                                listTableau.add(o.getListePointsPhysique().get(k - 1));
+                                listTableau.add(o.getListePointsPhysique().get(k));
+                                listTableau.add(o.getListePointsPhysique().get(k));
+                                listTableau.add(o.getListePointsPhysique().get(k + 1));
                             } else {
 
                                 if (k - 1 < 0) {
-                                    listTableau.add(o.getListePoints().get(k));
-                                    listTableau.add(o.getListePoints().get(k + 1));
-                                    listTableau.add(o.getListePoints().get(o.getListePoints().size() - 1));
-                                    listTableau.add(o.getListePoints().get(k));
+                                    listTableau.add(o.getListePointsPhysique().get(k));
+                                    listTableau.add(o.getListePointsPhysique().get(k + 1));
+                                    listTableau.add(o.getListePointsPhysique().get(o.getListePointsPhysique().size() - 1));
+                                    listTableau.add(o.getListePointsPhysique().get(k));
                                 } else {
 
-                                    if (k + 1 >= o.getListePoints().size()) {
-                                        listTableau.add(o.getListePoints().get(k - 1));
-                                        listTableau.add(o.getListePoints().get(k));
-                                        listTableau.add(o.getListePoints().get(k));
-                                        listTableau.add(o.getListePoints().get(0));
+                                    if (k + 1 >= o.getListePointsPhysique().size()) {
+                                        listTableau.add(o.getListePointsPhysique().get(k - 1));
+                                        listTableau.add(o.getListePointsPhysique().get(k));
+                                        listTableau.add(o.getListePointsPhysique().get(k));
+                                        listTableau.add(o.getListePointsPhysique().get(0));
                                     }
                                 }
                             }
                         } else {
 
-                            if (o.getListePoints().get(k).getX() == o.getDiagonales().get(w + 1).getX() && o.getListePoints().get(k).getY() == o.getDiagonales().get(w + 1).getY()) {
+                            if (o.getListePointsPhysique().get(k).getX() == o.getDiagonales().get(w + 1).getX() && o.getListePointsPhysique().get(k).getY() == o.getDiagonales().get(w + 1).getY()) {
 
-                                if (k - 1 >= 0 && k + 1 < o.getListePoints().size()) {
-                                    listTableau.add(o.getListePoints().get(k - 1));
-                                    listTableau.add(o.getListePoints().get(k));
-                                    listTableau.add(o.getListePoints().get(k));
-                                    listTableau.add(o.getListePoints().get(k + 1));
+                                if (k - 1 >= 0 && k + 1 < o.getListePointsPhysique().size()) {
+                                    listTableau.add(o.getListePointsPhysique().get(k - 1));
+                                    listTableau.add(o.getListePointsPhysique().get(k));
+                                    listTableau.add(o.getListePointsPhysique().get(k));
+                                    listTableau.add(o.getListePointsPhysique().get(k + 1));
                                 } else {
 
                                     if (k - 1 < 0) {
-                                        listTableau.add(o.getListePoints().get(k));
-                                        listTableau.add(o.getListePoints().get(k + 1));
-                                        listTableau.add(o.getListePoints().get(o.getListePoints().size() - 1));
-                                        listTableau.add(o.getListePoints().get(k));
+                                        listTableau.add(o.getListePointsPhysique().get(k));
+                                        listTableau.add(o.getListePointsPhysique().get(k + 1));
+                                        listTableau.add(o.getListePointsPhysique().get(o.getListePointsPhysique().size() - 1));
+                                        listTableau.add(o.getListePointsPhysique().get(k));
 
                                     } else {
 
-                                        if (k + 1 >= o.getListePoints().size()) {
-                                            listTableau.add(o.getListePoints().get(k - 1));
-                                            listTableau.add(o.getListePoints().get(k));
-                                            listTableau.add(o.getListePoints().get(k));
-                                            listTableau.add(o.getListePoints().get(0));
+                                        if (k + 1 >= o.getListePointsPhysique().size()) {
+                                            listTableau.add(o.getListePointsPhysique().get(k - 1));
+                                            listTableau.add(o.getListePointsPhysique().get(k));
+                                            listTableau.add(o.getListePointsPhysique().get(k));
+                                            listTableau.add(o.getListePointsPhysique().get(0));
                                         }
 
                                     }
@@ -166,17 +166,17 @@ public class MathsCalcule {
         if (!listTableau.isEmpty()) {
             return listTableau;
         }
-        for (int i = 0; i < o.getListePoints().size(); i++) {
-            if (i != o.getListePoints().size() - 1) {
-                    if (estCoupe(coordA, coordB, o.getListePoints().get(i), o.getListePoints().get(i + 1))) {
-                        listTableau.add(o.getListePoints().get(i));
-                        listTableau.add(o.getListePoints().get(i + 1));
+        for (int i = 0; i < o.getListePointsPhysique().size(); i++) {
+            if (i != o.getListePointsPhysique().size() - 1) {
+                    if (estCoupe(coordA, coordB, o.getListePointsPhysique().get(i), o.getListePointsPhysique().get(i + 1))) {
+                        listTableau.add(o.getListePointsPhysique().get(i));
+                        listTableau.add(o.getListePointsPhysique().get(i + 1));
                     }
 
             } else {
-                    if (estCoupe(coordA, coordB, o.getListePoints().get(i), o.getListePoints().get(0))) {
-                        listTableau.add(o.getListePoints().get(i));
-                        listTableau.add(o.getListePoints().get(0));
+                    if (estCoupe(coordA, coordB, o.getListePointsPhysique().get(i), o.getListePointsPhysique().get(0))) {
+                        listTableau.add(o.getListePointsPhysique().get(i));
+                        listTableau.add(o.getListePointsPhysique().get(0));
                 }
             }
         }
@@ -229,5 +229,23 @@ public class MathsCalcule {
         double y = (a1 * x) + b1;
 
         return new Point(x, y);
+    }
+
+    // Retourne le point d'arrivé, en partant du Point A et en ajoutant le vecteur u.
+    public static Point getPointPrime (Point A, Point vecU) {
+        return new Point(A.getX() + vecU.getX(), A.getY() + vecU.getY());
+    }
+
+    // Retourne l'équation de la droite (ax+b).
+    // Retourne un Point avec x correspondant à a et y correspondant à b.
+    public static Point getDroiteParallele (Point A, Point B, double espacement) {
+        Point vecteurDir = MathsCalcule.getVecteurDirecteur(A, B);
+        Point vecteurOrthogonal = new Point(vecteurDir.getY(), - vecteurDir.getX());
+        vecteurOrthogonal = MathsCalcule.normaliseVecteur(vecteurOrthogonal, espacement);
+        Point Aprime = MathsCalcule.getPointPrime(A, vecteurOrthogonal);
+        Point Bprime = MathsCalcule.getPointPrime(B, vecteurOrthogonal);
+
+        Point d1 = MathsCalcule.getDroite(Aprime, Bprime);
+        return d1;
     }
 }

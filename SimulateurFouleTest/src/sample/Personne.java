@@ -8,10 +8,8 @@ public class Personne {
 
     private Point coordCourant;
     private Point objectif; // Prochain point / direction du perso
-    private Point objectifRayon;
 
-
-    private double rayon;
+    private final double rayon = 10;
     private double dx;
     private double dy;
     private double vitesse = 1.5; // Norme du vecteur de déplacement par frame, en unité par frame.
@@ -19,8 +17,10 @@ public class Personne {
     public Personne(double posX , double posY){
         coordCourant = new Point(posX, posY);
         objectif = null;
-        rayon = 10;
-        objectifRayon = new Point();
+    }
+
+    // Simplement pour récupérer le rayon.
+    public Personne() {
     }
 
     public ControllerPersonne afficher() {
@@ -90,18 +90,6 @@ public class Personne {
         coordCourant.setPoint(p.getX(), p.getY());
     }
 
-    public void avancerRayon () { if (dx >= 0 && dy >= 0 && coordCourant.getX() + dx >= objectifRayon.getX() && coordCourant.getY() + dy >= objectifRayon.getY())
-        coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
-    else if (dx >= 0 && dy <= 0 && coordCourant.getX() + dx >= objectifRayon.getX() && coordCourant.getY() + dy <= objectifRayon.getY())
-        coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
-    else if (dx <= 0 && dy <= 0 && coordCourant.getX() + dx <= objectifRayon.getX() && coordCourant.getY() + dy <= objectifRayon.getY())
-        coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
-    else if (dx <= 0 && dy >= 0 && coordCourant.getX() + dx <= objectifRayon.getX() && coordCourant.getY() + dy >= objectifRayon.getY())
-        coordCourant.setPoint(objectifRayon.getX(), objectifRayon.getY());
-    else
-            coordCourant.setPoint(coordCourant.getX() + dx, coordCourant.getY() + dy); // Cas normal.
-    }
-
     // Est appelé quand un play la salle eu début, mais aussi à chaque fois qu'il vient d'atteindre son objectif.
     // Jamais appelé quand getVraisSuivant() == null
     public void setObjectif (Salle salle) {
@@ -113,283 +101,12 @@ public class Personne {
         }
         //System.out.println("courant : " + coordCourant);
         //System.out.println("objectif : " + objectif);
-        objectifRayon.setX(objectif.getX());
-        objectifRayon.setY(objectif.getY());
-    }
-
-    // Prend aussi en compte le rayon de la personne.
-    public void setObjectifRayon (Salle salle) {
-        setObjectif(salle);
-
-        for (Obstacle o : salle.getListObstacles()) {
-            for (Point p : o.getListePoints()) {
-                if (p.environEgale(objectif, 1)) {
-
-                    if (objectifRayon.environEgaleX(coordCourant.getX() - rayon)) {
-                        System.out.println("objectifRayon.environEgaleX(coordCourant.getX() - r) ligne 122");
-
-                        if (objectifRayon.environEgaleY(coordCourant.getY() + rayon)) {
-                            System.out.println("objectifRayon.environEgaleY(coordCourant.getY() + r) ligne 225");
-                            objectifRayon.setX(objectif.getX() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
-                            }
-
-                        } else if (objectifRayon.environEgaleY(coordCourant.getY() - rayon)) {
-                            System.out.println("objectifRayon.environEgaleY(coordCourant.getY() - r) ligne 135");
-                            objectifRayon.setX(objectif.getX() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
-                            }
-
-                        } else if (objectifRayon.getY() + rayon > coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() + r > coordCourant.getY() ligne 145");
-                            objectifRayon.setX(objectif.getX() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
-                            }
-
-                        } else if (objectifRayon.getY() - rayon > coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() - r > coordCourant.getY() ligne 154");
-                            objectifRayon.setX(objectif.getX() + rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() - rayon);
-                            }
-
-                        } else if (objectifRayon.getY() + rayon < coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() + r <coordCourant.getY() ligne 103");
-                            objectifRayon.setX(objectif.getX() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                            }
-
-                        } else if (objectifRayon.getY() - rayon < coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() - r <coordCourant.getY() ligne 172");
-                            objectifRayon.setX(objectif.getX() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                            }
-
-                        }
-                    } else if (objectifRayon.environEgaleX(coordCourant.getX() + rayon)) {
-                        System.out.println("objectifRayon.environEqualsX(coordCourant.getX()+r) ligne 182");
-
-                        if (objectifRayon.environEgaleY(coordCourant.getY() + rayon)) {
-                            System.out.println("objectifRayon.environEgaleY(coordCourant.getY() + r) ligne 185");
-                            objectifRayon.setX(objectif.getX() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
-                            }
-
-                        } else if (objectifRayon.environEgaleY(coordCourant.getY() - rayon)) {
-                            System.out.println("objectifRayon.environEgaleY(coordCourant.getY() - r) ligne 195");
-                            objectifRayon.setX(objectif.getX() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
-                            }
-
-                        } else if (objectifRayon.getY() + rayon > coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() + r > coordCourant.getY() ligne 205");
-                            objectifRayon.setX(objectif.getX() + rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() - rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
-                            }
-
-                        } else if (objectifRayon.getY() - rayon > coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() - r > coordCourant.getY() ligne 214");
-                            objectifRayon.setX(objectif.getX() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                            }
-
-                        } else if (objectifRayon.getY() + rayon < coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() + R<coordCourant.getY() ligne 223");
-                            objectifRayon.setX(objectif.getX() + rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() - rayon);
-                            }
-
-                        } else if (objectifRayon.getY() - rayon < coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() - r<coordCourant.getY() ligne 232");
-                            objectifRayon.setX(objectif.getX() + rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() - rayon);
-                            }
-
-                        }
-                    } else if (objectifRayon.getX() + rayon > coordCourant.getX()) {
-                        System.out.println("objectif.getX()+r > coordCourant.getX() ligne 242");
-
-                        if (objectifRayon.environEgaleY(coordCourant.getY() + rayon)) {
-                            System.out.println("objectifRayon.environEgaleY(coordCourant.getY() + r) ligne 245");
-                            objectifRayon.setX(objectif.getX() + rayon);
-                            objectifRayon.setY(objectif.getY() - rayon);
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() - rayon);
-                                objectifRayon.setY(objectif.getY() - rayon);
-                            }
-
-                        } else if (objectifRayon.environEgaleY(coordCourant.getY() - rayon)) {
-                            System.out.println("objectifRayon.environEgaleY(coordCourant.getY() - r) ligne 255");
-                            objectifRayon.setX(objectif.getX() - rayon);
-                            objectifRayon.setY(objectif.getY() - rayon);
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() - rayon);
-                            }
-
-                        } else if (objectifRayon.getY() + rayon > coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() + r > coordCourant.getY() ligne 265");
-                            objectifRayon.setX(objectif.getX() + rayon);
-                            objectifRayon.setY(objectif.getY() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() - rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
-
-                            }
-
-                        } else if (objectifRayon.getY() - rayon > coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() - r > coordCourant.getY() ligne 277");
-                            objectifRayon.setX(objectif.getX() + rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() - rayon);
-                            }
-
-                        } else if (objectifRayon.getY() + rayon < coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() + r < coordCourant.getY() ligne 286");
-                            objectifRayon.setX(objectif.getX() + rayon);
-                            objectifRayon.setY(objectif.getY() + rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() - rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
-                            }
-
-                        } else if (objectifRayon.getY() - rayon < coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() - r < coordCourant.getY() ligne 297");
-                            objectifRayon.setX(objectif.getX() + rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() - rayon);
-                            }
-
-                        }
-                    } else if (objectifRayon.getX() - rayon < coordCourant.getX()) {
-                        System.out.println("objectif.getX()-r < coordCourant.getX() ligne 307");
-
-                        if (objectifRayon.environEgaleY(coordCourant.getY() + rayon)) {
-                            System.out.println("objectifRayon.environEgaleY(coordCourant.getY() + r) ligne 310");
-                            objectifRayon.setX(objectif.getX() - rayon);
-                            objectifRayon.setY(objectif.getY() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() - rayon);
-                            }
-
-                        } else if (objectifRayon.environEgaleY(coordCourant.getY() - rayon)) {
-                            System.out.println("objectifRayon.environEgaleY(coordCourant.getY() - r) ligne 320");
-                            objectifRayon.setX(objectif.getX() + rayon);
-                            objectifRayon.setY(objectif.getY() + rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() - rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
-                            }
-
-                        } else if (objectifRayon.getY() + rayon > coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() + r > coordCourant.getY() ligne 330");
-                            objectifRayon.setX(objectif.getX() - rayon);
-                            objectifRayon.setY(objectif.getY() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
-                            }
-
-                        } else if (objectifRayon.getY() - rayon > coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() - r > coordCourant.getY() ligne 341");
-                            objectifRayon.setX(objectif.getX() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
-                            }
-
-                        } else if (objectifRayon.getY() + rayon < coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() + r <coordCourant.getY() ligne 351");
-                            objectifRayon.setX(objectif.getX() + rayon);
-                            objectifRayon.setY(objectif.getY() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce ");
-                                objectifRayon.setX(objectif.getX() - rayon);
-                                objectifRayon.setY(objectif.getY() + rayon);
-                            }
-
-                        } else if (objectifRayon.getY() - rayon < coordCourant.getY()) {
-                            System.out.println("objectifRayon.getY() - r < coordCourant.getY() ligne 360");
-                            objectifRayon.setX(objectif.getX() - rayon);
-
-                            if (!segmentObstacle(objectifRayon, o).isEmpty()) {
-                                System.out.println("objectifRayon était obstalce ");
-                                objectifRayon.setX(objectif.getX() + rayon);
-                                objectifRayon.setY(objectif.getY() - rayon);
-                            }
-
-                        }
-
-                    }
-
-                }
-            }
-        }
+        objectif.setX(objectif.getX());
+        objectif.setY(objectif.getY());
     }
 
     public boolean objectifAteint () {
-        return coordCourant.equals(objectifRayon);
+        return coordCourant.equals(objectif);
     }
 
     // Appelé par set objectif pour initialiser le premier objectif de la personne
@@ -430,10 +147,10 @@ public class Personne {
     }
 
     public boolean estObstacle(Point coordObjectif,Obstacle o){
-        if(coordObjectif.getX()>o.getListePoints().get(0).getX()
-        && coordObjectif.getX()<o.getListePoints().get(1).getX()
-        && coordObjectif.getY()>o.getListePoints().get(0).getY()
-        && coordObjectif.getY()<o.getListePoints().get(3).getY()){
+        if(coordObjectif.getX()>o.getListePointsPhysique().get(0).getX()
+        && coordObjectif.getX()<o.getListePointsPhysique().get(1).getX()
+        && coordObjectif.getY()>o.getListePointsPhysique().get(0).getY()
+        && coordObjectif.getY()<o.getListePointsPhysique().get(3).getY()){
             return true;
         }else
             return !segmentObstacle(coordObjectif,o).isEmpty();
@@ -441,10 +158,6 @@ public class Personne {
 
     public Point getObjectif() {
         return objectif;
-    }
-
-    public Point getObjectifRayon() {
-        return objectifRayon;
     }
 
     public Point getCoordCourant() {

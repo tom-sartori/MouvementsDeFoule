@@ -95,16 +95,17 @@ public class Controller extends Parent{
         });
 
         // Event qui lance la simulation lorsque l'utilisateur appuie sur le bouton play.
-        // Prends en compte les différents paramètres (checkbox) de gestion de rayon, collisions.
+        // Prends en compte les différents paramètres (checkbox) de gestion des collisions.
         cPanel.getPlayButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 salle.setVitessePersonnes(cPanel.getVitesseValue());
                 if(cPanel.getCollisionStatus()){
-                    if(cPanel.getRayonStatus()) salle.play(true, true);
-                    else salle.play(true, false);
-                }else if(cPanel.getRayonStatus()) salle.play(false, true);
-                else salle.play(false, false);
-                if(salle.isRunning()) cPanel.setLoopTimer(0);
+                    salle.play(true);
+                }
+                else
+                    salle.play(false);
+                if(salle.isRunning())
+                    cPanel.setLoopTimer(0);
             }
         });
 

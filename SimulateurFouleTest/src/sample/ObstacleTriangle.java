@@ -27,7 +27,7 @@ public class ObstacleTriangle implements Obstacle {
     }
 
     @Override
-    public List<Point> getListePoints() {
+    public List<Point> getListePointsPhysique() {
         return listePoints;
     }
 
