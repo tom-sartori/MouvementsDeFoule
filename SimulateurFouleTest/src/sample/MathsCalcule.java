@@ -191,4 +191,43 @@ public class MathsCalcule {
         return milieu;
     }
 
+    public static Point getVecteurDirecteur(Point A, Point B) {
+        return new Point(B.getX() - A.getX(), B.getY() - A.getY());
+    }
+
+    public static Point normaliseVecteur(Point u, double taille) {
+        double x = u.getX();
+        double y = u.getY();
+        double argument = Math.sqrt((x * x) + (y * y));
+
+        double xPrime = (taille / argument) * x;
+        double yPrime = (taille / argument) * y;
+        return new Point(xPrime, yPrime);
+    }
+
+    // Retourne la droite d'equation ax+b passant par A et B.
+    // Retourne un point avec x correspondant à a et y correspondant à b.
+    public static Point getDroite(Point A, Point B) {
+        double a = (B.getY() - A.getY()) / (B.getX() - A.getX());
+        double b = A.getY() - (a * A.getX());
+        return new Point(a, b);
+    }
+
+    // Retourne le point d'intersection des deux droites en paramètre
+    // Pre-requis ; pour chaque droite, le Point correspond à : x = a et y = b
+    public static Point getPointIntersection (Point d1, Point d2) {
+        double a1 = d1.getX();
+        double b1 = d1.getY();
+        double a2 = d2.getX();
+        double b2 = d2.getY();
+
+        if (a1 == a2) {
+            return null;
+        }
+
+        double x = (b2 - b1) / (a1 - a2);
+        double y = (a1 * x) + b1;
+
+        return new Point(x, y);
+    }
 }
