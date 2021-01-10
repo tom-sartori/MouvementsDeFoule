@@ -229,9 +229,11 @@ public class Salle {
     // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
     public void initialisationGrapheAvecAffichage () {
         graphe = new Graphe(this);
+        //graphe.afficherProdCartesienChemins();
         //graphe.afficherDiagonalesObstacle();
-        graphe.afficherObstaclePhysique();
+        //graphe.afficherObstaclePhysique();
         graphe.creerTousLesPlusCourtsChemins();
+        graphe.printSommetsObstacles();
         cSalle.afficherGraphe(graphe.afficher());
     }
 
@@ -254,7 +256,7 @@ public class Salle {
 
         if (!listSorties.isEmpty()) {
             for (Sortie sortie : listSorties) {
-                courant = sortie.findPointSortieDirect(this, A, rayon);
+                courant = sortie.findPointSortieDirect(this, A, 0); // Mettre rayon et pas 0
                 if (courant != null) {
                     distance = MathsCalcule.distance(A, courant);
 

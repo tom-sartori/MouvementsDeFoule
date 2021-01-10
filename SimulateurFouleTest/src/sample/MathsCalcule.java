@@ -240,7 +240,7 @@ public class MathsCalcule {
     // Retourne un Point avec x correspondant à a et y correspondant à b.
     public static Point getDroiteParallele (Point A, Point B, double espacement) {
         Point vecteurDir = MathsCalcule.getVecteurDirecteur(A, B);
-        Point vecteurOrthogonal = new Point(vecteurDir.getY(), - vecteurDir.getX());
+        Point vecteurOrthogonal = new Point(- vecteurDir.getY(), vecteurDir.getX());
         vecteurOrthogonal = MathsCalcule.normaliseVecteur(vecteurOrthogonal, espacement);
         Point Aprime = MathsCalcule.getPointPrime(A, vecteurOrthogonal);
         Point Bprime = MathsCalcule.getPointPrime(B, vecteurOrthogonal);
