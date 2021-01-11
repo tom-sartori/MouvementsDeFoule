@@ -173,8 +173,6 @@ public class Salle {
     // Appelé à chaque frame.
     // A pour but de faire évoluer la personne au sein du système.
     public void runAction(Salle salle, boolean collisionActive){
-        boolean bloque;
-        int y;
         double rayon = new Personne().getRayon();
         for (int i = 0; i < listPersonnes.size(); i++) {
             if (collisionActive) {
@@ -229,9 +227,11 @@ public class Salle {
     // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
     public void initialisationGrapheAvecAffichage () {
         graphe = new Graphe(this);
+        //graphe.afficherProdCartesienChemins();
         //graphe.afficherDiagonalesObstacle();
         graphe.afficherObstaclePhysique();
         graphe.creerTousLesPlusCourtsChemins();
+        //graphe.printSommetsObstacles();
         cSalle.afficherGraphe(graphe.afficher());
     }
 
@@ -254,7 +254,7 @@ public class Salle {
 
         if (!listSorties.isEmpty()) {
             for (Sortie sortie : listSorties) {
-                courant = sortie.findPointSortieDirect(this, A, rayon);
+                courant = sortie.findPointSortieDirect(this, A, 0); // Mettre rayon et pas 0
                 if (courant != null) {
                     distance = MathsCalcule.distance(A, courant);
 
@@ -319,31 +319,6 @@ public class Salle {
         }
         return true;
     }
-
-
-    public boolean estBloqueAvecSoc (Personne p, double distSoc) {
-        for (Personne personne : listPersonnes) {
-            if (p != personne) {
-                if (estEnCollision(p, personne, distSoc))
-                    return true;
-            }
-        }
-        return false;
-    }
-/*
-    public int getIndiceProcheBloque() {
-        double distance = Double.POSITIVE_INFINITY;
-        int memoire = -1;
-        for (int i = 0; i < listPersonnes.size(); i++) {
-            if (listPersonnes.get(i).getDistance() <= distance && estBloqueAvecSoc(listPersonnes.get(i))) {
-                distance = listPersonnes.get(i).getDistance();
-                memoire = i;
-            }
-        }
-        return memoire;
-    }
-
- */
 
     public List<Obstacle> getListObstacles(){
         return listObstacles;

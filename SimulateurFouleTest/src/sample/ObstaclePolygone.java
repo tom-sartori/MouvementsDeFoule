@@ -19,24 +19,28 @@ public class ObstaclePolygone implements Obstacle {
         listDiagonales = new ArrayList<>();
 
         for (Point point : listePoints) {
-            listePointsGraphiques.add(new Point(point));
+            listePointsPhysique.add(new Point(point));
         }
+        //listePointsGraphiques = listePointsPhysique;
+
 
         double rayon = new Personne().getRayon();
 
         Point d1 = MathsCalcule.getDroiteParallele(listePoints.get(listePoints.size() - 1), listePoints.get(0), rayon);
         Point d2 = MathsCalcule.getDroiteParallele(listePoints.get(0), listePoints.get(1), rayon);
-        listePointsPhysique.add(MathsCalcule.getPointIntersection(d1, d2));
+        listePointsGraphiques.add(MathsCalcule.getPointIntersection(d1, d2));
 
         for (int i = 1; i < listePoints.size() - 1; i++) {
             d1 = MathsCalcule.getDroiteParallele(listePoints.get(i - 1), listePoints.get(i), rayon);
             d2 = MathsCalcule.getDroiteParallele(listePoints.get(i), listePoints.get(i + 1), rayon);
-            listePointsPhysique.add(MathsCalcule.getPointIntersection(d1, d2));
+            listePointsGraphiques.add(MathsCalcule.getPointIntersection(d1, d2));
         }
 
         d1 = MathsCalcule.getDroiteParallele(listePoints.get(listePoints.size() - 2), listePoints.get(listePoints.size() - 1), rayon);
         d2 = MathsCalcule.getDroiteParallele(listePoints.get(listePoints.size() - 1), listePoints.get(0), rayon);
-        listePointsPhysique.add(MathsCalcule.getPointIntersection(d1, d2));
+        listePointsGraphiques.add(MathsCalcule.getPointIntersection(d1, d2));
+
+
 
 
 
@@ -83,7 +87,7 @@ public class ObstaclePolygone implements Obstacle {
 
     @Override
     public boolean estDansObstacle(Point point) {
-        ControllerObstaclePolygone obstaclePolygone = new ControllerObstaclePolygone(this);
+        ControllerObstaclePolygone obstaclePolygone = new ControllerObstaclePolygone(listePointsPhysique);
         return obstaclePolygone.contains(point.getX(), point.getY());
     }
 

@@ -46,10 +46,9 @@ public class Point {
 
     @Override
     public String toString() {
-        return "Point{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+        if (estSortie)
+            return "PointSortie(" + x + " ; " + y + ')';
+        return "Point(" + x + " ; " + y + ')';
     }
 
     public String toStringV2() {

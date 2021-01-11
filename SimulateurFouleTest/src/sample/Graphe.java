@@ -53,23 +53,14 @@ public class Graphe {
     }
 
 
-    // Fonction inutile mais reste là en cas de besoin.
-    // Fait une sorte de produit cartésien de tous les points du graphe et trace des chemins entre eux.
-    // Pas très utile car trace des chemins sur un meme point et compare des memes diagoles.
-    public void creerTousLesChemins(Salle salle) {
-        for (Obstacle obstacle : salle.getListObstacles()) {
-            for (Point point : obstacle.getListePointsPhysique()) {
-                for (Obstacle obstacle1 : salle.getListObstacles()) {
-                    for (Point point1 : obstacle1.getListePointsPhysique()) {
-                        if (!salle.intersecObstacle(point, point1))
-                            addChemin(new Chemin(point, point1));
-                    }
-                }
-                Point pointSortie = salle.findPointSortiePlusProcheDirect(point);
-                if (pointSortie != null) {
-                    addChemin(new Chemin(point, pointSortie));
-                }
-            }
+    // Fonction utilisé uniquement pour l'affichage.
+    // Fait un produit cartésien de tous les points du graphe et trace des chemins entre eux.
+    public void afficherProdCartesienChemins() {
+        for (Point point : listePointsObstacles) {
+            for (Point pointObstacle : listePointsObstacles)
+                addChemin(new Chemin(point, pointObstacle));
+            for (Point pointSortie : listePointsSorties)
+                addChemin(new Chemin(point, pointSortie));
         }
     }
 
@@ -191,5 +182,17 @@ public class Graphe {
             addChemin(new Chemin(obstacle.getListePointsPhysique().get(obstacle.getListePointsPhysique().size() - 1), obstacle.getListePointsPhysique().get(0)));
         }
 
+    }
+
+    public void printSommetsObstacles () {
+        int i = 0;
+        for (Point pointObstacle : listePointsObstacles) {
+            System.out.println("Point " + (char)('A' + i) + '(' + pointObstacle.getX() + " ; " + pointObstacle.getY()  + ") | Distance sortie : " + (double)Math.round(pointObstacle.getDistanceASortie() * 100)/100 + " px ; Point suivant : " + pointObstacle.getSuivant());
+            i++;
+        }
+    }
+
+    public void reeinitialiserAffichage() {
+        listeChemins.clear();
     }
 }

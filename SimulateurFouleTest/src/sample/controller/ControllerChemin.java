@@ -7,8 +7,6 @@ import sample.Chemin;
 
 public class ControllerChemin extends Parent {
 
-    private Chemin chemin;
-
     public ControllerChemin(Chemin chemin) {
         Line line = new Line();
         line.setStartX(chemin.getA().getX());
@@ -18,6 +16,5 @@ public class ControllerChemin extends Parent {
 
         line.setStroke(Color.RED);
         getChildren().add(line);
-        this.chemin = chemin;
     }
 }

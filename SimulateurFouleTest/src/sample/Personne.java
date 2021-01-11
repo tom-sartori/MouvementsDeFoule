@@ -80,14 +80,9 @@ public class Personne {
         return new Point(coordCourant.getX() + getDxNormalise(objectif), coordCourant.getY() + getDyNormalise(objectif)); // Cas normal.
     }
 
-    public void setDecalage(Point p){
-        coordCourant.setPoint(p.getX(), p.getY());
-    }
-
     // Fait avancer la personne suivant getProchainMouvement()
     public void avancer(){
-        Point p = getProchainMouvement();
-        coordCourant.setPoint(p.getX(), p.getY());
+        coordCourant.setPoint(getProchainMouvement());
     }
 
     // Est appelé quand un play la salle eu début, mais aussi à chaque fois qu'il vient d'atteindre son objectif.

@@ -15,10 +15,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Group root = new Group();
-        Scene scene = new Scene(root, 1060, 800, Color.LIGHTGRAY);
+        int largeurSalle = 1000;
+        int hauteurSalle = 600;
+        Salle salle = new Salle(largeurSalle, hauteurSalle);
 
-        Salle salle = new Salle(1000, 600);
 /*
         salle.addObstacle(new ObstacleRectangle(150, 200, 70, 30));
         salle.addObstacle(new ObstacleRectangle(300, 400, 50, 50));
@@ -44,11 +44,14 @@ public class Main extends Application {
         salle.addObstacle(new ObstaclePolygone(points));
 
 
-        salle.addSortie(1, 150, 250);
-        //salle.addSortie(2,404,41);
+        //salle.addSortie(1, 150, 250);
+        salle.addSortie(2,100,41);
         //salle.addSortie(3, 270, 200);
         //salle.addSortie(4, 300, 13);
 
+
+        Group root = new Group();
+        Scene scene = new Scene(root, largeurSalle + 60, hauteurSalle + 200, Color.LIGHTGRAY);
 
         Controller controller = new Controller(salle);
         root.getChildren().add(controller);
