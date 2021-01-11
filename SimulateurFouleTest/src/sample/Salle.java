@@ -173,8 +173,6 @@ public class Salle {
     // Appelé à chaque frame.
     // A pour but de faire évoluer la personne au sein du système.
     public void runAction(Salle salle, boolean collisionActive){
-        boolean bloque;
-        int y;
         double rayon = new Personne().getRayon();
         for (int i = 0; i < listPersonnes.size(); i++) {
             if (collisionActive) {
@@ -233,7 +231,7 @@ public class Salle {
         //graphe.afficherDiagonalesObstacle();
         //graphe.afficherObstaclePhysique();
         graphe.creerTousLesPlusCourtsChemins();
-        graphe.printSommetsObstacles();
+        //graphe.printSommetsObstacles();
         cSalle.afficherGraphe(graphe.afficher());
     }
 
