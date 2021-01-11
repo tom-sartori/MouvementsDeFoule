@@ -17,6 +17,7 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import sample.Obstacle;
 import sample.ObstaclePolygone;
+import sample.Personne;
 import sample.Point;
 import sample.Salle;
 
@@ -54,25 +55,30 @@ public class Controller extends Parent{
         cSalle.getSalleGraphique().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(!salle.isRunning() && !creationObstacle && !suppressionObstacle){
-                    cSalle.afficherPersonne(cSalle.createPersonne(event.getX(),event.getY()));
-                } else if(!salle.isRunning() && creationObstacle && !suppressionObstacle){
-                    Circle c = new Circle(event.getX()+marge, event.getY()+marge, 10);
-                    getChildren().add(c);
-                    pointObstacle.add(c);
-                    if(pointObstacle.size()>1){
-                        Line l = new Line(pointObstacle.get(pointObstacle.size()-2).getCenterX(),pointObstacle.get(pointObstacle.size()-2).getCenterY() , event.getX()+marge, event.getY()+marge);
-                        getChildren().add(l);
-                        ligneObstacle.add(l);
+                double rayon = new Personne().getRayon();
+                double x = event.getX();
+                double y = event.getY();
+                if((x+marge > marge+rayon && x < salle.getLargeur()-rayon)){
+                    if(!salle.isRunning() && !creationObstacle && !suppressionObstacle){
+                        cSalle.afficherPersonne(cSalle.createPersonne(x,y));
+                    } else if(!salle.isRunning() && creationObstacle && !suppressionObstacle){
+                        Circle c = new Circle(x+marge, y+marge, 10);
+                        getChildren().add(c);
+                        pointObstacle.add(c);
+                        if(pointObstacle.size()>1){
+                            Line l = new Line(pointObstacle.get(pointObstacle.size()-2).getCenterX(),pointObstacle.get(pointObstacle.size()-2).getCenterY() , event.getX()+marge, event.getY()+marge);
+                            getChildren().add(l);
+                            ligneObstacle.add(l);
+                        }
+                        if(pointObstacle.size()>2){
+                            if(pointObstacle.size()>3) getChildren().remove(getChildren().get(getChildren().size()-3));
+                            Line l = new Line(event.getX()+marge, event.getY()+marge, pointObstacle.get(0).getCenterX(), pointObstacle.get(0).getCenterY());
+                            getChildren().add(l);
+                            ligneObstacle.add(l);
+                        }
+                        
+                        creerObstacle.add(new Point(event.getX(), event.getY()));
                     }
-                    if(pointObstacle.size()>2){
-                        if(pointObstacle.size()>3) getChildren().remove(getChildren().get(getChildren().size()-3));
-                        Line l = new Line(event.getX()+marge, event.getY()+marge, pointObstacle.get(0).getCenterX(), pointObstacle.get(0).getCenterY());
-                        getChildren().add(l);
-                        ligneObstacle.add(l);
-                    }
-                    
-                    creerObstacle.add(new Point(event.getX(), event.getY()));
                 }
             }
         });
@@ -88,6 +94,9 @@ public class Controller extends Parent{
                             salle.removeObstacle(o.getObstacle());  
                             suppressionObstacle = false;
                             cPanel.visibility(true);
+                            cPanel.getGroupeGraphe().getSelectedToggle().setSelected(false);
+                            cPanel.getEnleverGrapheRB().setSelected(true);
+                            cSalle.cacherGraphe();
                         }
                     }
                 }
@@ -126,11 +135,37 @@ public class Controller extends Parent{
         });
 
         // Event qui affiche ou cache le graphe des chemins les plus courts lorsque l'utilisateur active ou désactive la checkbox correspondante.
-        cPanel.getGrapheCB().setOnAction(new EventHandler<ActionEvent>() {
+        cPanel.getGrapheRB().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                if(cPanel.getGrapheCB().isSelected())
-                    salle.initialisationGrapheAvecAffichage();
-                else cSalle.cacherGraphe();
+                cSalle.cacherGraphe();
+                salle.initialisationGrapheAvecAffichage("");
+            }
+        });
+
+        cPanel.getGrapheDiagonaleRB().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                cSalle.cacherGraphe();
+                salle.initialisationGrapheAvecAffichage("Diagonale");
+            }
+        });
+
+        cPanel.getGrapheCartesienRB().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                cSalle.cacherGraphe();
+                salle.initialisationGrapheAvecAffichage("Cartesien");
+            }
+        });
+
+        cPanel.getGraphePhysiqueRB().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                cSalle.cacherGraphe();
+                salle.initialisationGrapheAvecAffichage("Physique");
+            }
+        });
+
+        cPanel.getEnleverGrapheRB().setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                cSalle.cacherGraphe();
             }
         });
 
@@ -155,12 +190,34 @@ public class Controller extends Parent{
         // Event qui permet de valider la creation d'un obstacle lorsque l'utilisateur clique sur le bouton valider.
         cPanel.getValiderObstacleButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
+                boolean intersec = false;
+                for(int i=0;i<pointObstacle.size() && !intersec;i++){
+                    Point A = new Point(pointObstacle.get(i).getCenterX(),pointObstacle.get(i).getCenterY());
+                    Point B;
+                    if(i==pointObstacle.size()-1) B = new Point(pointObstacle.get(0).getCenterX(),pointObstacle.get(0).getCenterY());
+                    else B = new Point(pointObstacle.get(i+1).getCenterX(),pointObstacle.get(i+1).getCenterY());
+                    if(salle.intersecObstacle(A, B)) {
+                        intersec = true;
+                    }
+                }
                 creationObstacle = false;
                 cPanel.visibility(true);
-                if(!creerObstacle.isEmpty() && creerObstacle.size()>2){
-                    Obstacle obstacle = new ObstaclePolygone(creerObstacle);
-                    salle.addObstacle(obstacle);
-                    cSalle.afficherControllerObstacle(obstacle.afficher());
+                if(!intersec){
+                    if(!creerObstacle.isEmpty() && creerObstacle.size()>2){
+                        Obstacle obstacle = new ObstaclePolygone(creerObstacle);
+                        ControllerObstacle obstacleGraphique = obstacle.afficher();
+                        salle.addObstacle(obstacle);
+                        cSalle.afficherControllerObstacle(obstacleGraphique);
+                        List<ControllerObstacle> obstacles = cSalle.getListObstacles();
+                        for(ControllerObstacle o : obstacles){
+                                if(!obstacleGraphique.equals(o)){
+                                    if(obstacleGraphique.contains(o.getObstacle().getListePointsPhysique().get(0).getX(),o.getObstacle().getListePointsPhysique().get(0).getY())) salle.removeObstacle(o.getObstacle());
+                                }
+                        }
+                        cPanel.getGroupeGraphe().getSelectedToggle().setSelected(false);
+                        cPanel.getEnleverGrapheRB().setSelected(true);
+                        cSalle.cacherGraphe();
+                    }
                 }
                 creerObstacle.clear();
                 for(Circle c : pointObstacle) getChildren().remove(c);

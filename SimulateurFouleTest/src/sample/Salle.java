@@ -225,12 +225,12 @@ public class Salle {
 
     // Utilisé à chaque fois qu'on appuie sur "play", donc qu'on lance démarer.
     // Pas possible d'initialiser avant car les obstacles, sorties et persos ne sont pas encore ajoutés au graphe
-    public void initialisationGrapheAvecAffichage () {
+    public void initialisationGrapheAvecAffichage(String type) {
         graphe = new Graphe(this);
-        //graphe.afficherProdCartesienChemins();
-        //graphe.afficherDiagonalesObstacle();
-        graphe.afficherObstaclePhysique();
-        graphe.creerTousLesPlusCourtsChemins();
+        if(type.equalsIgnoreCase("Cartesien")) graphe.afficherProdCartesienChemins();
+        else if(type.equalsIgnoreCase("Diagonale")) graphe.afficherDiagonalesObstacle();
+        else if(type.equalsIgnoreCase("Physique")) graphe.afficherObstaclePhysique();
+        else graphe.creerTousLesPlusCourtsChemins();
         //graphe.printSommetsObstacles();
         cSalle.afficherGraphe(graphe.afficher());
     }
