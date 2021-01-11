@@ -21,9 +21,9 @@ public class ObstaclePolygone implements Obstacle {
         for (Point point : listePoints) {
             listePointsPhysique.add(new Point(point));
         }
-        listePointsGraphiques = listePointsPhysique;
+        //listePointsGraphiques = listePointsPhysique;
 
-        /*
+
         double rayon = new Personne().getRayon();
 
         Point d1 = MathsCalcule.getDroiteParallele(listePoints.get(listePoints.size() - 1), listePoints.get(0), rayon);
@@ -42,7 +42,7 @@ public class ObstaclePolygone implements Obstacle {
 
 
 
-         */
+
 
         ControllerObstaclePolygone obstacleFX = new ControllerObstaclePolygone(this);
         Point milieu = new Point();
@@ -87,7 +87,7 @@ public class ObstaclePolygone implements Obstacle {
 
     @Override
     public boolean estDansObstacle(Point point) {
-        ControllerObstaclePolygone obstaclePolygone = new ControllerObstaclePolygone(this);
+        ControllerObstaclePolygone obstaclePolygone = new ControllerObstaclePolygone(listePointsPhysique);
         return obstaclePolygone.contains(point.getX(), point.getY());
     }
 

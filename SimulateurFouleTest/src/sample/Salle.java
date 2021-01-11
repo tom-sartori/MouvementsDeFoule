@@ -229,7 +229,7 @@ public class Salle {
         graphe = new Graphe(this);
         //graphe.afficherProdCartesienChemins();
         //graphe.afficherDiagonalesObstacle();
-        //graphe.afficherObstaclePhysique();
+        graphe.afficherObstaclePhysique();
         graphe.creerTousLesPlusCourtsChemins();
         //graphe.printSommetsObstacles();
         cSalle.afficherGraphe(graphe.afficher());
@@ -319,31 +319,6 @@ public class Salle {
         }
         return true;
     }
-
-
-    public boolean estBloqueAvecSoc (Personne p, double distSoc) {
-        for (Personne personne : listPersonnes) {
-            if (p != personne) {
-                if (estEnCollision(p, personne, distSoc))
-                    return true;
-            }
-        }
-        return false;
-    }
-/*
-    public int getIndiceProcheBloque() {
-        double distance = Double.POSITIVE_INFINITY;
-        int memoire = -1;
-        for (int i = 0; i < listPersonnes.size(); i++) {
-            if (listPersonnes.get(i).getDistance() <= distance && estBloqueAvecSoc(listPersonnes.get(i))) {
-                distance = listPersonnes.get(i).getDistance();
-                memoire = i;
-            }
-        }
-        return memoire;
-    }
-
- */
 
     public List<Obstacle> getListObstacles(){
         return listObstacles;

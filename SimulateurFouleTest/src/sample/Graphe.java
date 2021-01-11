@@ -191,4 +191,8 @@ public class Graphe {
             i++;
         }
     }
+
+    public void reeinitialiserAffichage() {
+        listeChemins.clear();
+    }
 }
