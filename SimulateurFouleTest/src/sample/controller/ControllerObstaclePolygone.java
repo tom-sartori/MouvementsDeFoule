@@ -14,7 +14,6 @@ public class ControllerObstaclePolygone extends ControllerObstacle {
         obstacle = obstaclePolygone;
 
         Polygon polygoneGraphique = new Polygon();
-        double rayon = new Personne(-1, -1).getRayon();
 
         for (Point point : obstaclePolygone.getListePointsGraphiques()) {
             polygoneGraphique.getPoints().addAll(point.getX(), point.getY());
