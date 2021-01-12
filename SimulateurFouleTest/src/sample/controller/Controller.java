@@ -187,15 +187,16 @@ public class Controller extends Parent{
             }
         });
 
-        // Event qui permet de valider la creation d'un obstacle lorsque l'utilisateur clique sur le bouton valider.
-        cPanel.getValiderObstacleButton().setOnAction(new EventHandler<ActionEvent>() {
+         // Event qui permet de valider la creation d'un obstacle lorsque l'utilisateur clique sur le bouton valider.
+         cPanel.getValiderObstacleButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 boolean intersec = false;
+                double rayon = new Personne().getRayon();
                 for(int i=0;i<pointObstacle.size() && !intersec;i++){
-                    Point A = new Point(pointObstacle.get(i).getCenterX(),pointObstacle.get(i).getCenterY());
+                    Point A = new Point(pointObstacle.get(i).getCenterX()-marge,pointObstacle.get(i).getCenterY()-marge);
                     Point B;
-                    if(i==pointObstacle.size()-1) B = new Point(pointObstacle.get(0).getCenterX(),pointObstacle.get(0).getCenterY());
-                    else B = new Point(pointObstacle.get(i+1).getCenterX(),pointObstacle.get(i+1).getCenterY());
+                    if(i==pointObstacle.size()-1) B = new Point(pointObstacle.get(0).getCenterX()-marge,pointObstacle.get(0).getCenterY()-marge);
+                    else B = new Point(pointObstacle.get(i+1).getCenterX()-marge,pointObstacle.get(i+1).getCenterY()-marge);
                     if(salle.intersecObstacle(A, B)) {
                         intersec = true;
                     }
@@ -211,7 +212,7 @@ public class Controller extends Parent{
                         List<ControllerObstacle> obstacles = cSalle.getListObstacles();
                         for(ControllerObstacle o : obstacles){
                                 if(!obstacleGraphique.equals(o)){
-                                    if(obstacleGraphique.contains(o.getObstacle().getListePointsPhysique().get(0).getX(),o.getObstacle().getListePointsPhysique().get(0).getY())) salle.removeObstacle(o.getObstacle());
+                                    if(obstacleGraphique.contains(o.getObstacle().getListePointsGraphiques().get(0).getX(),o.getObstacle().getListePointsGraphiques().get(0).getY())) salle.removeObstacle(o.getObstacle());
                                 }
                         }
                         cPanel.getGroupeGraphe().getSelectedToggle().setSelected(false);
@@ -226,7 +227,6 @@ public class Controller extends Parent{
                 ligneObstacle.clear();
             }
         });
-
         // Event qui permet d'activer l'option pour supprimer un obstacle lorsque l'utilisateur clique sur le bouton correspondant.
         cPanel.getSupprimerObstacleButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {

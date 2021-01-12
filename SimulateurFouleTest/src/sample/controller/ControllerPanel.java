@@ -226,6 +226,10 @@ public class ControllerPanel extends Parent {
         return collisions.isSelected();
     }
 
+    public Boolean getRayonStatus(){
+        return rayon.isSelected();
+    }
+
     public Button getAddPersonButton(){
         return addPersonButton;
     }

@@ -54,4 +54,9 @@ public class ObstacleRectangle implements Obstacle {
     public List<Point> getDiagonales() {
         return listDiagonales;
     }
+
+    @Override
+    public List<Point> getListePointsGraphiques() {
+        return listePoints;
+    }
 }

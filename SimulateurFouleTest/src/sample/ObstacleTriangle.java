@@ -40,4 +40,9 @@ public class ObstacleTriangle implements Obstacle {
     public boolean estDansObstacle(Point point) {
         return false;
     }
+
+    @Override
+    public List<Point> getListePointsGraphiques() {
+        return listePoints;
+    }
 }

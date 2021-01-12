@@ -104,6 +104,7 @@ public class ObstaclePolygone implements Obstacle {
         return Objects.hash(listePointsPhysique);
     }
 
+    @Override
     public List<Point> getListePointsGraphiques() {
         return listePointsGraphiques;
     }
