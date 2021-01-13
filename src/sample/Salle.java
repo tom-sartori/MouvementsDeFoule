@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
@@ -250,7 +249,6 @@ public class Salle {
         double distanceCourte = Double.POSITIVE_INFINITY;
         Point plusProche = null;
         Point courant;
-        double rayon = new Personne().getRayon();     // Car toutes les personnes ont le même rayon.
 
         if (!listSorties.isEmpty()) {
             for (Sortie sortie : listSorties) {

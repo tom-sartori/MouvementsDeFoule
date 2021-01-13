@@ -191,7 +191,6 @@ public class Controller extends Parent{
          cPanel.getValiderObstacleButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 boolean intersec = false;
-                double rayon = new Personne().getRayon();
                 for(int i=0;i<pointObstacle.size() && !intersec;i++){
                     Point A = new Point(pointObstacle.get(i).getCenterX()-marge,pointObstacle.get(i).getCenterY()-marge);
                     Point B;

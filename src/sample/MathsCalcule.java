@@ -11,8 +11,8 @@ public class MathsCalcule {
         double b = coordB.getY() - coordA.getY();
         double c = coordC.getX() - coordD.getX();
         double d = coordC.getY() - coordD.getY();
-        double u = coordC.getX() - coordA.getX();
-        double v = coordC.getY() - coordA.getY();
+        // double u = coordC.getX() - coordA.getX();
+        // double v = coordC.getY() - coordA.getY();
 
         double determinant = (a * d) - (b * c);
         return determinant;

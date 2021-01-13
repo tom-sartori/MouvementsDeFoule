@@ -4,7 +4,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import sample.Obstacle;
 import sample.ObstaclePolygone;
-import sample.Personne;
 import sample.Point;
 
 import java.util.List;

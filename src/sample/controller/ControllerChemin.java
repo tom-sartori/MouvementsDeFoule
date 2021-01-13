@@ -1,9 +1,9 @@
 package sample.controller;
 
+import sample.Chemin;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import sample.Chemin;
 
 public class ControllerChemin extends Parent {
 
