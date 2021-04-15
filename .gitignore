@@ -1,5 +1,5 @@
 .class
 .DS_Store
-/out
 ./out/
-./target
+/.idea/
+/target/
